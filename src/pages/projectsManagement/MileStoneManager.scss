@@ -1,0 +1,629 @@
+@import '../../assets/styles/variables';
+
+.milestone-manager-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba($deep-blue, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+
+    @media (max-width: $breakpoint-md) {
+        padding: 0.5rem;
+        align-items: flex-start;
+        padding-top: 2rem;
+    }
+}
+
+.milestone-manager-modal {
+    background: $white;
+    border-radius: $border-radius * 2;
+    box-shadow: 0 25px 80px rgba($deep-blue, 0.3);
+    max-width: 1000px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, $deep-blue 0%, $orange 50%, $vibrant-green 100%);
+    }
+}
+
+// Modal Header
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 2px solid rgba($light-gray, 0.3);
+
+    @media (max-width: $breakpoint-md) {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .header-content {
+        flex: 1;
+
+        h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: $deep-blue;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+
+            svg {
+                color: $orange;
+            }
+
+            @media (max-width: $breakpoint-md) {
+                font-size: 1.5rem;
+            }
+        }
+
+        p {
+            color: $dark-gray;
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+    }
+
+    .close-button {
+        background: none;
+        border: none;
+        color: $dark-gray;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: $border-radius;
+        transition: $transition;
+        flex-shrink: 0;
+
+        &:hover {
+            background: rgba($light-gray, 0.5);
+            color: $deep-blue;
+        }
+    }
+}
+
+// Progress Overview
+.progress-overview {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba($deep-blue, 0.02), rgba($orange, 0.01));
+    border-bottom: 1px solid rgba($light-gray, 0.3);
+
+    @media (max-width: $breakpoint-lg) {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    @media (max-width: $breakpoint-md) {
+        padding: 1.5rem;
+    }
+
+    .progress-card,
+    .status-overview,
+    .upcoming-milestones {
+        background: $white;
+        padding: 1.5rem;
+        border-radius: $border-radius * 1.5;
+        box-shadow: 0 4px 15px rgba($deep-blue, 0.08);
+        border: 1px solid rgba($deep-blue, 0.1);
+
+        h3 {
+            color: $deep-blue;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+    }
+
+    .progress-card {
+        text-align: center;
+
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient($vibrant-green 0deg,
+                    $vibrant-green calc(var(--progress) * 3.6deg),
+                    rgba($light-gray, 0.3) calc(var(--progress) * 3.6deg),
+                    rgba($light-gray, 0.3) 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+
+            &::before {
+                content: '';
+                width: 60px;
+                height: 60px;
+                background: $white;
+                border-radius: 50%;
+                position: absolute;
+            }
+
+            .progress-value {
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: $deep-blue;
+                z-index: 1;
+            }
+        }
+
+        .progress-stats {
+            color: $dark-gray;
+            opacity: 0.8;
+            font-size: 0.85rem;
+        }
+    }
+
+    .status-overview {
+        .status-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: rgba($light-gray, 0.1);
+            border-radius: $border-radius;
+
+            .status-dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                flex-shrink: 0;
+            }
+
+            .status-label {
+                flex: 1;
+                font-size: 0.85rem;
+                color: $dark-gray;
+            }
+
+            .status-count {
+                font-weight: 600;
+                color: $deep-blue;
+                font-size: 0.9rem;
+            }
+        }
+    }
+
+    .upcoming-milestones {
+        .upcoming-list {
+            .upcoming-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba($light-gray, 0.3);
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                .milestone-name {
+                    flex: 1;
+                    font-weight: 500;
+                    color: $deep-blue;
+                    font-size: 0.85rem;
+                }
+
+                .milestone-date {
+                    color: $orange;
+                    font-size: 0.8rem;
+                    font-weight: 500;
+                }
+            }
+
+            .no-upcoming {
+                text-align: center;
+                color: $dark-gray;
+                opacity: 0.6;
+                font-size: 0.85rem;
+                font-style: italic;
+            }
+        }
+    }
+}
+
+// Milestones Section
+.milestones-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem 1rem;
+
+        @media (max-width: $breakpoint-md) {
+            padding: 1rem 1.5rem 0.5rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        h3 {
+            color: $deep-blue;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .add-milestone-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: $vibrant-green;
+            color: $white;
+            border: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: $border-radius;
+            font-weight: 500;
+            cursor: pointer;
+            transition: $transition;
+
+            &:hover {
+                background: darken($vibrant-green, 10%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba($vibrant-green, 0.3);
+            }
+        }
+    }
+
+    .milestones-list {
+        flex: 1;
+        padding: 0 2rem 1rem;
+        overflow-y: auto;
+
+        @media (max-width: $breakpoint-md) {
+            padding: 0 1.5rem 1rem;
+        }
+
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba($deep-blue, 0.3);
+            border-radius: 3px;
+        }
+
+        .milestone-item {
+            margin-bottom: 1rem;
+            background: $white;
+            border: 1px solid rgba($light-gray, 0.3);
+            border-radius: $border-radius * 1.5;
+            transition: all 0.3s ease;
+
+            &:hover {
+                box-shadow: 0 4px 15px rgba($deep-blue, 0.1);
+                transform: translateY(-1px);
+            }
+
+            &.editing {
+                border-color: $deep-blue;
+                box-shadow: 0 0 0 3px rgba($deep-blue, 0.1);
+            }
+        }
+
+        .milestone-view {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+
+            .milestone-status-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: rgba(currentColor, 0.1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .milestone-content {
+                flex: 1;
+
+                h4 {
+                    color: $deep-blue;
+                    font-weight: 600;
+                    margin-bottom: 0.5rem;
+                    font-size: 1rem;
+                }
+
+                .milestone-meta {
+                    display: flex;
+                    gap: 1rem;
+                    align-items: center;
+
+                    @media (max-width: $breakpoint-sm) {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: 0.3rem;
+                    }
+
+                    .milestone-due {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.3rem;
+                        color: $dark-gray;
+                        opacity: 0.8;
+                        font-size: 0.85rem;
+                    }
+
+                    .milestone-status {
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.3px;
+                    }
+                }
+            }
+
+            .milestone-actions {
+                display: flex;
+                gap: 0.5rem;
+                flex-shrink: 0;
+
+                button {
+                    background: none;
+                    border: 1px solid rgba($light-gray, 0.5);
+                    color: $dark-gray;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: $border-radius;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: $transition;
+
+                    &:hover {
+                        border-color: $deep-blue;
+                        color: $deep-blue;
+                        background: rgba($deep-blue, 0.05);
+                    }
+
+                    &.remove-milestone-btn:hover {
+                        border-color: #ef4444;
+                        color: #ef4444;
+                        background: rgba(#ef4444, 0.05);
+                    }
+
+                    &.duplicate-btn:hover {
+                        border-color: $orange;
+                        color: $orange;
+                        background: rgba($orange, 0.05);
+                    }
+                }
+            }
+        }
+
+        .milestone-edit-form {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+
+            @media (max-width: $breakpoint-md) {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .edit-inputs {
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr;
+                gap: 1rem;
+                flex: 1;
+
+                @media (max-width: $breakpoint-md) {
+                    grid-template-columns: 1fr;
+                }
+
+                input,
+                select {
+                    padding: 0.8rem 1rem;
+                    border: 2px solid rgba($light-gray, 0.5);
+                    border-radius: $border-radius;
+                    font-size: 0.9rem;
+                    transition: $transition;
+
+                    &:focus {
+                        outline: none;
+                        border-color: $deep-blue;
+                        box-shadow: 0 0 0 3px rgba($deep-blue, 0.1);
+                    }
+                }
+
+                select {
+                    cursor: pointer;
+                    appearance: none;
+                    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+                    background-position: right 0.5rem center;
+                    background-repeat: no-repeat;
+                    background-size: 1.5em 1.5em;
+                    padding-right: 2.5rem;
+                }
+            }
+
+            .edit-actions {
+                display: flex;
+                gap: 0.5rem;
+                flex-shrink: 0;
+
+                @media (max-width: $breakpoint-md) {
+                    justify-content: flex-end;
+                }
+
+                button {
+                    background: none;
+                    border: 1px solid;
+                    width: 36px;
+                    height: 36px;
+                    border-radius: $border-radius;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: $transition;
+
+                    &.save-btn {
+                        border-color: $vibrant-green;
+                        color: $vibrant-green;
+
+                        &:hover {
+                            background: rgba($vibrant-green, 0.1);
+                        }
+                    }
+
+                    &.delete-btn {
+                        border-color: #ef4444;
+                        color: #ef4444;
+
+                        &:hover {
+                            background: rgba(#ef4444, 0.1);
+                        }
+                    }
+                }
+            }
+        }
+
+        .empty-milestones {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 3rem 2rem;
+            min-height: 300px;
+
+            svg {
+                color: rgba($deep-blue, 0.3);
+                margin-bottom: 1rem;
+            }
+
+            h3 {
+                color: $deep-blue;
+                font-size: 1.3rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                color: $dark-gray;
+                opacity: 0.8;
+                margin-bottom: 2rem;
+                max-width: 300px;
+            }
+
+            .btn {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.8rem 1.5rem;
+                background: $deep-blue;
+                color: $white;
+                border: none;
+                border-radius: $border-radius;
+                font-weight: 500;
+                cursor: pointer;
+                transition: $transition;
+
+                &:hover {
+                    background: darken($deep-blue, 10%);
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 15px rgba($deep-blue, 0.3);
+                }
+            }
+        }
+    }
+}
+
+// Modal Footer
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid rgba($light-gray, 0.3);
+    background: rgba($light-gray, 0.1);
+
+    @media (max-width: $breakpoint-md) {
+        padding: 1rem 1.5rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.5rem;
+        font-weight: 500;
+        border-radius: $border-radius;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid;
+
+        @media (max-width: $breakpoint-sm) {
+            justify-content: center;
+        }
+
+        &.btn-secondary {
+            background: rgba($dark-gray, 0.1);
+            color: $dark-gray;
+            border-color: rgba($dark-gray, 0.2);
+
+            &:hover {
+                background: rgba($dark-gray, 0.15);
+                transform: translateY(-1px);
+            }
+        }
+
+        &.btn-primary {
+            background: $deep-blue;
+            color: $white;
+            border-color: $deep-blue;
+
+            &:hover {
+                background: darken($deep-blue, 10%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba($deep-blue, 0.3);
+            }
+        }
+    }
+}

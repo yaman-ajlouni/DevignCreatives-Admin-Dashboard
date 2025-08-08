@@ -12,7 +12,8 @@ import {
     AlertCircle,
     Edit,
     Mail,
-    Settings
+    Settings,
+    ExternalLink
 } from 'lucide-react';
 import './ProjectDetails.scss';
 
@@ -47,7 +48,23 @@ function ProjectDetails({ project, onClose, onEdit, onManageMilestones }) {
         }
     };
 
+    const handleExtraWorkClick = () => {
+        // Navigate to extra-work path
+        if (window.location.pathname.includes('/projects')) {
+            window.location.href = '/extra-work';
+        } else {
+            // If using React Router, you would use navigate('/extra-work') here
+            console.log('Navigate to /extra-work');
+        }
+    };
+
     const completedMilestones = project.milestones.filter(m => m.status === 'completed').length;
+    const overdueMilestones = project.milestones.filter(m =>
+        m.status !== 'completed' &&
+        m.status !== 'canceled' &&
+        m.dueDate &&
+        new Date(m.dueDate) < new Date()
+    );
 
     return (
         <div className="project-details-overlay">
@@ -55,9 +72,16 @@ function ProjectDetails({ project, onClose, onEdit, onManageMilestones }) {
                 {/* Header */}
                 <div className="modal-header">
                     <div className="header-content">
-                        <h1>{project.name}</h1>
-                        <div className={`status ${getStatusClass(project.status)}`}>
-                            {project.status}
+                        <div className="header-title">
+                            <h1>{project.name}</h1>
+                            <div className="header-meta">
+                                <div className={`status ${getStatusClass(project.status)}`}>
+                                    {project.status}
+                                </div>
+                                <div className="project-category">
+                                    {project.category}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <button className="close-button" onClick={onClose}>
@@ -96,17 +120,31 @@ function ProjectDetails({ project, onClose, onEdit, onManageMilestones }) {
                                 <div className="card-content">
                                     <div className="date-info">
                                         <div className="date-item">
-                                            <span className="date-label">Start Date:</span>
-                                            <span>{new Date(project.startDate).toLocaleDateString()}</span>
+                                            <span className="date-label">Started:</span>
+                                            <span>{new Date(project.startDate).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'short',
+                                                day: 'numeric'
+                                            })}</span>
                                         </div>
                                         <div className="date-item">
-                                            <span className="date-label">Due Date:</span>
-                                            <span>{new Date(project.dueDate).toLocaleDateString()}</span>
+                                            <span className="date-label">Due:</span>
+                                            <span className={new Date(project.dueDate) < new Date() && project.status !== 'completed' ? 'overdue' : ''}>
+                                                {new Date(project.dueDate).toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'short',
+                                                    day: 'numeric'
+                                                })}
+                                            </span>
                                         </div>
                                         {project.endDate && (
                                             <div className="date-item">
-                                                <span className="date-label">End Date:</span>
-                                                <span>{new Date(project.endDate).toLocaleDateString()}</span>
+                                                <span className="date-label">Completed:</span>
+                                                <span>{new Date(project.endDate).toLocaleDateString('en-US', {
+                                                    year: 'numeric',
+                                                    month: 'short',
+                                                    day: 'numeric'
+                                                })}</span>
                                             </div>
                                         )}
                                     </div>
@@ -130,10 +168,16 @@ function ProjectDetails({ project, onClose, onEdit, onManageMilestones }) {
                                     <h3>Progress</h3>
                                 </div>
                                 <div className="card-content">
-                                    <div className="progress-circle">
+                                    <div className="progress-circle" style={{ '--progress': project.progress }}>
                                         <div className="progress-value">{project.progress}%</div>
                                     </div>
                                     <div className="progress-label">Complete</div>
+                                    {overdueMilestones.length > 0 && (
+                                        <div className="progress-warning">
+                                            <AlertCircle size={14} />
+                                            <span>{overdueMilestones.length} overdue</span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -143,19 +187,29 @@ function ProjectDetails({ project, onClose, onEdit, onManageMilestones }) {
                     <div className="description-section">
                         <h3>Project Description</h3>
                         <p>{project.description}</p>
-                        <div className="tags-container">
-                            {project.tags.map((tag, index) => (
-                                <span key={index} className="tag">
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
+                        {project.tags && project.tags.length > 0 && (
+                            <div className="tags-container">
+                                {project.tags.map((tag, index) => (
+                                    <span key={index} className="tag">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Milestones */}
                     <div className="milestones-section">
                         <div className="section-header">
-                            <h3>Milestones ({completedMilestones}/{project.milestones.length})</h3>
+                            <div className="section-title">
+                                <h3>Milestones ({completedMilestones}/{project.milestones.length})</h3>
+                                {overdueMilestones.length > 0 && (
+                                    <div className="overdue-badge">
+                                        <AlertCircle size={14} />
+                                        <span>{overdueMilestones.length} overdue</span>
+                                    </div>
+                                )}
+                            </div>
                             <div className="milestone-actions">
                                 <div className="milestone-progress">
                                     <div className="milestone-progress-bar">
@@ -170,7 +224,7 @@ function ProjectDetails({ project, onClose, onEdit, onManageMilestones }) {
                                     onClick={() => onManageMilestones && onManageMilestones(project)}
                                 >
                                     <Settings size={14} />
-                                    Manage
+                                    <span>Manage</span>
                                 </button>
                             </div>
                         </div>
@@ -181,14 +235,28 @@ function ProjectDetails({ project, onClose, onEdit, onManageMilestones }) {
                                         {getMilestoneIcon(milestone.status)}
                                     </div>
                                     <div className="milestone-content">
-                                        <h4>{milestone.name}</h4>
-                                        <div className="milestone-meta">
-                                            <span className="milestone-date">
-                                                Due: {new Date(milestone.dueDate).toLocaleDateString()}
-                                            </span>
+                                        <div className="milestone-header">
+                                            <h4>{milestone.name}</h4>
                                             <span className={`milestone-status ${getMilestoneStatusClass(milestone.status)}`}>
                                                 {milestone.status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                                             </span>
+                                        </div>
+                                        <div className="milestone-meta">
+                                            <span className="milestone-date">
+                                                <Calendar size={12} />
+                                                Due: {new Date(milestone.dueDate).toLocaleDateString('en-US', {
+                                                    weekday: 'short',
+                                                    month: 'short',
+                                                    day: 'numeric'
+                                                })}
+                                            </span>
+                                            {milestone.dueDate && new Date(milestone.dueDate) < new Date() &&
+                                                milestone.status !== 'completed' && milestone.status !== 'canceled' && (
+                                                    <span className="overdue-indicator">
+                                                        <AlertCircle size={12} />
+                                                        Overdue
+                                                    </span>
+                                                )}
                                         </div>
                                     </div>
                                 </div>
@@ -205,27 +273,38 @@ function ProjectDetails({ project, onClose, onEdit, onManageMilestones }) {
                                     <MessageCircle size={24} />
                                 </div>
                                 <div className="activity-content">
-                                    <h4>Client Chat</h4>
-                                    <p>{project.hasChat ? 'Active conversation' : 'No active chat'}</p>
+                                    <h4>Client Communication</h4>
+                                    <p>{project.hasChat ? 'Active conversation with client' : 'No active chat with client'}</p>
                                 </div>
                                 {project.hasChat && (
                                     <button className="activity-action">
-                                        View Chat
+                                        <span>View Chat</span>
+                                        <ExternalLink size={14} />
                                     </button>
                                 )}
                             </div>
 
-                            <div className={`activity-card ${project.extraWorkCount > 0 ? 'active' : 'inactive'}`}>
+                            <div
+                                className={`activity-card ${project.extraWorkCount > 0 ? 'active' : 'inactive'} ${project.extraWorkCount > 0 ? 'clickable' : ''}`}
+                                onClick={project.extraWorkCount > 0 ? handleExtraWorkClick : undefined}
+                                style={project.extraWorkCount > 0 ? { cursor: 'pointer' } : {}}
+                            >
                                 <div className="activity-icon">
                                     <Zap size={24} />
                                 </div>
                                 <div className="activity-content">
-                                    <h4>Extra Work</h4>
-                                    <p>{project.extraWorkCount > 0 ? `${project.extraWorkCount} requests` : 'No extra work'}</p>
+                                    <h4>Extra Work Requests</h4>
+                                    <p>
+                                        {project.extraWorkCount > 0
+                                            ? `${project.extraWorkCount} additional work request${project.extraWorkCount > 1 ? 's' : ''}`
+                                            : 'No additional work requests'
+                                        }
+                                    </p>
                                 </div>
                                 {project.extraWorkCount > 0 && (
                                     <button className="activity-action">
-                                        View Details
+                                        <span>View Details</span>
+                                        <ExternalLink size={14} />
                                     </button>
                                 )}
                             </div>
@@ -235,13 +314,23 @@ function ProjectDetails({ project, onClose, onEdit, onManageMilestones }) {
 
                 {/* Footer */}
                 <div className="modal-footer">
-                    <button className="btn btn-secondary" onClick={onClose}>
-                        Close
-                    </button>
-                    <button className="btn btn-primary" onClick={() => onEdit && onEdit(project)}>
-                        <Edit size={16} />
-                        Edit Project
-                    </button>
+                    <div className="footer-info">
+                        <div className="project-stats">
+                            <span>Created: {new Date(project.startDate).toLocaleDateString()}</span>
+                            {project.endDate && (
+                                <span>Completed: {new Date(project.endDate).toLocaleDateString()}</span>
+                            )}
+                        </div>
+                    </div>
+                    <div className="footer-actions">
+                        <button className="btn btn-secondary" onClick={onClose}>
+                            Close
+                        </button>
+                        <button className="btn btn-primary" onClick={() => onEdit && onEdit(project)}>
+                            <Edit size={16} />
+                            Edit Project
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

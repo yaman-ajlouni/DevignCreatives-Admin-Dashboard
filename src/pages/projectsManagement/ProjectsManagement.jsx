@@ -173,6 +173,16 @@ function ProjectsManagement() {
         setShowEditProject(true);
     };
 
+    const handleProjectCardClick = (project, event) => {
+        // Prevent triggering when clicking on menu or buttons
+        if (event.target.closest('.project-menu') ||
+            event.target.closest('.menu-dropdown') ||
+            event.target.closest('button')) {
+            return;
+        }
+        handleViewProject(project);
+    };
+
     const handleCloseProjectDetails = () => {
         setShowProjectDetails(false);
         setSelectedProject(null);
@@ -353,7 +363,11 @@ function ProjectsManagement() {
             <div className={`projects-container ${viewMode}`}>
                 {filteredProjects.length > 0 ? (
                     filteredProjects.map((project) => (
-                        <div key={project.id} className="project-card">
+                        <div
+                            key={project.id}
+                            className="project-card"
+                            onClick={(e) => handleProjectCardClick(project, e)}
+                        >
                             <div className="project-header">
                                 <div className="project-title">
                                     <h3>{project.name}</h3>
@@ -362,27 +376,39 @@ function ProjectsManagement() {
                                     </div>
                                 </div>
                                 <div className="project-menu">
-                                    <button className="menu-button">
+                                    <button className="menu-button" onClick={(e) => e.stopPropagation()}>
                                         <MoreVertical size={16} />
                                     </button>
                                     <div className="menu-dropdown">
-                                        <button className="menu-item" onClick={() => handleViewProject(project)}>
+                                        <button className="menu-item" onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleViewProject(project);
+                                        }}>
                                             <Eye size={14} />
                                             View Details
                                         </button>
-                                        <button className="menu-item" onClick={() => handleEditProject(project)}>
+                                        <button className="menu-item" onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleEditProject(project);
+                                        }}>
                                             <Edit size={14} />
                                             Edit Project
                                         </button>
-                                        <button className="menu-item" onClick={() => handleManageMilestones(project)}>
+                                        <button className="menu-item" onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleManageMilestones(project);
+                                        }}>
                                             <Target size={14} />
                                             Manage Milestones
                                         </button>
-                                        <button className="menu-item">
+                                        <button className="menu-item" onClick={(e) => e.stopPropagation()}>
                                             <Archive size={14} />
                                             Archive
                                         </button>
-                                        <button className="menu-item danger" onClick={() => handleDeleteProject(project.id)}>
+                                        <button className="menu-item danger" onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDeleteProject(project.id);
+                                        }}>
                                             <Trash2 size={14} />
                                             Delete
                                         </button>

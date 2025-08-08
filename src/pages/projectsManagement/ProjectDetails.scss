@@ -16,6 +16,13 @@
 
     @media (max-width: $breakpoint-md) {
         padding: 0.5rem;
+        align-items: flex-start;
+        padding-top: 1rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 0.25rem;
+        padding-top: 0.5rem;
     }
 }
 
@@ -25,11 +32,20 @@
     box-shadow: 0 25px 80px rgba($deep-blue, 0.3);
     max-width: 1000px;
     width: 100%;
-    max-height: 90vh;
-    overflow: hidden;
+    max-height: 95vh;
     display: flex;
     flex-direction: column;
     position: relative;
+
+    @media (max-width: $breakpoint-md) {
+        max-height: 98vh;
+        border-radius: $border-radius;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        max-height: 100vh;
+        border-radius: 0;
+    }
 
     &::before {
         content: '';
@@ -39,6 +55,10 @@
         right: 0;
         height: 4px;
         background: linear-gradient(90deg, $deep-blue 0%, $orange 50%, $vibrant-green 100%);
+
+        @media (max-width: $breakpoint-sm) {
+            height: 3px;
+        }
     }
 }
 
@@ -49,53 +69,98 @@
     align-items: flex-start;
     padding: 2rem 2rem 1rem;
     border-bottom: 2px solid rgba($light-gray, 0.3);
+    background: linear-gradient(135deg, rgba($deep-blue, 0.03), rgba($orange, 0.01));
+    flex-shrink: 0;
 
     @media (max-width: $breakpoint-md) {
         padding: 1.5rem 1.5rem 1rem;
     }
 
+    @media (max-width: $breakpoint-sm) {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
     .header-content {
         flex: 1;
 
-        h1 {
-            color: $deep-blue;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            line-height: 1.2;
-
-            @media (max-width: $breakpoint-md) {
-                font-size: 1.6rem;
-            }
-        }
-
-        .status {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            border-radius: 25px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-
-            &.completed {
-                background: rgba($vibrant-green, 0.1);
-                color: $vibrant-green;
-            }
-
-            &.in-progress {
-                background: rgba($deep-blue, 0.1);
+        .header-title {
+            h1 {
                 color: $deep-blue;
+                font-size: 2rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+                line-height: 1.2;
+
+                @media (max-width: $breakpoint-md) {
+                    font-size: 1.6rem;
+                }
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 1.4rem;
+                }
             }
 
-            &.on-hold {
-                background: rgba($orange, 0.1);
-                color: $orange;
-            }
+            .header-meta {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+                flex-wrap: wrap;
 
-            &.canceled {
-                background: rgba(#ef4444, 0.1);
-                color: #ef4444;
+                @media (max-width: $breakpoint-sm) {
+                    gap: 0.75rem;
+                }
+
+                .status {
+                    display: inline-block;
+                    padding: 0.4rem 1rem;
+                    border-radius: 25px;
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+
+                    @media (max-width: $breakpoint-sm) {
+                        padding: 0.3rem 0.8rem;
+                        font-size: 0.75rem;
+                    }
+
+                    &.completed {
+                        background: rgba($vibrant-green, 0.1);
+                        color: $vibrant-green;
+                    }
+
+                    &.in-progress {
+                        background: rgba($deep-blue, 0.1);
+                        color: $deep-blue;
+                    }
+
+                    &.on-hold {
+                        background: rgba($orange, 0.1);
+                        color: $orange;
+                    }
+
+                    &.canceled {
+                        background: rgba(#ef4444, 0.1);
+                        color: #ef4444;
+                    }
+                }
+
+                .project-category {
+                    padding: 0.3rem 0.8rem;
+                    background: rgba($dark-gray, 0.1);
+                    color: $dark-gray;
+                    border-radius: 15px;
+                    font-size: 0.75rem;
+                    font-weight: 500;
+
+                    @media (max-width: $breakpoint-sm) {
+                        padding: 0.25rem 0.6rem;
+                        font-size: 0.7rem;
+                    }
+                }
             }
         }
     }
@@ -110,6 +175,13 @@
         transition: $transition;
         flex-shrink: 0;
 
+        @media (max-width: $breakpoint-sm) {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem;
+        }
+
         &:hover {
             background: rgba($light-gray, 0.5);
             color: $deep-blue;
@@ -122,9 +194,14 @@
     flex: 1;
     padding: 2rem;
     overflow-y: auto;
+    min-height: 0;
 
     @media (max-width: $breakpoint-md) {
         padding: 1.5rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 1rem;
     }
 
     &::-webkit-scrollbar {
@@ -135,11 +212,19 @@
         background: rgba($deep-blue, 0.3);
         border-radius: 3px;
     }
+
+    &::-webkit-scrollbar-track {
+        background: rgba($light-gray, 0.1);
+    }
 }
 
 // Overview Section
 .overview-section {
     margin-bottom: 2.5rem;
+
+    @media (max-width: $breakpoint-sm) {
+        margin-bottom: 2rem;
+    }
 }
 
 .overview-grid {
@@ -159,6 +244,10 @@
     border-radius: $border-radius * 1.5;
     padding: 1.5rem;
     transition: all 0.3s ease;
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 1rem;
+    }
 
     &:hover {
         transform: translateY(-2px);
@@ -180,6 +269,10 @@
             font-size: 1.1rem;
             font-weight: 600;
             margin: 0;
+
+            @media (max-width: $breakpoint-sm) {
+                font-size: 1rem;
+            }
         }
     }
 
@@ -190,6 +283,11 @@
                 font-size: 1.2rem;
                 font-weight: 600;
                 margin-bottom: 0.75rem;
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 1.1rem;
+                    margin-bottom: 0.5rem;
+                }
             }
 
             .contact-info {
@@ -199,6 +297,10 @@
                     gap: 0.5rem;
                     color: $dark-gray;
                     font-size: 0.9rem;
+
+                    @media (max-width: $breakpoint-sm) {
+                        font-size: 0.85rem;
+                    }
 
                     svg {
                         color: $orange;
@@ -213,8 +315,17 @@
             .date-item {
                 display: flex;
                 justify-content: space-between;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.6rem;
                 font-size: 0.9rem;
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 0.85rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
 
                 .date-label {
                     color: $dark-gray;
@@ -225,6 +336,10 @@
                 span:last-child {
                     color: $deep-blue;
                     font-weight: 600;
+
+                    &.overdue {
+                        color: #ef4444;
+                    }
                 }
             }
         }
@@ -261,6 +376,11 @@
             margin: 0 auto 1rem;
             position: relative;
 
+            @media (max-width: $breakpoint-sm) {
+                width: 70px;
+                height: 70px;
+            }
+
             &::before {
                 content: '';
                 width: 60px;
@@ -268,6 +388,11 @@
                 background: $white;
                 border-radius: 50%;
                 position: absolute;
+
+                @media (max-width: $breakpoint-sm) {
+                    width: 50px;
+                    height: 50px;
+                }
             }
 
             .progress-value {
@@ -275,6 +400,10 @@
                 font-weight: 700;
                 color: $deep-blue;
                 z-index: 1;
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 1.1rem;
+                }
             }
         }
 
@@ -283,6 +412,22 @@
             opacity: 0.8;
             font-size: 0.85rem;
             text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-warning {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            color: #ef4444;
+            font-size: 0.8rem;
+            font-weight: 500;
+
+            svg {
+                width: 14px;
+                height: 14px;
+            }
         }
     }
 }
@@ -291,11 +436,19 @@
 .description-section {
     margin-bottom: 2.5rem;
 
+    @media (max-width: $breakpoint-sm) {
+        margin-bottom: 2rem;
+    }
+
     h3 {
         color: $deep-blue;
         font-size: 1.3rem;
         font-weight: 600;
         margin-bottom: 1rem;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 1.2rem;
+        }
     }
 
     p {
@@ -303,6 +456,11 @@
         line-height: 1.6;
         margin-bottom: 1.5rem;
         font-size: 1rem;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
     }
 
     .tags-container {
@@ -317,6 +475,11 @@
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 500;
+
+            @media (max-width: $breakpoint-sm) {
+                padding: 0.25rem 0.6rem;
+                font-size: 0.7rem;
+            }
         }
     }
 }
@@ -325,31 +488,70 @@
 .milestones-section {
     margin-bottom: 2.5rem;
 
+    @media (max-width: $breakpoint-sm) {
+        margin-bottom: 2rem;
+    }
+
     .section-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         margin-bottom: 1.5rem;
+        gap: 1rem;
 
-        @media (max-width: $breakpoint-sm) {
+        @media (max-width: $breakpoint-md) {
             flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
+            align-items: stretch;
         }
 
-        h3 {
-            color: $deep-blue;
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin: 0;
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+
+            @media (max-width: $breakpoint-sm) {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            h3 {
+                color: $deep-blue;
+                font-size: 1.3rem;
+                font-weight: 600;
+                margin: 0;
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 1.2rem;
+                }
+            }
+
+            .overdue-badge {
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
+                padding: 0.3rem 0.8rem;
+                background: rgba(#ef4444, 0.1);
+                color: #ef4444;
+                border-radius: 15px;
+                font-size: 0.75rem;
+                font-weight: 600;
+
+                svg {
+                    width: 14px;
+                    height: 14px;
+                }
+            }
         }
 
         .milestone-actions {
             display: flex;
             align-items: center;
             gap: 1rem;
+            flex-shrink: 0;
 
-            @media (max-width: $breakpoint-sm) {
+            @media (max-width: $breakpoint-md) {
                 width: 100%;
                 justify-content: space-between;
             }
@@ -358,7 +560,7 @@
                 flex: 1;
                 max-width: 300px;
 
-                @media (max-width: $breakpoint-sm) {
+                @media (max-width: $breakpoint-md) {
                     max-width: none;
                     flex: 1;
                 }
@@ -394,6 +596,14 @@
                 transition: $transition;
                 flex-shrink: 0;
 
+                @media (max-width: $breakpoint-sm) {
+                    span {
+                        display: none;
+                    }
+
+                    padding: 0.6rem;
+                }
+
                 &:hover {
                     background: rgba($deep-blue, 0.1);
                     border-color: $deep-blue;
@@ -408,12 +618,17 @@
             display: flex;
             align-items: flex-start;
             gap: 1rem;
-            padding: 1rem;
+            padding: 1.2rem;
             margin-bottom: 1rem;
             background: rgba($white, 0.8);
             border: 1px solid rgba($light-gray, 0.3);
             border-radius: $border-radius * 1.5;
             transition: all 0.3s ease;
+
+            @media (max-width: $breakpoint-sm) {
+                padding: 1rem;
+                gap: 0.75rem;
+            }
 
             &:hover {
                 transform: translateX(4px);
@@ -425,54 +640,148 @@
             }
 
             .milestone-icon {
-                width: 32px;
-                height: 32px;
+                width: 36px;
+                height: 36px;
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 flex-shrink: 0;
                 color: $white;
+                border: 2px solid transparent;
+
+                @media (max-width: $breakpoint-sm) {
+                    width: 32px;
+                    height: 32px;
+                }
 
                 svg {
                     width: 16px;
                     height: 16px;
+
+                    @media (max-width: $breakpoint-sm) {
+                        width: 14px;
+                        height: 14px;
+                    }
                 }
             }
 
-            &.completed .milestone-icon {
-                background: linear-gradient(135deg, $vibrant-green, rgba($vibrant-green, 0.8));
+            &.completed {
+                border-left: 4px solid $vibrant-green;
+
+                .milestone-icon {
+                    background: linear-gradient(135deg, $vibrant-green, rgba($vibrant-green, 0.8));
+                }
             }
 
-            &.in-progress .milestone-icon {
-                background: linear-gradient(135deg, $deep-blue, rgba($deep-blue, 0.8));
+            &.in-progress {
+                border-left: 4px solid $deep-blue;
+
+                .milestone-icon {
+                    background: linear-gradient(135deg, $deep-blue, rgba($deep-blue, 0.8));
+                }
             }
 
-            &.on-hold .milestone-icon {
-                background: linear-gradient(135deg, $orange, rgba($orange, 0.8));
+            &.on-hold {
+                border-left: 4px solid $orange;
+
+                .milestone-icon {
+                    background: linear-gradient(135deg, $orange, rgba($orange, 0.8));
+                }
             }
 
-            &.canceled .milestone-icon {
-                background: linear-gradient(135deg, #ef4444, rgba(#ef4444, 0.8));
+            &.canceled {
+                border-left: 4px solid #ef4444;
+
+                .milestone-icon {
+                    background: linear-gradient(135deg, #ef4444, rgba(#ef4444, 0.8));
+                }
+
+                opacity: 0.7;
             }
 
-            &.pending .milestone-icon {
-                background: linear-gradient(135deg, $dark-gray, rgba($dark-gray, 0.8));
+            &.pending {
+                border-left: 4px solid $dark-gray;
+
+                .milestone-icon {
+                    background: linear-gradient(135deg, $dark-gray, rgba($dark-gray, 0.8));
+                }
             }
 
             .milestone-content {
                 flex: 1;
+                min-width: 0;
 
-                h4 {
-                    color: $deep-blue;
-                    font-weight: 600;
+                .milestone-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
                     margin-bottom: 0.5rem;
-                    font-size: 1rem;
+                    gap: 1rem;
+
+                    @media (max-width: $breakpoint-sm) {
+                        flex-direction: column;
+                        gap: 0.5rem;
+                    }
+
+                    h4 {
+                        color: $deep-blue;
+                        font-weight: 600;
+                        margin: 0;
+                        font-size: 1rem;
+                        line-height: 1.3;
+                        word-break: break-word;
+
+                        @media (max-width: $breakpoint-sm) {
+                            font-size: 0.9rem;
+                        }
+                    }
+
+                    .milestone-status {
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        padding: 0.2rem 0.6rem;
+                        border-radius: 15px;
+                        white-space: nowrap;
+                        flex-shrink: 0;
+
+                        @media (max-width: $breakpoint-sm) {
+                            align-self: flex-start;
+                            font-size: 0.7rem;
+                        }
+
+                        &.completed {
+                            background: rgba($vibrant-green, 0.1);
+                            color: $vibrant-green;
+                        }
+
+                        &.in-progress {
+                            background: rgba($deep-blue, 0.1);
+                            color: $deep-blue;
+                        }
+
+                        &.on-hold {
+                            background: rgba($orange, 0.1);
+                            color: $orange;
+                        }
+
+                        &.canceled {
+                            background: rgba(#ef4444, 0.1);
+                            color: #ef4444;
+                        }
+
+                        &.pending {
+                            background: rgba($dark-gray, 0.1);
+                            color: $dark-gray;
+                        }
+                    }
                 }
 
                 .milestone-meta {
                     display: flex;
-                    justify-content: space-between;
+                    gap: 1rem;
                     align-items: center;
 
                     @media (max-width: $breakpoint-sm) {
@@ -482,35 +791,34 @@
                     }
 
                     .milestone-date {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.3rem;
                         color: $dark-gray;
                         opacity: 0.8;
                         font-size: 0.85rem;
-                    }
 
-                    .milestone-status {
-                        font-size: 0.75rem;
-                        font-weight: 600;
-                        text-transform: uppercase;
-                        letter-spacing: 0.5px;
-
-                        &.completed {
-                            color: $vibrant-green;
-                        }
-
-                        &.in-progress {
-                            color: $deep-blue;
-                        }
-
-                        &.on-hold {
+                        svg {
+                            width: 12px;
+                            height: 12px;
                             color: $orange;
                         }
+                    }
 
-                        &.canceled {
-                            color: #ef4444;
-                        }
+                    .overdue-indicator {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.3rem;
+                        color: #ef4444;
+                        font-size: 0.75rem;
+                        font-weight: 600;
+                        padding: 0.2rem 0.5rem;
+                        background: rgba(#ef4444, 0.1);
+                        border-radius: 10px;
 
-                        &.pending {
-                            color: $dark-gray;
+                        svg {
+                            width: 12px;
+                            height: 12px;
                         }
                     }
                 }
@@ -526,6 +834,10 @@
         font-size: 1.3rem;
         font-weight: 600;
         margin-bottom: 1.5rem;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 1.2rem;
+        }
     }
 
     .activity-indicators {
@@ -545,6 +857,18 @@
         padding: 1.5rem;
         border-radius: $border-radius * 1.5;
         transition: all 0.3s ease;
+
+        @media (max-width: $breakpoint-sm) {
+            padding: 1rem;
+            gap: 0.75rem;
+        }
+
+        &.clickable {
+            &:hover {
+                transform: translateY(-2px) scale(1.02);
+                box-shadow: 0 8px 25px rgba($deep-blue, 0.15);
+            }
+        }
 
         &.active {
             background: linear-gradient(135deg, rgba($vibrant-green, 0.05), rgba($vibrant-green, 0.02));
@@ -579,6 +903,16 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+
+            @media (max-width: $breakpoint-sm) {
+                width: 40px;
+                height: 40px;
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
         }
 
         .activity-content {
@@ -589,6 +923,10 @@
                 font-weight: 600;
                 margin-bottom: 0.3rem;
                 font-size: 1rem;
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 0.9rem;
+                }
             }
 
             p {
@@ -596,10 +934,18 @@
                 opacity: 0.8;
                 font-size: 0.9rem;
                 margin: 0;
+                line-height: 1.4;
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 0.85rem;
+                }
             }
         }
 
         .activity-action {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             background: none;
             border: 1px solid rgba($deep-blue, 0.3);
             color: $deep-blue;
@@ -609,10 +955,21 @@
             font-weight: 500;
             cursor: pointer;
             transition: $transition;
+            flex-shrink: 0;
+
+            @media (max-width: $breakpoint-sm) {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+
+                span {
+                    display: none;
+                }
+            }
 
             &:hover {
                 background: rgba($deep-blue, 0.05);
                 border-color: $deep-blue;
+                transform: translateY(-1px);
             }
         }
     }
@@ -621,44 +978,86 @@
 // Modal Footer
 .modal-footer {
     display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
     padding: 1.5rem 2rem;
     border-top: 2px solid rgba($light-gray, 0.3);
-    background: rgba($light-gray, 0.1);
+    background: rgba($light-gray, 0.05);
+    flex-shrink: 0;
 
     @media (max-width: $breakpoint-md) {
         padding: 1rem 1.5rem;
     }
 
-    .btn {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.8rem 1.5rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
+    @media (max-width: $breakpoint-sm) {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
 
-        &.btn-secondary {
-            background: rgba($dark-gray, 0.1);
+    .footer-info {
+        .project-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
             color: $dark-gray;
-            border: 1px solid rgba($dark-gray, 0.2);
+            opacity: 0.8;
 
-            &:hover {
-                background: rgba($dark-gray, 0.15);
-                transform: translateY(-1px);
+            @media (max-width: $breakpoint-sm) {
+                flex-direction: column;
+                gap: 0.25rem;
+                font-size: 0.8rem;
             }
         }
+    }
 
-        &.btn-primary {
-            background: $deep-blue;
-            color: $white;
-            border: 1px solid $deep-blue;
+    .footer-actions {
+        display: flex;
+        gap: 1rem;
 
-            &:hover {
-                background: darken($deep-blue, 10%);
-                transform: translateY(-1px);
-                box-shadow: 0 4px 15px rgba($deep-blue, 0.3);
+        @media (max-width: $breakpoint-sm) {
+            width: 100%;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+            border-radius: $border-radius;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid;
+
+            @media (max-width: $breakpoint-sm) {
+                flex: 1;
+                justify-content: center;
+                padding: 0.9rem 1rem;
+            }
+
+            &.btn-secondary {
+                background: rgba($dark-gray, 0.1);
+                color: $dark-gray;
+                border-color: rgba($dark-gray, 0.2);
+
+                &:hover {
+                    background: rgba($dark-gray, 0.15);
+                    transform: translateY(-1px);
+                }
+            }
+
+            &.btn-primary {
+                background: $deep-blue;
+                color: $white;
+                border-color: $deep-blue;
+
+                &:hover {
+                    background: darken($deep-blue, 10%);
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 15px rgba($deep-blue, 0.3);
+                }
             }
         }
     }

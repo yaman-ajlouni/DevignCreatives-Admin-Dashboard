@@ -1,3 +1,15 @@
+// Variables (define locally if import fails)
+$deep-blue: #1e3a8a;
+$orange: #f97316;
+$vibrant-green: #22c55e;
+$white: #ffffff;
+$light-gray: #e5e7eb;
+$dark-gray: #6b7280;
+$breakpoint-lg: 1024px;
+$breakpoint-md: 768px;
+$breakpoint-sm: 640px;
+
+// Try to import variables, fallback to local definitions above
 @import '../../assets/styles/variables';
 
 // ==========================================
@@ -43,7 +55,7 @@
     // Modal Container
     &__modal {
         position: relative;
-        z-index: 2;
+        z-index: 9999;
         background: $white;
         border-radius: 20px;
         box-shadow:

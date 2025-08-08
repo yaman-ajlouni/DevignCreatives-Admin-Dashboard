@@ -6,9 +6,9 @@ import Sidebar from './components/sidebar/Sidebar';
 // Import your pages here
 import Dashboard from './pages/dashboard/Dashboard';
 import ProjectsManagement from './pages/projectsManagement/ProjectsManagement';
-// import ClientsManagement from './pages/clientsManagement/ClientsManagement';
-// import FeedbackManagement from './pages/feedbackManagement/FeedbackManagement';
-// import ImagesManagement from './pages/imagesManagement/ImagesManagement';
+import ClientsManagement from './pages/clientsManagement/ClientsManagement';
+import FeedbackManagement from './pages/feedbackManagement/FeedbackManagement';
+import ImagesManagement from './pages/imagesManagement/ImagesManagement';
 // import NotificationsManagement from './pages/notificationsManagement/NotificationsManagement';
 // import ExtraWorkManagement from './pages/extraWorkManagement/ExtraWorkManagement';
 // import Analytics from './pages/analytics/Analytics';
@@ -34,10 +34,10 @@ function App() {
             <Routes>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/projects" element={<ProjectsManagement />} />
-              {/* <Route path="/clients" element={<ClientsManagement />} />
+              <Route path="/clients" element={<ClientsManagement />} />
               <Route path="/feedback" element={<FeedbackManagement />} />
               <Route path="/images" element={<ImagesManagement />} />
-              <Route path="/notifications" element={<NotificationsManagement />} />
+              {/* <Route path="/notifications" element={<NotificationsManagement />} />
               <Route path="/extra-work" element={<ExtraWorkManagement />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/users" element={<UserManagement />} />

@@ -17,7 +17,10 @@ import {
     X,
     MessageCircle,
     Zap,
-    Target
+    Target,
+    Grid,
+    List,
+    Menu
 } from 'lucide-react';
 import ProjectDetails from './ProjectDetails';
 import NewProject from './NewProject';
@@ -34,6 +37,8 @@ function ProjectsManagement() {
     const [showEditProject, setShowEditProject] = useState(false);
     const [showMilestoneManager, setShowMilestoneManager] = useState(false);
     const [selectedProject, setSelectedProject] = useState(null);
+    const [showMobileFilters, setShowMobileFilters] = useState(false);
+    const [activeMenuId, setActiveMenuId] = useState(null);
 
     const [projects, setProjects] = useState([
         {
@@ -166,11 +171,13 @@ function ProjectsManagement() {
     const handleViewProject = (project) => {
         setSelectedProject(project);
         setShowProjectDetails(true);
+        setActiveMenuId(null);
     };
 
     const handleEditProject = (project) => {
         setSelectedProject(project);
         setShowEditProject(true);
+        setActiveMenuId(null);
     };
 
     const handleProjectCardClick = (project, event) => {
@@ -181,6 +188,10 @@ function ProjectsManagement() {
             return;
         }
         handleViewProject(project);
+    };
+
+    const handleMenuToggle = (projectId) => {
+        setActiveMenuId(activeMenuId === projectId ? null : projectId);
     };
 
     const handleCloseProjectDetails = () => {
@@ -207,6 +218,7 @@ function ProjectsManagement() {
         setShowProjectDetails(false);
         setSelectedProject(project);
         setShowMilestoneManager(true);
+        setActiveMenuId(null);
     };
 
     const handleCloseMilestoneManager = () => {
@@ -237,6 +249,7 @@ function ProjectsManagement() {
     const handleDeleteProject = (projectId) => {
         if (window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
             setProjects(prevProjects => prevProjects.filter(project => project.id !== projectId));
+            setActiveMenuId(null);
         }
     };
 
@@ -259,6 +272,15 @@ function ProjectsManagement() {
         canceled: projects.filter(p => p.status === 'Canceled').length
     };
 
+    // Close menu when clicking outside
+    React.useEffect(() => {
+        const handleClickOutside = () => {
+            setActiveMenuId(null);
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, []);
+
     return (
         <div className="projects-management">
             {/* Header */}
@@ -270,53 +292,88 @@ function ProjectsManagement() {
                 <div className="header-actions">
                     <button className="btn btn-primary" onClick={() => setShowNewProject(true)}>
                         <Plus size={20} />
-                        New Project
+                        <span className="btn-text">New Project</span>
                     </button>
                 </div>
             </div>
 
             {/* Filters and Search */}
             <div className="controls-section">
-                <div className="search-filters">
-                    <div className="search-box">
-                        <Search size={20} />
-                        <input
-                            type="text"
-                            placeholder="Search projects, clients, or categories..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
+                <div className="controls-wrapper">
+                    <div className="search-filters">
+                        <div className="search-box">
+                            <Search size={20} />
+                            <input
+                                type="text"
+                                placeholder="Search projects, clients, or categories..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
 
-                    <div className="filter-dropdown">
-                        <Filter size={16} />
-                        <select
-                            value={filterStatus}
-                            onChange={(e) => setFilterStatus(e.target.value)}
+                        <div className="desktop-filters">
+                            <div className="filter-dropdown">
+                                <Filter size={16} />
+                                <select
+                                    value={filterStatus}
+                                    onChange={(e) => setFilterStatus(e.target.value)}
+                                >
+                                    <option value="all">All Status ({statusCounts.all})</option>
+                                    <option value="in-progress">In Progress ({statusCounts['in-progress']})</option>
+                                    <option value="on-hold">On Hold ({statusCounts['on-hold']})</option>
+                                    <option value="completed">Completed ({statusCounts.completed})</option>
+                                    <option value="canceled">Canceled ({statusCounts.canceled})</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button
+                            className="mobile-filter-toggle"
+                            onClick={() => setShowMobileFilters(!showMobileFilters)}
                         >
-                            <option value="all">All Status ({statusCounts.all})</option>
-                            <option value="in-progress">In Progress ({statusCounts['in-progress']})</option>
-                            <option value="on-hold">On Hold ({statusCounts['on-hold']})</option>
-                            <option value="completed">Completed ({statusCounts.completed})</option>
-                            <option value="canceled">Canceled ({statusCounts.canceled})</option>
-                        </select>
+                            <Menu size={16} />
+                            <span>Filters</span>
+                        </button>
+                    </div>
+
+                    <div className="view-controls">
+                        <button
+                            className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+                            onClick={() => setViewMode('grid')}
+                            title="Grid View"
+                        >
+                            <Grid size={16} />
+                            <span className="view-text">Grid</span>
+                        </button>
+                        <button
+                            className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
+                            onClick={() => setViewMode('list')}
+                            title="List View"
+                        >
+                            <List size={16} />
+                            <span className="view-text">List</span>
+                        </button>
                     </div>
                 </div>
 
-                <div className="view-controls">
-                    <button
-                        className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-                        onClick={() => setViewMode('grid')}
-                    >
-                        Grid
-                    </button>
-                    <button
-                        className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
-                        onClick={() => setViewMode('list')}
-                    >
-                        List
-                    </button>
-                </div>
+                {/* Mobile Filters */}
+                {showMobileFilters && (
+                    <div className="mobile-filters">
+                        <div className="mobile-filter-item">
+                            <label>Filter by Status:</label>
+                            <select
+                                value={filterStatus}
+                                onChange={(e) => setFilterStatus(e.target.value)}
+                            >
+                                <option value="all">All Status ({statusCounts.all})</option>
+                                <option value="in-progress">In Progress ({statusCounts['in-progress']})</option>
+                                <option value="on-hold">On Hold ({statusCounts['on-hold']})</option>
+                                <option value="completed">Completed ({statusCounts.completed})</option>
+                                <option value="canceled">Canceled ({statusCounts.canceled})</option>
+                            </select>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Stats Summary */}
@@ -376,43 +433,51 @@ function ProjectsManagement() {
                                     </div>
                                 </div>
                                 <div className="project-menu">
-                                    <button className="menu-button" onClick={(e) => e.stopPropagation()}>
+                                    <button
+                                        className="menu-button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleMenuToggle(project.id);
+                                        }}
+                                    >
                                         <MoreVertical size={16} />
                                     </button>
-                                    <div className="menu-dropdown">
-                                        <button className="menu-item" onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleViewProject(project);
-                                        }}>
-                                            <Eye size={14} />
-                                            View Details
-                                        </button>
-                                        <button className="menu-item" onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleEditProject(project);
-                                        }}>
-                                            <Edit size={14} />
-                                            Edit Project
-                                        </button>
-                                        <button className="menu-item" onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleManageMilestones(project);
-                                        }}>
-                                            <Target size={14} />
-                                            Manage Milestones
-                                        </button>
-                                        <button className="menu-item" onClick={(e) => e.stopPropagation()}>
-                                            <Archive size={14} />
-                                            Archive
-                                        </button>
-                                        <button className="menu-item danger" onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleDeleteProject(project.id);
-                                        }}>
-                                            <Trash2 size={14} />
-                                            Delete
-                                        </button>
-                                    </div>
+                                    {activeMenuId === project.id && (
+                                        <div className="menu-dropdown">
+                                            <button className="menu-item" onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleViewProject(project);
+                                            }}>
+                                                <Eye size={14} />
+                                                View Details
+                                            </button>
+                                            <button className="menu-item" onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleEditProject(project);
+                                            }}>
+                                                <Edit size={14} />
+                                                Edit Project
+                                            </button>
+                                            <button className="menu-item" onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleManageMilestones(project);
+                                            }}>
+                                                <Target size={14} />
+                                                Manage Milestones
+                                            </button>
+                                            <button className="menu-item" onClick={(e) => e.stopPropagation()}>
+                                                <Archive size={14} />
+                                                Archive
+                                            </button>
+                                            <button className="menu-item danger" onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleDeleteProject(project.id);
+                                            }}>
+                                                <Trash2 size={14} />
+                                                Delete
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

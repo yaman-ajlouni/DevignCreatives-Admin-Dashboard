@@ -20,7 +20,7 @@ import './Sidebar.scss';
 function Sidebar({ isOpen, toggleSidebar }) {
     const menuItems = [
         {
-            path: '/dashboard',
+            path: '/',
             name: 'Dashboard',
             icon: LayoutDashboard
         },
@@ -55,19 +55,9 @@ function Sidebar({ isOpen, toggleSidebar }) {
             icon: Zap
         },
         {
-            path: '/analytics',
-            name: 'Analytics & Reports',
-            icon: BarChart3
-        },
-        {
             path: '/users',
             name: 'User Management',
             icon: UserCog
-        },
-        {
-            path: '/settings',
-            name: 'Settings',
-            icon: Settings
         }
     ];
 

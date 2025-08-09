@@ -10,9 +10,6 @@ import {
     Target,
     Calendar,
     Edit2,
-    TrendingUp,
-    Award,
-    AlertTriangle,
     Copy
 } from 'lucide-react';
 import './MilestoneManager.scss';
@@ -111,12 +108,6 @@ function MilestoneManager({ project, onClose, onSave }) {
     }
 
     const completedMilestones = milestones.filter(m => m.status === 'completed').length;
-    const overdueMilestones = milestones.filter(m =>
-        m.status !== 'completed' &&
-        m.status !== 'canceled' &&
-        m.dueDate &&
-        new Date(m.dueDate) < new Date()
-    );
 
     return (
         <div className="milestone-modal__overlay" onClick={handleOverlayClick}>
@@ -147,108 +138,6 @@ function MilestoneManager({ project, onClose, onSave }) {
                     <button className="milestone-modal__close-btn" onClick={onClose}>
                         <X size={24} />
                     </button>
-                </div>
-
-                {/* Overview Dashboard */}
-                <div className="milestone-modal__overview">
-                    <div className="milestone-modal__overview-grid">
-                        <div className="milestone-modal__overview-card milestone-modal__overview-card--primary">
-                            <div className="milestone-modal__card-header">
-                                <div className="milestone-modal__card-icon">
-                                    <TrendingUp size={20} />
-                                </div>
-                                <h3>Progress Overview</h3>
-                            </div>
-                            <div className="milestone-modal__progress-display">
-                                <div className="milestone-modal__progress-circle" style={{ '--progress': `${(completedMilestones / milestones.length) * 100 || 0}` }}>
-                                    <div className="milestone-modal__progress-value">{Math.round((completedMilestones / milestones.length) * 100) || 0}%</div>
-                                </div>
-                                <div className="milestone-modal__progress-details">
-                                    <p className="milestone-modal__progress-text">{completedMilestones} of {milestones.length} milestones completed</p>
-                                    <div className="milestone-modal__progress-bar">
-                                        <div
-                                            className="milestone-modal__progress-fill"
-                                            style={{ width: `${(completedMilestones / milestones.length) * 100 || 0}%` }}
-                                        ></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="milestone-modal__overview-card">
-                            <div className="milestone-modal__card-header">
-                                <div className="milestone-modal__card-icon">
-                                    <Award size={20} />
-                                </div>
-                                <h3>Status Breakdown</h3>
-                            </div>
-                            <div className="milestone-modal__status-list">
-                                {milestoneStatusOptions.map(option => {
-                                    const count = milestones.filter(m => m.status === option.value).length;
-                                    return (
-                                        <div key={option.value} className="milestone-modal__status-item">
-                                            <div className="milestone-modal__status-dot" style={{ backgroundColor: option.color }}></div>
-                                            <span className="milestone-modal__status-label">{option.label}</span>
-                                            <span className="milestone-modal__status-count">{count}</span>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-
-                        <div className="milestone-modal__overview-card">
-                            <div className="milestone-modal__card-header">
-                                <div className="milestone-modal__card-icon">
-                                    <AlertTriangle size={20} />
-                                </div>
-                                <h3>Upcoming Deadlines</h3>
-                            </div>
-                            <div className="milestone-modal__upcoming-list">
-                                {milestones
-                                    .filter(m => m.status !== 'completed' && m.status !== 'canceled' && m.dueDate)
-                                    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
-                                    .slice(0, 3)
-                                    .map((milestone, index) => {
-                                        const dueDate = new Date(milestone.dueDate);
-                                        const isOverdue = dueDate < new Date();
-                                        const isUrgent = dueDate < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={`milestone-modal__upcoming-item ${isOverdue ? 'milestone-modal__upcoming-item--overdue' : isUrgent ? 'milestone-modal__upcoming-item--urgent' : ''}`}
-                                            >
-                                                <div className="milestone-modal__upcoming-info">
-                                                    <h4 className="milestone-modal__upcoming-name">{milestone.name || 'Untitled Milestone'}</h4>
-                                                    <span className="milestone-modal__upcoming-date">
-                                                        {dueDate.toLocaleDateString('en-US', {
-                                                            weekday: 'short',
-                                                            month: 'short',
-                                                            day: 'numeric'
-                                                        })}
-                                                    </span>
-                                                </div>
-                                                {isOverdue && (
-                                                    <div className="milestone-modal__upcoming-alert">
-                                                        <AlertTriangle size={14} />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
-                                {milestones.filter(m => m.status !== 'completed' && m.status !== 'canceled' && m.dueDate).length === 0 && (
-                                    <p className="milestone-modal__no-upcoming">No upcoming deadlines</p>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    {overdueMilestones.length > 0 && (
-                        <div className="milestone-modal__alert milestone-modal__alert--danger">
-                            <AlertTriangle size={16} />
-                            <span>{overdueMilestones.length} milestone{overdueMilestones.length > 1 ? 's are' : ' is'} overdue</span>
-                        </div>
-                    )}
                 </div>
 
                 {/* Content */}

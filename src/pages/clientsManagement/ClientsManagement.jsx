@@ -20,7 +20,8 @@ import {
     X,
     Users,
     Briefcase,
-    MessageCircle
+    MessageCircle,
+    Menu
 } from 'lucide-react';
 import ClientView from './ClientView';
 import ClientEdit from './ClientEdit';
@@ -36,6 +37,8 @@ function ClientsManagement() {
     const [showClientEdit, setShowClientEdit] = useState(false);
     const [showNewClient, setShowNewClient] = useState(false);
     const [selectedClient, setSelectedClient] = useState(null);
+    const [showMobileFilters, setShowMobileFilters] = useState(false);
+    const [activeMenuId, setActiveMenuId] = useState(null);
 
     // Sample clients data - in real app, this would come from API
     const [clients, setClients] = useState([
@@ -257,6 +260,10 @@ function ClientsManagement() {
         }
     };
 
+    const handleMenuToggle = (clientId) => {
+        setActiveMenuId(activeMenuId === clientId ? null : clientId);
+    };
+
     const handleSort = (field) => {
         if (sortBy === field) {
             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
@@ -269,16 +276,19 @@ function ClientsManagement() {
     const handleViewClient = (client) => {
         setSelectedClient(client);
         setShowClientView(true);
+        setActiveMenuId(null);
     };
 
     const handleEditClient = (client) => {
         setSelectedClient(client);
         setShowClientEdit(true);
+        setActiveMenuId(null);
     };
 
     const handleDeleteClient = (clientId) => {
         if (window.confirm('Are you sure you want to delete this client? This action cannot be undone.')) {
             setClients(prevClients => prevClients.filter(client => client.id !== clientId));
+            setActiveMenuId(null);
         }
     };
 
@@ -351,10 +361,19 @@ function ClientsManagement() {
         });
     };
 
+    // Close menu when clicking outside
+    React.useEffect(() => {
+        const handleClickOutside = () => {
+            setActiveMenuId(null);
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, []);
+
     return (
         <div className="clients-management">
             {/* Header */}
-            <div className="page-header">
+            <div className="dashboard-header">
                 <div className="header-content">
                     <h1>Client Management</h1>
                     <p>Manage your client relationships and track project history</p>
@@ -362,7 +381,7 @@ function ClientsManagement() {
                 <div className="header-actions">
                     <button className="btn btn-primary" onClick={() => setShowNewClient(true)}>
                         <Plus size={20} />
-                        Add New Client
+                        <span className="btn-text">Add New Client</span>
                     </button>
                 </div>
             </div>
@@ -414,50 +433,78 @@ function ClientsManagement() {
 
             {/* Controls */}
             <div className="controls-section">
-                <div className="search-filters">
-                    <div className="search-box">
-                        <Search size={20} />
-                        <input
-                            type="text"
-                            placeholder="Search clients, emails, or companies..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
+                <div className="controls-wrapper">
+                    <div className="search-filters">
+                        <div className="search-box">
+                            <Search size={20} />
+                            <input
+                                type="text"
+                                placeholder="Search clients, emails, or companies..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
 
-                    <div className="filter-dropdown">
-                        <Filter size={16} />
-                        <select
-                            value={filterStatus}
-                            onChange={(e) => setFilterStatus(e.target.value)}
+                        <div className="filter-dropdown">
+                            <Filter size={16} />
+                            <select
+                                value={filterStatus}
+                                onChange={(e) => setFilterStatus(e.target.value)}
+                            >
+                                <option value="all">All Status ({statusCounts.all})</option>
+                                <option value="active">Active ({statusCounts.active})</option>
+                                <option value="completed">Completed ({statusCounts.completed})</option>
+                                <option value="inactive">Inactive ({statusCounts.inactive})</option>
+                            </select>
+                        </div>
+
+                        <button
+                            className="mobile-filter-toggle"
+                            onClick={() => setShowMobileFilters(!showMobileFilters)}
                         >
-                            <option value="all">All Status ({statusCounts.all})</option>
-                            <option value="active">Active ({statusCounts.active})</option>
-                            <option value="completed">Completed ({statusCounts.completed})</option>
-                            <option value="inactive">Inactive ({statusCounts.inactive})</option>
+                            <Menu size={16} />
+                            <span>Filters</span>
+                        </button>
+                    </div>
+
+                    <div className="sort-controls">
+                        <span>Sort by:</span>
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                        >
+                            <option value="name">Name</option>
+                            <option value="company">Company</option>
+                            <option value="totalProjects">Projects</option>
+                            <option value="totalValue">Value</option>
+                            <option value="joinDate">Join Date</option>
                         </select>
+                        <button
+                            className={`sort-order ${sortOrder}`}
+                            onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                        >
+                            {sortOrder === 'asc' ? '↑' : '↓'}
+                        </button>
                     </div>
                 </div>
 
-                <div className="sort-controls">
-                    <span>Sort by:</span>
-                    <select
-                        value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value)}
-                    >
-                        <option value="name">Name</option>
-                        <option value="company">Company</option>
-                        <option value="totalProjects">Projects</option>
-                        <option value="totalValue">Value</option>
-                        <option value="joinDate">Join Date</option>
-                    </select>
-                    <button
-                        className={`sort-order ${sortOrder}`}
-                        onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                    >
-                        {sortOrder === 'asc' ? '↑' : '↓'}
-                    </button>
-                </div>
+                {/* Mobile Filters */}
+                {showMobileFilters && (
+                    <div className="mobile-filters">
+                        <div className="mobile-filter-item">
+                            <label>Filter by Status:</label>
+                            <select
+                                value={filterStatus}
+                                onChange={(e) => setFilterStatus(e.target.value)}
+                            >
+                                <option value="all">All Status ({statusCounts.all})</option>
+                                <option value="active">Active ({statusCounts.active})</option>
+                                <option value="completed">Completed ({statusCounts.completed})</option>
+                                <option value="inactive">Inactive ({statusCounts.inactive})</option>
+                            </select>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Clients Table */}
@@ -593,30 +640,41 @@ function ClientsManagement() {
                                                 <Edit size={16} />
                                             </button>
                                             <div className="dropdown">
-                                                <button className="action-btn more">
+                                                <button
+                                                    className="action-btn more"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleMenuToggle(client.id);
+                                                    }}
+                                                >
                                                     <MoreVertical size={16} />
                                                 </button>
-                                                <div className="dropdown-menu">
-                                                    <button className="dropdown-item">
-                                                        <Mail size={14} />
-                                                        Send Email
-                                                    </button>
-                                                    <button className="dropdown-item">
-                                                        <Phone size={14} />
-                                                        Call Client
-                                                    </button>
-                                                    <button className="dropdown-item">
-                                                        <Plus size={14} />
-                                                        New Project
-                                                    </button>
-                                                    <button
-                                                        className="dropdown-item danger"
-                                                        onClick={() => handleDeleteClient(client.id)}
-                                                    >
-                                                        <Trash2 size={14} />
-                                                        Delete Client
-                                                    </button>
-                                                </div>
+                                                {activeMenuId === client.id && (
+                                                    <div className="dropdown-menu">
+                                                        <button className="dropdown-item">
+                                                            <Mail size={14} />
+                                                            Send Email
+                                                        </button>
+                                                        <button className="dropdown-item">
+                                                            <Phone size={14} />
+                                                            Call Client
+                                                        </button>
+                                                        <button className="dropdown-item">
+                                                            <Plus size={14} />
+                                                            New Project
+                                                        </button>
+                                                        <button
+                                                            className="dropdown-item danger"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleDeleteClient(client.id);
+                                                            }}
+                                                        >
+                                                            <Trash2 size={14} />
+                                                            Delete Client
+                                                        </button>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </td>

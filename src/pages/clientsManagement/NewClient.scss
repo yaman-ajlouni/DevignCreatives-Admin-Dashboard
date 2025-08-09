@@ -1,0 +1,604 @@
+@import '../../assets/styles/variables';
+
+.client-modal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba($deep-blue, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    padding: 1rem;
+
+    @media (max-width: $breakpoint-md) {
+        padding: 0.5rem;
+        align-items: flex-start;
+        padding-top: 1rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 0;
+        align-items: stretch;
+    }
+}
+
+.client-modal__container {
+    background: $white;
+    border-radius: $border-radius * 2;
+    box-shadow: 0 25px 80px rgba($deep-blue, 0.3);
+    max-width: 800px;
+    width: 100%;
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+
+    @media (max-width: $breakpoint-md) {
+        max-height: 98vh;
+        border-radius: $border-radius;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        width: 100vw;
+        height: 100vh;
+        max-height: none;
+        border-radius: 0;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, $deep-blue 0%, $orange 50%, $vibrant-green 100%);
+
+        @media (max-width: $breakpoint-sm) {
+            height: 3px;
+        }
+    }
+}
+
+.client-modal__close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: rgba($white, 0.9);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $dark-gray;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+
+    @media (max-width: $breakpoint-sm) {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    &:hover {
+        background: $white;
+        color: $deep-blue;
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba($deep-blue, 0.15);
+    }
+}
+
+.client-modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1.5rem;
+    background: linear-gradient(135deg, rgba($deep-blue, 0.03) 0%, rgba($orange, 0.01) 100%);
+    border-bottom: 1px solid rgba($light-gray, 0.2);
+    flex-shrink: 0;
+
+    @media (max-width: $breakpoint-md) {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 1rem;
+    }
+
+    .client-modal__header-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex: 1;
+
+        .client-modal__icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, $vibrant-green, lighten($vibrant-green, 10%));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $white;
+            flex-shrink: 0;
+
+            @media (max-width: $breakpoint-sm) {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+
+        .client-modal__title-section {
+            h1 {
+                font-size: 1.875rem;
+                font-weight: 700;
+                color: $deep-blue;
+                margin: 0 0 0.25rem 0;
+                line-height: 1.2;
+
+                @media (max-width: $breakpoint-md) {
+                    font-size: 1.5rem;
+                }
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 1.25rem;
+                }
+            }
+
+            p {
+                font-size: 1rem;
+                color: $dark-gray;
+                opacity: 0.8;
+                margin: 0;
+                font-weight: 500;
+
+                @media (max-width: $breakpoint-md) {
+                    font-size: 0.9rem;
+                }
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 0.85rem;
+                }
+            }
+        }
+    }
+}
+
+.client-modal__content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: rgba($light-gray, 0.1);
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba($deep-blue, 0.3);
+        border-radius: 3px;
+
+        &:hover {
+            background: rgba($deep-blue, 0.5);
+        }
+    }
+}
+
+.client-modal__form {
+    padding: 0;
+}
+
+.client-modal__section {
+    padding: 0 2rem 2rem;
+
+    @media (max-width: $breakpoint-md) {
+        padding: 0 1.5rem 1.5rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 0 1rem 1rem;
+    }
+
+    &:first-child {
+        padding-top: 1.5rem;
+
+        @media (max-width: $breakpoint-md) {
+            padding-top: 1rem;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            padding-top: 0.75rem;
+        }
+    }
+
+    >.client-modal__info-card {
+        background: $white;
+        border-radius: $border-radius * 1.5;
+        padding: 1.5rem;
+        border: 1px solid rgba($light-gray, 0.2);
+        box-shadow: 0 4px 6px -1px rgba($deep-blue, 0.1);
+        transition: all 0.3s ease;
+
+        @media (max-width: $breakpoint-md) {
+            padding: 1.25rem;
+            border-radius: $border-radius;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            padding: 1rem;
+            border-radius: $border-radius * 0.75;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -3px rgba($deep-blue, 0.15);
+
+            @media (max-width: $breakpoint-sm) {
+                transform: none;
+            }
+        }
+    }
+
+    .client-modal__section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+
+        @media (max-width: $breakpoint-sm) {
+            margin-bottom: 1rem;
+        }
+
+        .client-modal__section-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba($deep-blue, 0.1), rgba($deep-blue, 0.05));
+            color: $deep-blue;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+
+            @media (max-width: $breakpoint-sm) {
+                width: 32px;
+                height: 32px;
+
+                svg {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: $deep-blue;
+            margin: 0;
+
+            @media (max-width: $breakpoint-sm) {
+                font-size: 1rem;
+            }
+        }
+    }
+
+    .client-modal__form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        position: relative;
+
+        label {
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: $deep-blue;
+            position: relative;
+        }
+
+        textarea {
+            width: 100%;
+            background: none;
+            border: none;
+            color: $dark-gray;
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: color 0.2s ease;
+        }
+    }
+}
+
+
+.client-modal__login-section {
+    background: rgba($deep-blue, 0.02);
+    border-radius: $border-radius;
+    padding: 1.25rem;
+    border: 1px solid rgba($deep-blue, 0.08);
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 1rem;
+        border-radius: $border-radius * 0.75;
+    }
+
+    .client-modal__login-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        color: $deep-blue;
+        font-weight: 600;
+        font-size: 0.9rem;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+
+        svg {
+            flex-shrink: 0;
+
+            @media (max-width: $breakpoint-sm) {
+                width: 14px;
+                height: 14px;
+            }
+        }
+    }
+
+    .client-modal__password-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+
+        @media (max-width: $breakpoint-sm) {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+    }
+
+    .client-modal__password-input {
+        position: relative;
+
+        .client-modal__password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: $dark-gray;
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: color 0.2s ease;
+
+            @media (max-width: $breakpoint-sm) {
+                right: 0.625rem;
+            }
+
+            &:hover {
+                color: $deep-blue;
+            }
+
+            svg {
+                width: 16px;
+                height: 16px;
+
+                @media (max-width: $breakpoint-sm) {
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+        }
+
+        input {
+            padding-right: 3rem;
+
+            @media (max-width: $breakpoint-sm) {
+                padding-right: 2.5rem;
+            }
+        }
+    }
+}
+
+.client-modal__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid rgba($light-gray, 0.2);
+    background: rgba($light-gray, 0.03);
+    flex-shrink: 0;
+
+    @media (max-width: $breakpoint-md) {
+        padding: 1rem 1.5rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .client-modal__footer-info {
+        color: $dark-gray;
+        opacity: 0.8;
+
+        span {
+            font-size: 0.875rem;
+            font-weight: 500;
+
+            @media (max-width: $breakpoint-sm) {
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+    .client-modal__footer-actions {
+        display: flex;
+        gap: 1rem;
+
+        @media (max-width: $breakpoint-sm) {
+            width: 100%;
+            gap: 0.75rem;
+        }
+    }
+
+    .client-modal__btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.875rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 500;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid;
+
+        @media (max-width: $breakpoint-sm) {
+            flex: 1;
+            justify-content: center;
+            padding: 1rem;
+            font-size: 0.8rem;
+        }
+
+        svg {
+            flex-shrink: 0;
+
+            @media (max-width: $breakpoint-sm) {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        &--secondary {
+            background: rgba($dark-gray, 0.08);
+            color: $dark-gray;
+            border-color: rgba($dark-gray, 0.2);
+
+            &:hover {
+                background: rgba($dark-gray, 0.12);
+                transform: translateY(-1px);
+
+                @media (max-width: $breakpoint-sm) {
+                    transform: none;
+                }
+            }
+        }
+
+        &--primary {
+            background: $vibrant-green;
+            color: $white;
+            border-color: $vibrant-green;
+            box-shadow: 0 2px 4px rgba($vibrant-green, 0.2);
+
+            &:hover {
+                background: darken($vibrant-green, 8%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba($vibrant-green, 0.3);
+
+                @media (max-width: $breakpoint-sm) {
+                    transform: none;
+                }
+            }
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+}
+
+// Touch improvements for mobile
+@media (max-width: $breakpoint-sm) {
+    .client-modal__container {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .client-modal__btn {
+        -webkit-tap-highlight-color: transparent;
+        min-height: 44px;
+    }
+}
+
+// Landscape mobile optimizations
+@media (max-width: 812px) and (orientation: landscape) {
+    .client-modal__header {
+        padding: 1rem;
+
+        .client-modal__title-section {
+            h1 {
+                font-size: 1.25rem;
+                margin-bottom: 0.125rem;
+            }
+
+            p {
+                font-size: 0.8rem;
+            }
+        }
+
+        .client-modal__icon {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    .client-modal__section {
+        padding: 1rem;
+        margin: 0.75rem 1rem;
+
+        .client-modal__section-header {
+            margin-bottom: 1rem;
+
+            .client-modal__section-icon {
+                width: 30px;
+                height: 30px;
+            }
+
+            h3 {
+                font-size: 0.95rem;
+            }
+        }
+    }
+
+    .client-modal__form-grid {
+        gap: 0.75rem;
+
+        .client-modal__form-group {
+
+            input,
+            select,
+            textarea {
+                padding: 0.75rem 0.875rem;
+            }
+        }
+    }
+
+    .client-modal__login-section {
+        padding: 1rem;
+
+        .client-modal__password-fields {
+            gap: 0.75rem;
+        }
+    }
+}

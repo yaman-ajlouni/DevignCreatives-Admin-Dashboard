@@ -1,8 +1,14 @@
 import React from 'react';
+import { LogOut } from 'lucide-react';
 import logo from '../../assets/images/devigncreatives-logo.png';
 import './Navbar.scss';
 
 function Navbar({ toggleSidebar }) {
+    const handleLogout = () => {
+        // Add your logout logic here
+        console.log('Logout clicked');
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-left">
@@ -29,15 +35,10 @@ function Navbar({ toggleSidebar }) {
                     </div>
                 </div>
 
-                <div className="user-profile">
-                    <div className="user-avatar">
-                        <span>DC</span>
-                    </div>
-                    <div className="user-info">
-                        <span className="user-name">Manager User</span>
-                        <span className="user-role">Manager</span>
-                    </div>
-                </div>
+                <button className="logout-button" onClick={handleLogout}>
+                    <LogOut className="logout-icon" size={20} />
+                    <span className="logout-text">Logout</span>
+                </button>
             </div>
         </nav>
     );

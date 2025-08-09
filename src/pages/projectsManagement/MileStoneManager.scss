@@ -36,6 +36,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow: hidden;
 
     @media (max-width: $breakpoint-md) {
         max-height: 98vh;
@@ -240,326 +241,13 @@
     }
 }
 
-// Overview Dashboard
-.milestone-modal__overview {
-    padding: 1.5rem 2rem;
-    background: linear-gradient(135deg, rgba($deep-blue, 0.02) 0%, rgba($orange, 0.01) 100%);
-    border-bottom: 1px solid rgba($light-gray, 0.15);
-
-    @media (max-width: $breakpoint-md) {
-        padding: 1rem 1.5rem;
-    }
-
-    @media (max-width: $breakpoint-sm) {
-        padding: 1rem;
-    }
-}
-
-.milestone-modal__overview-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1.5rem;
-
-    @media (max-width: $breakpoint-lg) {
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-    }
-
-    @media (max-width: $breakpoint-md) {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-}
-
-.milestone-modal__overview-card {
-    background: $white;
-    border-radius: 16px;
-    padding: 1.5rem;
-    border: 1px solid rgba($deep-blue, 0.08);
-    box-shadow: 0 4px 6px -1px rgba($deep-blue, 0.1);
-    transition: all 0.3s ease;
-
-    @media (max-width: $breakpoint-sm) {
-        padding: 1rem;
-        border-radius: 12px;
-    }
-
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px -3px rgba($deep-blue, 0.15);
-    }
-
-    &--primary {
-        background: linear-gradient(135deg, rgba($deep-blue, 0.03), rgba($vibrant-green, 0.02));
-        border-color: rgba($deep-blue, 0.1);
-
-        @media (max-width: $breakpoint-lg) {
-            grid-column: 1 / -1;
-        }
-    }
-}
-
-.milestone-modal__card-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.25rem;
-
-    h3 {
-        font-size: 1rem;
-        font-weight: 600;
-        color: $deep-blue;
-        margin: 0;
-
-        @media (max-width: $breakpoint-sm) {
-            font-size: 0.9rem;
-        }
-    }
-}
-
-.milestone-modal__card-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, rgba($orange, 0.1), rgba($orange, 0.05));
-    color: $orange;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-// Progress Display
-.milestone-modal__progress-display {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-
-    @media (max-width: $breakpoint-sm) {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-}
-
-.milestone-modal__progress-circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: conic-gradient($vibrant-green 0deg,
-            $vibrant-green calc(var(--progress) * 3.6deg),
-            rgba($light-gray, 0.2) calc(var(--progress) * 3.6deg),
-            rgba($light-gray, 0.2) 360deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    flex-shrink: 0;
-
-    @media (max-width: $breakpoint-sm) {
-        width: 70px;
-        height: 70px;
-    }
-
-    &::before {
-        content: '';
-        width: 60px;
-        height: 60px;
-        background: $white;
-        border-radius: 50%;
-        position: absolute;
-
-        @media (max-width: $breakpoint-sm) {
-            width: 50px;
-            height: 50px;
-        }
-    }
-}
-
-.milestone-modal__progress-value {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: $deep-blue;
-    z-index: 1;
-    position: relative;
-
-    @media (max-width: $breakpoint-sm) {
-        font-size: 1.1rem;
-    }
-}
-
-.milestone-modal__progress-details {
-    flex: 1;
-    min-width: 0;
-}
-
-.milestone-modal__progress-text {
-    color: $dark-gray;
-    font-size: 0.875rem;
-    margin: 0 0 0.75rem 0;
-    opacity: 0.8;
-}
-
-.milestone-modal__progress-bar {
-    width: 100%;
-    height: 6px;
-    background: rgba($light-gray, 0.2);
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.milestone-modal__progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, $deep-blue, $vibrant-green);
-    border-radius: 3px;
-    transition: width 0.6s ease;
-}
-
-// Status List
-.milestone-modal__status-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.milestone-modal__status-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    background: rgba($light-gray, 0.03);
-    border-radius: 10px;
-    transition: all 0.2s ease;
-
-    &:hover {
-        background: rgba($light-gray, 0.08);
-        transform: translateX(2px);
-    }
-}
-
-.milestone-modal__status-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.milestone-modal__status-label {
-    flex: 1;
-    font-size: 0.875rem;
-    color: $dark-gray;
-    font-weight: 500;
-}
-
-.milestone-modal__status-count {
-    background: rgba($deep-blue, 0.1);
-    color: $deep-blue;
-    font-weight: 700;
-    font-size: 0.8rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-    min-width: 24px;
-    text-align: center;
-}
-
-// Upcoming List
-.milestone-modal__upcoming-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.milestone-modal__upcoming-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.875rem 0;
-    border-bottom: 1px solid rgba($light-gray, 0.1);
-
-    &:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-    }
-
-    &--urgent {
-        .milestone-modal__upcoming-alert {
-            color: $orange;
-        }
-    }
-
-    &--overdue {
-        .milestone-modal__upcoming-name {
-            color: #ef4444;
-        }
-
-        .milestone-modal__upcoming-alert {
-            color: #ef4444;
-        }
-    }
-}
-
-.milestone-modal__upcoming-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.milestone-modal__upcoming-name {
-    font-weight: 600;
-    color: $deep-blue;
-    font-size: 0.875rem;
-    margin: 0 0 0.25rem 0;
-    line-height: 1.3;
-}
-
-.milestone-modal__upcoming-date {
-    color: $orange;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-.milestone-modal__upcoming-alert {
-    flex-shrink: 0;
-    margin-left: 0.5rem;
-}
-
-.milestone-modal__no-upcoming {
-    text-align: center;
-    color: $dark-gray;
-    opacity: 0.6;
-    font-size: 0.875rem;
-    font-style: italic;
-    padding: 1rem 0;
-    margin: 0;
-}
-
-// Alert
-.milestone-modal__alert {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    padding: 1rem;
-    border-radius: 12px;
-    font-weight: 500;
-    font-size: 0.875rem;
-
-    &--danger {
-        background: rgba(#ef4444, 0.08);
-        border: 1px solid rgba(#ef4444, 0.2);
-        color: #ef4444;
-    }
-
-    svg {
-        flex-shrink: 0;
-    }
-}
-
 // Content Section
 .milestone-modal__content {
     flex: 1;
     display: flex;
     flex-direction: column;
     min-height: 0;
+    overflow: hidden;
 }
 
 .milestone-modal__section-header {
@@ -568,6 +256,7 @@
     justify-content: space-between;
     padding: 1.5rem 2rem 1rem;
     border-bottom: 1px solid rgba($light-gray, 0.15);
+    flex-shrink: 0;
 
     @media (max-width: $breakpoint-md) {
         padding: 1rem 1.5rem 0.75rem;
@@ -641,6 +330,7 @@
     flex: 1;
     padding: 0 2rem 1rem;
     overflow-y: auto;
+    overflow-x: hidden;
 
     @media (max-width: $breakpoint-md) {
         padding: 0 1.5rem 1rem;
@@ -1132,6 +822,7 @@
     padding: 1.5rem 2rem;
     border-top: 1px solid rgba($light-gray, 0.2);
     background: rgba($light-gray, 0.03);
+    flex-shrink: 0;
 
     @media (max-width: $breakpoint-md) {
         padding: 1rem 1.5rem;
@@ -1250,38 +941,6 @@
 
         p {
             font-size: 0.8rem;
-        }
-    }
-
-    .milestone-modal__overview {
-        padding: 0.75rem;
-
-        .milestone-modal__overview-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-        }
-
-        .milestone-modal__overview-card {
-            padding: 0.75rem;
-        }
-
-        .milestone-modal__progress-display {
-            flex-direction: row;
-            gap: 1rem;
-
-            .milestone-modal__progress-circle {
-                width: 60px;
-                height: 60px;
-
-                &::before {
-                    width: 45px;
-                    height: 45px;
-                }
-
-                .milestone-modal__progress-value {
-                    font-size: 1rem;
-                }
-            }
         }
     }
 

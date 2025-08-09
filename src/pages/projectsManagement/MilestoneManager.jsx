@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     X,
     Save,
@@ -15,9 +15,9 @@ import {
     AlertTriangle,
     Copy
 } from 'lucide-react';
+import './MilestoneManager.scss';
 
 function MilestoneManager({ project, onClose, onSave }) {
-
     const [milestones, setMilestones] = useState(project?.milestones || []);
     const [editingIndex, setEditingIndex] = useState(null);
 
@@ -105,283 +105,200 @@ function MilestoneManager({ project, onClose, onSave }) {
         }
     };
 
-    // Inline styles for debugging (no external CSS dependency)
-    const overlayStyle = {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        zIndex: 9999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '1rem'
-    };
-
-    const modalStyle = {
-        backgroundColor: 'white',
-        borderRadius: '20px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        maxWidth: '1200px',
-        width: '100%',
-        maxHeight: '95vh',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-        position: 'relative'
-    };
-
-    const headerStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '2rem',
-        borderBottom: '1px solid #e5e7eb',
-        backgroundColor: '#f9fafb'
-    };
-
-    const contentStyle = {
-        flex: 1,
-        padding: '2rem',
-        overflowY: 'auto'
-    };
-
-    const footerStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '1.5rem 2rem',
-        borderTop: '1px solid #e5e7eb',
-        backgroundColor: '#f9fafb'
-    };
-
-    const closeButtonStyle = {
-        position: 'absolute',
-        top: '1rem',
-        right: '1rem',
-        width: '40px',
-        height: '40px',
-        border: 'none',
-        backgroundColor: 'white',
-        borderRadius: '10px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-        zIndex: 10000
-    };
-
-    const buttonStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        padding: '0.75rem 1.5rem',
-        borderRadius: '10px',
-        fontWeight: '500',
-        cursor: 'pointer',
-        border: '1px solid',
-        transition: 'all 0.2s ease'
-    };
-
-    const primaryButtonStyle = {
-        ...buttonStyle,
-        backgroundColor: '#3b82f6',
-        color: 'white',
-        borderColor: '#3b82f6'
-    };
-
-    const secondaryButtonStyle = {
-        ...buttonStyle,
-        backgroundColor: '#f3f4f6',
-        color: '#6b7280',
-        borderColor: '#d1d5db'
-    };
-
     if (!project) {
         console.error('MilestoneManager: No project provided');
         return null;
     }
 
-    return (
-        <div style={overlayStyle} onClick={handleOverlayClick}>
-            <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
-                {/* Close Button */}
-                <button style={closeButtonStyle} onClick={onClose}>
-                    <X size={24} />
-                </button>
+    const completedMilestones = milestones.filter(m => m.status === 'completed').length;
+    const overdueMilestones = milestones.filter(m =>
+        m.status !== 'completed' &&
+        m.status !== 'canceled' &&
+        m.dueDate &&
+        new Date(m.dueDate) < new Date()
+    );
 
+    return (
+        <div className="milestone-modal__overlay" onClick={handleOverlayClick}>
+            <div className="milestone-modal__container" onClick={(e) => e.stopPropagation()}>
                 {/* Header */}
-                <header style={headerStyle}>
-                    <div>
-                        <h1 style={{ margin: 0, fontSize: '1.5rem', fontWeight: '700', color: '#1f2937' }}>
-                            Project Milestones
-                        </h1>
-                        <p style={{ margin: '0.25rem 0 0 0', color: '#6b7280' }}>
-                            {project.name}
-                        </p>
-                    </div>
-                    <div style={{ display: 'flex', gap: '0.75rem' }}>
-                        <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '0.5rem 1rem',
-                            backgroundColor: '#dcfce7',
-                            color: '#16a34a',
-                            borderRadius: '12px',
-                            fontSize: '0.875rem',
-                            fontWeight: '600'
-                        }}>
-                            <CheckCircle size={16} />
-                            <span>{milestones.filter(m => m.status === 'completed').length}</span>
+                <div className="milestone-modal__header">
+                    <div className="milestone-modal__header-content">
+                        <div className="milestone-modal__title-section">
+                            <div className="milestone-modal__title-icon">
+                                <Target size={24} />
+                            </div>
+                            <div className="milestone-modal__title-info">
+                                <h1>Project Milestones</h1>
+                                <p>{project.name}</p>
+                            </div>
                         </div>
-                        <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '0.5rem 1rem',
-                            backgroundColor: '#dbeafe',
-                            color: '#2563eb',
-                            borderRadius: '12px',
-                            fontSize: '0.875rem',
-                            fontWeight: '600'
-                        }}>
-                            <Target size={16} />
-                            <span>{milestones.length}</span>
+                        <div className="milestone-modal__header-stats">
+                            <div className="milestone-modal__stat-badge milestone-modal__stat-badge--completed">
+                                <CheckCircle size={16} />
+                                <span>{completedMilestones}</span>
+                            </div>
+                            <div className="milestone-modal__stat-badge milestone-modal__stat-badge--total">
+                                <Target size={16} />
+                                <span>{milestones.length}</span>
+                            </div>
                         </div>
                     </div>
-                </header>
+                    <button className="milestone-modal__close-btn" onClick={onClose}>
+                        <X size={24} />
+                    </button>
+                </div>
+
+                {/* Overview Dashboard */}
+                <div className="milestone-modal__overview">
+                    <div className="milestone-modal__overview-grid">
+                        <div className="milestone-modal__overview-card milestone-modal__overview-card--primary">
+                            <div className="milestone-modal__card-header">
+                                <div className="milestone-modal__card-icon">
+                                    <TrendingUp size={20} />
+                                </div>
+                                <h3>Progress Overview</h3>
+                            </div>
+                            <div className="milestone-modal__progress-display">
+                                <div className="milestone-modal__progress-circle" style={{ '--progress': `${(completedMilestones / milestones.length) * 100 || 0}` }}>
+                                    <div className="milestone-modal__progress-value">{Math.round((completedMilestones / milestones.length) * 100) || 0}%</div>
+                                </div>
+                                <div className="milestone-modal__progress-details">
+                                    <p className="milestone-modal__progress-text">{completedMilestones} of {milestones.length} milestones completed</p>
+                                    <div className="milestone-modal__progress-bar">
+                                        <div
+                                            className="milestone-modal__progress-fill"
+                                            style={{ width: `${(completedMilestones / milestones.length) * 100 || 0}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="milestone-modal__overview-card">
+                            <div className="milestone-modal__card-header">
+                                <div className="milestone-modal__card-icon">
+                                    <Award size={20} />
+                                </div>
+                                <h3>Status Breakdown</h3>
+                            </div>
+                            <div className="milestone-modal__status-list">
+                                {milestoneStatusOptions.map(option => {
+                                    const count = milestones.filter(m => m.status === option.value).length;
+                                    return (
+                                        <div key={option.value} className="milestone-modal__status-item">
+                                            <div className="milestone-modal__status-dot" style={{ backgroundColor: option.color }}></div>
+                                            <span className="milestone-modal__status-label">{option.label}</span>
+                                            <span className="milestone-modal__status-count">{count}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        <div className="milestone-modal__overview-card">
+                            <div className="milestone-modal__card-header">
+                                <div className="milestone-modal__card-icon">
+                                    <AlertTriangle size={20} />
+                                </div>
+                                <h3>Upcoming Deadlines</h3>
+                            </div>
+                            <div className="milestone-modal__upcoming-list">
+                                {milestones
+                                    .filter(m => m.status !== 'completed' && m.status !== 'canceled' && m.dueDate)
+                                    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+                                    .slice(0, 3)
+                                    .map((milestone, index) => {
+                                        const dueDate = new Date(milestone.dueDate);
+                                        const isOverdue = dueDate < new Date();
+                                        const isUrgent = dueDate < new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+                                        return (
+                                            <div
+                                                key={index}
+                                                className={`milestone-modal__upcoming-item ${isOverdue ? 'milestone-modal__upcoming-item--overdue' : isUrgent ? 'milestone-modal__upcoming-item--urgent' : ''}`}
+                                            >
+                                                <div className="milestone-modal__upcoming-info">
+                                                    <h4 className="milestone-modal__upcoming-name">{milestone.name || 'Untitled Milestone'}</h4>
+                                                    <span className="milestone-modal__upcoming-date">
+                                                        {dueDate.toLocaleDateString('en-US', {
+                                                            weekday: 'short',
+                                                            month: 'short',
+                                                            day: 'numeric'
+                                                        })}
+                                                    </span>
+                                                </div>
+                                                {isOverdue && (
+                                                    <div className="milestone-modal__upcoming-alert">
+                                                        <AlertTriangle size={14} />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                {milestones.filter(m => m.status !== 'completed' && m.status !== 'canceled' && m.dueDate).length === 0 && (
+                                    <p className="milestone-modal__no-upcoming">No upcoming deadlines</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {overdueMilestones.length > 0 && (
+                        <div className="milestone-modal__alert milestone-modal__alert--danger">
+                            <AlertTriangle size={16} />
+                            <span>{overdueMilestones.length} milestone{overdueMilestones.length > 1 ? 's are' : ' is'} overdue</span>
+                        </div>
+                    )}
+                </div>
 
                 {/* Content */}
-                <div style={contentStyle}>
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginBottom: '2rem'
-                    }}>
-                        <h2 style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.75rem',
-                            margin: 0,
-                            fontSize: '1.25rem',
-                            fontWeight: '600',
-                            color: '#1f2937'
-                        }}>
+                <div className="milestone-modal__content">
+                    <div className="milestone-modal__section-header">
+                        <h2 className="milestone-modal__section-title">
                             <Target size={20} />
                             All Milestones ({milestones.length})
                         </h2>
-                        <button
-                            style={{
-                                ...buttonStyle,
-                                backgroundColor: '#10b981',
-                                color: 'white',
-                                borderColor: '#10b981'
-                            }}
-                            onClick={addMilestone}
-                        >
+                        <button className="milestone-modal__add-btn" onClick={addMilestone}>
                             <Plus size={16} />
                             <span>Add Milestone</span>
                         </button>
                     </div>
 
                     {/* Milestones List */}
-                    <div>
+                    <div className="milestone-modal__milestones-list">
                         {milestones.length > 0 ? (
                             milestones.map((milestone, index) => (
-                                <div
-                                    key={index}
-                                    style={{
-                                        marginBottom: '1rem',
-                                        backgroundColor: 'white',
-                                        border: '1px solid #e5e7eb',
-                                        borderRadius: '16px',
-                                        overflow: 'hidden',
-                                        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-                                    }}
-                                >
+                                <div key={index} className={`milestone-modal__milestone-item milestone-modal__milestone-item--${milestone.status}`}>
                                     {editingIndex === index ? (
                                         /* Edit Mode */
-                                        <div style={{ padding: '1.5rem' }}>
-                                            <div style={{
-                                                display: 'grid',
-                                                gridTemplateColumns: '2fr 1fr 1fr',
-                                                gap: '1rem',
-                                                marginBottom: '1rem'
-                                            }}>
-                                                <div>
-                                                    <label style={{
-                                                        display: 'block',
-                                                        fontSize: '0.8rem',
-                                                        fontWeight: '600',
-                                                        color: '#374151',
-                                                        marginBottom: '0.5rem'
-                                                    }}>
-                                                        Milestone Name
-                                                    </label>
+                                        <div className="milestone-modal__edit-form">
+                                            <div className="milestone-modal__edit-inputs">
+                                                <div className="milestone-modal__input-group">
+                                                    <label>Milestone Name</label>
                                                     <input
                                                         type="text"
                                                         value={milestone.name}
                                                         onChange={(e) => handleMilestoneChange(index, 'name', e.target.value)}
                                                         placeholder="Enter milestone name"
-                                                        style={{
-                                                            width: '100%',
-                                                            padding: '0.75rem',
-                                                            border: '2px solid #d1d5db',
-                                                            borderRadius: '8px',
-                                                            fontSize: '0.875rem'
-                                                        }}
+                                                        className="milestone-modal__milestone-input"
                                                         autoFocus
                                                     />
                                                 </div>
-                                                <div>
-                                                    <label style={{
-                                                        display: 'block',
-                                                        fontSize: '0.8rem',
-                                                        fontWeight: '600',
-                                                        color: '#374151',
-                                                        marginBottom: '0.5rem'
-                                                    }}>
-                                                        Due Date
-                                                    </label>
+                                                <div className="milestone-modal__input-group">
+                                                    <label>Due Date</label>
                                                     <input
                                                         type="date"
                                                         value={milestone.dueDate}
                                                         onChange={(e) => handleMilestoneChange(index, 'dueDate', e.target.value)}
-                                                        style={{
-                                                            width: '100%',
-                                                            padding: '0.75rem',
-                                                            border: '2px solid #d1d5db',
-                                                            borderRadius: '8px',
-                                                            fontSize: '0.875rem'
-                                                        }}
+                                                        className="milestone-modal__milestone-input"
                                                     />
                                                 </div>
-                                                <div>
-                                                    <label style={{
-                                                        display: 'block',
-                                                        fontSize: '0.8rem',
-                                                        fontWeight: '600',
-                                                        color: '#374151',
-                                                        marginBottom: '0.5rem'
-                                                    }}>
-                                                        Status
-                                                    </label>
+                                                <div className="milestone-modal__input-group">
+                                                    <label>Status</label>
                                                     <select
                                                         value={milestone.status}
                                                         onChange={(e) => handleMilestoneChange(index, 'status', e.target.value)}
-                                                        style={{
-                                                            width: '100%',
-                                                            padding: '0.75rem',
-                                                            border: '2px solid #d1d5db',
-                                                            borderRadius: '8px',
-                                                            fontSize: '0.875rem',
-                                                            backgroundColor: 'white'
-                                                        }}
+                                                        className="milestone-modal__milestone-select"
                                                     >
                                                         {milestoneStatusOptions.map(option => (
                                                             <option key={option.value} value={option.value}>
@@ -391,30 +308,16 @@ function MilestoneManager({ project, onClose, onSave }) {
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                                            <div className="milestone-modal__edit-actions">
                                                 <button
-                                                    style={{
-                                                        padding: '0.5rem',
-                                                        border: '2px solid #10b981',
-                                                        backgroundColor: 'white',
-                                                        color: '#10b981',
-                                                        borderRadius: '8px',
-                                                        cursor: 'pointer'
-                                                    }}
+                                                    className="milestone-modal__action-btn milestone-modal__action-btn--save"
                                                     onClick={() => setEditingIndex(null)}
                                                     title="Save changes"
                                                 >
                                                     <CheckCircle size={16} />
                                                 </button>
                                                 <button
-                                                    style={{
-                                                        padding: '0.5rem',
-                                                        border: '2px solid #ef4444',
-                                                        backgroundColor: 'white',
-                                                        color: '#ef4444',
-                                                        borderRadius: '8px',
-                                                        cursor: 'pointer'
-                                                    }}
+                                                    className="milestone-modal__action-btn milestone-modal__action-btn--delete"
                                                     onClick={() => removeMilestone(index)}
                                                     title="Delete milestone"
                                                 >
@@ -424,97 +327,57 @@ function MilestoneManager({ project, onClose, onSave }) {
                                         </div>
                                     ) : (
                                         /* View Mode */
-                                        <div style={{
-                                            display: 'flex',
-                                            alignItems: 'flex-start',
-                                            gap: '1rem',
-                                            padding: '1.5rem'
-                                        }}>
-                                            <div style={{
-                                                width: '44px',
-                                                height: '44px',
-                                                borderRadius: '50%',
-                                                backgroundColor: 'white',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                border: `2px solid ${getStatusColor(milestone.status)}`,
-                                                color: getStatusColor(milestone.status),
-                                                flexShrink: 0
-                                            }}>
-                                                {getMilestoneIcon(milestone.status)}
+                                        <div className="milestone-modal__milestone-view">
+                                            <div className="milestone-modal__milestone-indicator">
+                                                <div className="milestone-modal__milestone-icon" style={{ borderColor: getStatusColor(milestone.status), color: getStatusColor(milestone.status) }}>
+                                                    {getMilestoneIcon(milestone.status)}
+                                                </div>
+                                                <div className="milestone-modal__milestone-line" style={{ backgroundColor: getStatusColor(milestone.status) }}></div>
                                             </div>
-                                            <div style={{ flex: 1, minWidth: 0 }}>
-                                                <div style={{
-                                                    display: 'flex',
-                                                    alignItems: 'flex-start',
-                                                    justifyContent: 'space-between',
-                                                    gap: '1rem',
-                                                    marginBottom: '0.75rem'
-                                                }}>
-                                                    <h3 style={{
-                                                        fontSize: '1.125rem',
-                                                        fontWeight: '600',
-                                                        color: '#1f2937',
-                                                        margin: 0,
-                                                        lineHeight: 1.3
-                                                    }}>
-                                                        {milestone.name || 'Untitled Milestone'}
-                                                    </h3>
-                                                    <span style={{
-                                                        fontSize: '0.75rem',
-                                                        fontWeight: '600',
-                                                        textTransform: 'uppercase',
-                                                        letterSpacing: '0.5px',
-                                                        padding: '0.375rem 0.75rem',
-                                                        borderRadius: '6px',
-                                                        backgroundColor: `${getStatusColor(milestone.status)}20`,
-                                                        color: getStatusColor(milestone.status),
-                                                        whiteSpace: 'nowrap'
-                                                    }}>
+                                            <div className="milestone-modal__milestone-content">
+                                                <div className="milestone-modal__milestone-header">
+                                                    <h3>{milestone.name || 'Untitled Milestone'}</h3>
+                                                    <span className={`milestone-modal__milestone-badge milestone-modal__milestone-badge--${milestone.status}`}>
                                                         {milestoneStatusOptions.find(opt => opt.value === milestone.status)?.label}
                                                     </span>
                                                 </div>
-                                                <div style={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: '0.375rem',
-                                                    color: '#6b7280',
-                                                    fontSize: '0.875rem'
-                                                }}>
-                                                    <Calendar size={14} />
-                                                    <span>
+                                                <div className="milestone-modal__milestone-meta">
+                                                    <span className="milestone-modal__milestone-date">
+                                                        <Calendar size={14} />
                                                         {milestone.dueDate ?
                                                             new Date(milestone.dueDate).toLocaleDateString() :
                                                             'No due date'
                                                         }
                                                     </span>
+                                                    {milestone.dueDate && new Date(milestone.dueDate) < new Date() &&
+                                                        milestone.status !== 'completed' && milestone.status !== 'canceled' && (
+                                                            <span className="milestone-modal__overdue-badge">
+                                                                <AlertCircle size={12} />
+                                                                Overdue
+                                                            </span>
+                                                        )}
                                                 </div>
                                             </div>
-                                            <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
+                                            <div className="milestone-modal__milestone-actions">
                                                 <button
-                                                    style={{
-                                                        padding: '0.5rem',
-                                                        border: '2px solid #3b82f6',
-                                                        backgroundColor: 'white',
-                                                        color: '#3b82f6',
-                                                        borderRadius: '8px',
-                                                        cursor: 'pointer'
-                                                    }}
+                                                    className="milestone-modal__action-btn milestone-modal__action-btn--edit"
                                                     onClick={() => setEditingIndex(index)}
                                                     title="Edit milestone"
                                                 >
                                                     <Edit2 size={16} />
                                                 </button>
                                                 <button
-                                                    style={{
-                                                        padding: '0.5rem',
-                                                        border: '2px solid #ef4444',
-                                                        backgroundColor: 'white',
-                                                        color: '#ef4444',
-                                                        borderRadius: '8px',
-                                                        cursor: 'pointer'
+                                                    className="milestone-modal__action-btn milestone-modal__action-btn--duplicate"
+                                                    onClick={() => {
+                                                        const duplicatedMilestone = { ...milestone, name: `${milestone.name} (Copy)` };
+                                                        setMilestones([...milestones, duplicatedMilestone]);
                                                     }}
+                                                    title="Duplicate milestone"
+                                                >
+                                                    <Copy size={16} />
+                                                </button>
+                                                <button
+                                                    className="milestone-modal__action-btn milestone-modal__action-btn--delete"
                                                     onClick={() => removeMilestone(index)}
                                                     title="Remove milestone"
                                                 >
@@ -526,53 +389,13 @@ function MilestoneManager({ project, onClose, onSave }) {
                                 </div>
                             ))
                         ) : (
-                            <div style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                textAlign: 'center',
-                                padding: '3rem 2rem',
-                                minHeight: '300px',
-                                justifyContent: 'center'
-                            }}>
-                                <div style={{
-                                    width: '80px',
-                                    height: '80px',
-                                    backgroundColor: '#f3f4f6',
-                                    borderRadius: '50%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    marginBottom: '1.5rem',
-                                    color: '#6b7280'
-                                }}>
+                            <div className="milestone-modal__empty-state">
+                                <div className="milestone-modal__empty-icon">
                                     <Target size={48} />
                                 </div>
-                                <h3 style={{
-                                    fontSize: '1.5rem',
-                                    fontWeight: '600',
-                                    color: '#1f2937',
-                                    margin: '0 0 0.5rem 0'
-                                }}>
-                                    No milestones yet
-                                </h3>
-                                <p style={{
-                                    color: '#6b7280',
-                                    margin: '0 0 2rem 0',
-                                    maxWidth: '400px',
-                                    lineHeight: 1.5
-                                }}>
-                                    Add milestones to track your project progress and keep everyone aligned on key deliverables.
-                                </p>
-                                <button
-                                    style={{
-                                        ...buttonStyle,
-                                        backgroundColor: '#3b82f6',
-                                        color: 'white',
-                                        borderColor: '#3b82f6'
-                                    }}
-                                    onClick={addMilestone}
-                                >
+                                <h3>No milestones yet</h3>
+                                <p>Add milestones to track your project progress and keep everyone aligned on key deliverables.</p>
+                                <button className="milestone-modal__empty-btn" onClick={addMilestone}>
                                     <Plus size={16} />
                                     Create First Milestone
                                 </button>
@@ -582,28 +405,22 @@ function MilestoneManager({ project, onClose, onSave }) {
                 </div>
 
                 {/* Footer */}
-                <footer style={footerStyle}>
-                    <div style={{ color: '#6b7280' }}>
-                        <span style={{ fontSize: '0.875rem', fontWeight: '500' }}>
+                <div className="milestone-modal__footer">
+                    <div className="milestone-modal__footer-info">
+                        <span className="milestone-modal__footer-text">
                             {milestones.filter(m => m.name && m.dueDate).length} valid milestones
                         </span>
                     </div>
-                    <div style={{ display: 'flex', gap: '1rem' }}>
-                        <button
-                            style={secondaryButtonStyle}
-                            onClick={onClose}
-                        >
+                    <div className="milestone-modal__footer-actions">
+                        <button className="milestone-modal__btn milestone-modal__btn--secondary" onClick={onClose}>
                             Cancel
                         </button>
-                        <button
-                            style={primaryButtonStyle}
-                            onClick={handleSave}
-                        >
+                        <button className="milestone-modal__btn milestone-modal__btn--primary" onClick={handleSave}>
                             <Save size={16} />
                             Save Changes
                         </button>
                     </div>
-                </footer>
+                </div>
             </div>
         </div>
     );

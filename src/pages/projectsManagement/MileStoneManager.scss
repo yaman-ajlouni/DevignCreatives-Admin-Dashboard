@@ -1,33 +1,18 @@
-// Variables (define locally if import fails)
-$deep-blue: #1e3a8a;
-$orange: #f97316;
-$vibrant-green: #22c55e;
-$white: #ffffff;
-$light-gray: #e5e7eb;
-$dark-gray: #6b7280;
-$breakpoint-lg: 1024px;
-$breakpoint-md: 768px;
-$breakpoint-sm: 640px;
-
-// Try to import variables, fallback to local definitions above
 @import '../../assets/styles/variables';
 
-// ==========================================
-// MILESTONE MANAGER - MAIN CONTAINER
-// ==========================================
-
-.milestone-manager {
-    position: fixed !important;
+.milestone-modal__overlay {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 9999 !important;
+    background: rgba($deep-blue, 0.4);
+    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1100; // Higher than project details modal
     padding: 1rem;
-    isolation: isolate;
 
     @media (max-width: $breakpoint-md) {
         padding: 0.5rem;
@@ -36,74 +21,56 @@ $breakpoint-sm: 640px;
     }
 
     @media (max-width: $breakpoint-sm) {
-        padding: 0;
-        align-items: stretch;
+        padding: 0.25rem;
+        padding-top: 0.5rem;
+    }
+}
+
+.milestone-modal__container {
+    background: $white;
+    border-radius: $border-radius * 2;
+    box-shadow: 0 25px 80px rgba($deep-blue, 0.3);
+    max-width: 1200px;
+    width: 100%;
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    @media (max-width: $breakpoint-md) {
+        max-height: 98vh;
+        border-radius: $border-radius;
     }
 
-    // Overlay
-    &__overlay {
+    @media (max-width: $breakpoint-sm) {
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    &::before {
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba($deep-blue, 0.4);
-        backdrop-filter: blur(4px);
-        z-index: 9998;
-    }
-
-    // Modal Container
-    &__modal {
-        position: relative;
-        z-index: 9999;
-        background: $white;
-        border-radius: 20px;
-        box-shadow:
-            0 25px 50px -12px rgba($deep-blue, 0.25),
-            0 0 0 1px rgba($deep-blue, 0.05);
-        max-width: 1200px;
-        width: 100%;
-        max-height: 95vh;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-
-        @media (max-width: $breakpoint-md) {
-            max-height: 98vh;
-            border-radius: 16px;
-        }
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, $deep-blue 0%, $orange 50%, $vibrant-green 100%);
 
         @media (max-width: $breakpoint-sm) {
-            height: 100vh;
-            max-height: 100vh;
-            border-radius: 0;
-        }
-
-        // Top border gradient
-        &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, $deep-blue 0%, $orange 50%, $vibrant-green 100%);
-            z-index: 10000;
+            height: 3px;
         }
     }
 }
 
-// ==========================================
-// HEADER SECTION
-// ==========================================
-
-.milestone-manager__header {
+// Header Section
+.milestone-modal__header {
     display: flex;
-    align-items: flex-start;
     justify-content: space-between;
+    align-items: flex-start;
     padding: 2rem 2rem 1.5rem;
     background: linear-gradient(135deg, rgba($deep-blue, 0.03) 0%, rgba($orange, 0.01) 100%);
     border-bottom: 1px solid rgba($light-gray, 0.2);
+    flex-shrink: 0;
     position: relative;
 
     @media (max-width: $breakpoint-md) {
@@ -117,7 +84,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__header-content {
+.milestone-modal__header-content {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -129,13 +96,13 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__title-section {
+.milestone-modal__title-section {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
 }
 
-.milestone-manager__icon {
+.milestone-modal__title-icon {
     width: 48px;
     height: 48px;
     background: linear-gradient(135deg, $orange, lighten($orange, 10%));
@@ -159,39 +126,39 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__title-info {
+.milestone-modal__title-info {
     min-width: 0;
-}
 
-.milestone-manager__title {
-    font-size: 1.875rem;
-    font-weight: 700;
-    color: $deep-blue;
-    margin: 0 0 0.25rem 0;
-    line-height: 1.2;
+    h1 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: $deep-blue;
+        margin: 0 0 0.25rem 0;
+        line-height: 1.2;
 
-    @media (max-width: $breakpoint-md) {
-        font-size: 1.5rem;
+        @media (max-width: $breakpoint-md) {
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 1.375rem;
+        }
     }
 
-    @media (max-width: $breakpoint-sm) {
-        font-size: 1.375rem;
+    p {
+        font-size: 1rem;
+        color: $dark-gray;
+        opacity: 0.8;
+        margin: 0;
+        font-weight: 500;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 0.9rem;
+        }
     }
 }
 
-.milestone-manager__subtitle {
-    font-size: 1rem;
-    color: $dark-gray;
-    opacity: 0.8;
-    margin: 0;
-    font-weight: 500;
-
-    @media (max-width: $breakpoint-sm) {
-        font-size: 0.9rem;
-    }
-}
-
-.milestone-manager__header-stats {
+.milestone-modal__header-stats {
     display: flex;
     gap: 0.75rem;
     align-items: center;
@@ -203,7 +170,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__stat-badge {
+.milestone-modal__stat-badge {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -235,7 +202,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__close {
+.milestone-modal__close-btn {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -273,11 +240,8 @@ $breakpoint-sm: 640px;
     }
 }
 
-// ==========================================
-// OVERVIEW DASHBOARD
-// ==========================================
-
-.milestone-manager__overview {
+// Overview Dashboard
+.milestone-modal__overview {
     padding: 1.5rem 2rem;
     background: linear-gradient(135deg, rgba($deep-blue, 0.02) 0%, rgba($orange, 0.01) 100%);
     border-bottom: 1px solid rgba($light-gray, 0.15);
@@ -291,7 +255,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__overview-grid {
+.milestone-modal__overview-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1.5rem;
@@ -307,7 +271,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__card {
+.milestone-modal__overview-card {
     background: $white;
     border-radius: 16px;
     padding: 1.5rem;
@@ -335,14 +299,25 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__card-header {
+.milestone-modal__card-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 1.25rem;
+
+    h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: $deep-blue;
+        margin: 0;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 0.9rem;
+        }
+    }
 }
 
-.milestone-manager__card-icon {
+.milestone-modal__card-icon {
     width: 36px;
     height: 36px;
     border-radius: 10px;
@@ -354,19 +329,8 @@ $breakpoint-sm: 640px;
     flex-shrink: 0;
 }
 
-.milestone-manager__card-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: $deep-blue;
-    margin: 0;
-
-    @media (max-width: $breakpoint-sm) {
-        font-size: 0.9rem;
-    }
-}
-
 // Progress Display
-.milestone-manager__progress-display {
+.milestone-modal__progress-display {
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -378,7 +342,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__progress-circle {
+.milestone-modal__progress-circle {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -412,7 +376,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__progress-value {
+.milestone-modal__progress-value {
     font-size: 1.25rem;
     font-weight: 700;
     color: $deep-blue;
@@ -424,19 +388,19 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__progress-details {
+.milestone-modal__progress-details {
     flex: 1;
     min-width: 0;
 }
 
-.milestone-manager__progress-text {
+.milestone-modal__progress-text {
     color: $dark-gray;
     font-size: 0.875rem;
     margin: 0 0 0.75rem 0;
     opacity: 0.8;
 }
 
-.milestone-manager__progress-bar {
+.milestone-modal__progress-bar {
     width: 100%;
     height: 6px;
     background: rgba($light-gray, 0.2);
@@ -444,7 +408,7 @@ $breakpoint-sm: 640px;
     overflow: hidden;
 }
 
-.milestone-manager__progress-fill {
+.milestone-modal__progress-fill {
     height: 100%;
     background: linear-gradient(90deg, $deep-blue, $vibrant-green);
     border-radius: 3px;
@@ -452,13 +416,13 @@ $breakpoint-sm: 640px;
 }
 
 // Status List
-.milestone-manager__status-list {
+.milestone-modal__status-list {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
 }
 
-.milestone-manager__status-item {
+.milestone-modal__status-item {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -473,21 +437,21 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__status-dot {
+.milestone-modal__status-dot {
     width: 12px;
     height: 12px;
     border-radius: 50%;
     flex-shrink: 0;
 }
 
-.milestone-manager__status-label {
+.milestone-modal__status-label {
     flex: 1;
     font-size: 0.875rem;
     color: $dark-gray;
     font-weight: 500;
 }
 
-.milestone-manager__status-count {
+.milestone-modal__status-count {
     background: rgba($deep-blue, 0.1);
     color: $deep-blue;
     font-weight: 700;
@@ -499,13 +463,13 @@ $breakpoint-sm: 640px;
 }
 
 // Upcoming List
-.milestone-manager__upcoming-list {
+.milestone-modal__upcoming-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.milestone-manager__upcoming-item {
+.milestone-modal__upcoming-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -518,28 +482,28 @@ $breakpoint-sm: 640px;
     }
 
     &--urgent {
-        .milestone-manager__upcoming-alert {
+        .milestone-modal__upcoming-alert {
             color: $orange;
         }
     }
 
     &--overdue {
-        .milestone-manager__upcoming-name {
+        .milestone-modal__upcoming-name {
             color: #ef4444;
         }
 
-        .milestone-manager__upcoming-alert {
+        .milestone-modal__upcoming-alert {
             color: #ef4444;
         }
     }
 }
 
-.milestone-manager__upcoming-info {
+.milestone-modal__upcoming-info {
     flex: 1;
     min-width: 0;
 }
 
-.milestone-manager__upcoming-name {
+.milestone-modal__upcoming-name {
     font-weight: 600;
     color: $deep-blue;
     font-size: 0.875rem;
@@ -547,18 +511,18 @@ $breakpoint-sm: 640px;
     line-height: 1.3;
 }
 
-.milestone-manager__upcoming-date {
+.milestone-modal__upcoming-date {
     color: $orange;
     font-size: 0.8rem;
     font-weight: 500;
 }
 
-.milestone-manager__upcoming-alert {
+.milestone-modal__upcoming-alert {
     flex-shrink: 0;
     margin-left: 0.5rem;
 }
 
-.milestone-manager__no-upcoming {
+.milestone-modal__no-upcoming {
     text-align: center;
     color: $dark-gray;
     opacity: 0.6;
@@ -569,7 +533,7 @@ $breakpoint-sm: 640px;
 }
 
 // Alert
-.milestone-manager__alert {
+.milestone-modal__alert {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -590,18 +554,15 @@ $breakpoint-sm: 640px;
     }
 }
 
-// ==========================================
-// CONTENT SECTION
-// ==========================================
-
-.milestone-manager__content {
+// Content Section
+.milestone-modal__content {
     flex: 1;
     display: flex;
     flex-direction: column;
     min-height: 0;
 }
 
-.milestone-manager__section-header {
+.milestone-modal__section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -620,7 +581,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__section-title {
+.milestone-modal__section-title {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -638,7 +599,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__add-btn {
+.milestone-modal__add-btn {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -675,11 +636,8 @@ $breakpoint-sm: 640px;
     }
 }
 
-// ==========================================
-// MILESTONES LIST
-// ==========================================
-
-.milestone-manager__milestones {
+// Milestones List
+.milestone-modal__milestones-list {
     flex: 1;
     padding: 0 2rem 1rem;
     overflow-y: auto;
@@ -712,7 +670,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__milestone {
+.milestone-modal__milestone-item {
     margin-bottom: 1rem;
     background: $white;
     border: 1px solid rgba($light-gray, 0.2);
@@ -728,11 +686,6 @@ $breakpoint-sm: 640px;
     &:hover {
         box-shadow: 0 8px 25px -5px rgba($deep-blue, 0.12);
         transform: translateY(-2px);
-    }
-
-    &--editing {
-        border-color: $deep-blue;
-        box-shadow: 0 0 0 3px rgba($deep-blue, 0.1);
     }
 
     // Status-based styling
@@ -764,7 +717,7 @@ $breakpoint-sm: 640px;
 }
 
 // Milestone View Mode
-.milestone-manager__milestone-view {
+.milestone-modal__milestone-view {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
@@ -776,14 +729,14 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__milestone-indicator {
+.milestone-modal__milestone-indicator {
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
 }
 
-.milestone-manager__milestone-icon {
+.milestone-modal__milestone-icon {
     width: 44px;
     height: 44px;
     border-radius: 50%;
@@ -805,7 +758,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__milestone-line {
+.milestone-modal__milestone-line {
     width: 2px;
     height: 24px;
     margin-top: 0.5rem;
@@ -816,12 +769,12 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__milestone-content {
+.milestone-modal__milestone-content {
     flex: 1;
     min-width: 0;
 }
 
-.milestone-manager__milestone-header {
+.milestone-modal__milestone-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -832,22 +785,22 @@ $breakpoint-sm: 640px;
         flex-direction: column;
         gap: 0.5rem;
     }
-}
 
-.milestone-manager__milestone-name {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: $deep-blue;
-    margin: 0;
-    line-height: 1.3;
-    word-break: break-word;
+    h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: $deep-blue;
+        margin: 0;
+        line-height: 1.3;
+        word-break: break-word;
 
-    @media (max-width: $breakpoint-sm) {
-        font-size: 1rem;
+        @media (max-width: $breakpoint-sm) {
+            font-size: 1rem;
+        }
     }
 }
 
-.milestone-manager__milestone-badge {
+.milestone-modal__milestone-badge {
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -860,9 +813,34 @@ $breakpoint-sm: 640px;
     @media (max-width: $breakpoint-sm) {
         align-self: flex-start;
     }
+
+    &--completed {
+        background: rgba($vibrant-green, 0.1);
+        color: $vibrant-green;
+    }
+
+    &--in-progress {
+        background: rgba($deep-blue, 0.1);
+        color: $deep-blue;
+    }
+
+    &--on-hold {
+        background: rgba($orange, 0.1);
+        color: $orange;
+    }
+
+    &--canceled {
+        background: rgba(#ef4444, 0.1);
+        color: #ef4444;
+    }
+
+    &--pending {
+        background: rgba(#6b7280, 0.1);
+        color: #6b7280;
+    }
 }
 
-.milestone-manager__milestone-meta {
+.milestone-modal__milestone-meta {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -874,7 +852,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__milestone-date {
+.milestone-modal__milestone-date {
     display: flex;
     align-items: center;
     gap: 0.375rem;
@@ -888,7 +866,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__overdue-badge {
+.milestone-modal__overdue-badge {
     display: flex;
     align-items: center;
     gap: 0.25rem;
@@ -904,7 +882,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__milestone-actions {
+.milestone-modal__milestone-actions {
     display: flex;
     gap: 0.5rem;
     flex-shrink: 0;
@@ -917,7 +895,7 @@ $breakpoint-sm: 640px;
 }
 
 // Edit Mode
-.milestone-manager__edit-form {
+.milestone-modal__edit-form {
     padding: 1.5rem;
 
     @media (max-width: $breakpoint-sm) {
@@ -925,7 +903,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__edit-inputs {
+.milestone-modal__edit-inputs {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     gap: 1rem;
@@ -937,22 +915,22 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__input-group {
+.milestone-modal__input-group {
     display: flex;
     flex-direction: column;
+
+    label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: $deep-blue;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 }
 
-.milestone-manager__label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: $deep-blue;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.milestone-manager__input,
-.milestone-manager__select {
+.milestone-modal__milestone-input,
+.milestone-modal__milestone-select {
     padding: 0.875rem 1rem;
     border: 2px solid rgba($light-gray, 0.5);
     border-radius: 10px;
@@ -971,7 +949,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__select {
+.milestone-modal__milestone-select {
     cursor: pointer;
     appearance: none;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
@@ -981,7 +959,7 @@ $breakpoint-sm: 640px;
     padding-right: 2.5rem;
 }
 
-.milestone-manager__edit-actions {
+.milestone-modal__edit-actions {
     display: flex;
     gap: 0.5rem;
     justify-content: flex-end;
@@ -992,7 +970,7 @@ $breakpoint-sm: 640px;
 }
 
 // Action Buttons
-.milestone-manager__action-btn {
+.milestone-modal__action-btn {
     width: 40px;
     height: 40px;
     border: 2px solid;
@@ -1059,11 +1037,8 @@ $breakpoint-sm: 640px;
     }
 }
 
-// ==========================================
-// EMPTY STATE
-// ==========================================
-
-.milestone-manager__empty {
+// Empty State
+.milestone-modal__empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1076,9 +1051,33 @@ $breakpoint-sm: 640px;
         padding: 2rem 1rem;
         min-height: 250px;
     }
+
+    h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $deep-blue;
+        margin: 0 0 0.5rem 0;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 1.25rem;
+        }
+    }
+
+    p {
+        color: $dark-gray;
+        opacity: 0.8;
+        margin: 0 0 2rem 0;
+        max-width: 400px;
+        line-height: 1.5;
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 0.9rem;
+            max-width: 300px;
+        }
+    }
 }
 
-.milestone-manager__empty-icon {
+.milestone-modal__empty-icon {
     width: 80px;
     height: 80px;
     background: linear-gradient(135deg, rgba($deep-blue, 0.1), rgba($orange, 0.05));
@@ -1100,31 +1099,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__empty-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: $deep-blue;
-    margin: 0 0 0.5rem 0;
-
-    @media (max-width: $breakpoint-sm) {
-        font-size: 1.25rem;
-    }
-}
-
-.milestone-manager__empty-description {
-    color: $dark-gray;
-    opacity: 0.8;
-    margin: 0 0 2rem 0;
-    max-width: 400px;
-    line-height: 1.5;
-
-    @media (max-width: $breakpoint-sm) {
-        font-size: 0.9rem;
-        max-width: 300px;
-    }
-}
-
-.milestone-manager__empty-btn {
+.milestone-modal__empty-btn {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -1149,11 +1124,8 @@ $breakpoint-sm: 640px;
     }
 }
 
-// ==========================================
-// FOOTER
-// ==========================================
-
-.milestone-manager__footer {
+// Footer
+.milestone-modal__footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1172,12 +1144,12 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__footer-info {
+.milestone-modal__footer-info {
     color: $dark-gray;
     opacity: 0.8;
 }
 
-.milestone-manager__footer-text {
+.milestone-modal__footer-text {
     font-size: 0.875rem;
     font-weight: 500;
 
@@ -1186,7 +1158,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__footer-actions {
+.milestone-modal__footer-actions {
     display: flex;
     gap: 1rem;
 
@@ -1196,7 +1168,7 @@ $breakpoint-sm: 640px;
     }
 }
 
-.milestone-manager__btn {
+.milestone-modal__btn {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -1240,5 +1212,88 @@ $breakpoint-sm: 640px;
 
     &:active {
         transform: translateY(0);
+    }
+}
+
+// Touch improvements for mobile
+@media (max-width: $breakpoint-sm) {
+    .milestone-modal__milestone-item {
+        -webkit-tap-highlight-color: transparent;
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+
+    .milestone-modal__action-btn {
+        -webkit-tap-highlight-color: transparent;
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .milestone-modal__btn {
+        -webkit-tap-highlight-color: transparent;
+        min-height: 44px;
+    }
+}
+
+// Landscape mobile optimizations
+@media (max-width: 812px) and (orientation: landscape) {
+    .milestone-modal__header {
+        padding: 1rem;
+    }
+
+    .milestone-modal__title-info {
+        h1 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            font-size: 0.8rem;
+        }
+    }
+
+    .milestone-modal__overview {
+        padding: 0.75rem;
+
+        .milestone-modal__overview-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .milestone-modal__overview-card {
+            padding: 0.75rem;
+        }
+
+        .milestone-modal__progress-display {
+            flex-direction: row;
+            gap: 1rem;
+
+            .milestone-modal__progress-circle {
+                width: 60px;
+                height: 60px;
+
+                &::before {
+                    width: 45px;
+                    height: 45px;
+                }
+
+                .milestone-modal__progress-value {
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+
+    .milestone-modal__section-header {
+        padding: 0.75rem;
+    }
+
+    .milestone-modal__milestones-list {
+        padding: 0 0.75rem 0.75rem;
+
+        .milestone-modal__milestone-view {
+            padding: 0.75rem;
+        }
     }
 }

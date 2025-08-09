@@ -215,13 +215,11 @@ function ProjectDetails({ project, onClose, onEdit, onManageMilestones }) {
             <div className="project-modal__description-section">
                 <h3>Project Description</h3>
                 <p>{project.description}</p>
-                {project.tags && project.tags.length > 0 && (
-                    <div className="project-modal__tags-wrapper">
-                        {project.tags.map((tag, index) => (
-                            <span key={index} className="project-modal__tag">
-                                {tag}
-                            </span>
-                        ))}
+                {project.category && (
+                    <div className="project-modal__category-wrapper">
+                        <span className="project-modal__category">
+                            {project.category}
+                        </span>
                     </div>
                 )}
             </div>

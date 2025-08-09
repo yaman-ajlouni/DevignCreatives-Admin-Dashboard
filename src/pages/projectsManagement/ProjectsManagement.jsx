@@ -53,8 +53,7 @@ function ProjectsManagement() {
             dueDate: '2025-08-15',
             budget: '$12,500',
             description: 'Complete e-commerce website with payment integration and inventory management.',
-            category: 'E-commerce',
-            tags: ['Website', 'E-commerce', 'Payment'],
+            category: 'Website',
             milestones: [
                 { name: 'Design Mockups', status: 'completed', dueDate: '2025-07-20' },
                 { name: 'Frontend Development', status: 'in-progress', dueDate: '2025-08-05' },
@@ -76,8 +75,7 @@ function ProjectsManagement() {
             dueDate: '2025-08-12',
             budget: '$8,900',
             description: 'Modern corporate website with blog and team showcase.',
-            category: 'Corporate',
-            tags: ['Website', 'Corporate', 'CMS'],
+            category: 'Website',
             milestones: [
                 { name: 'Content Strategy', status: 'completed', dueDate: '2025-07-05' },
                 { name: 'Design Phase', status: 'completed', dueDate: '2025-07-15' },
@@ -99,8 +97,7 @@ function ProjectsManagement() {
             dueDate: '2025-08-25',
             budget: '$15,200',
             description: 'UI/UX design for mobile application with user testing.',
-            category: 'Mobile',
-            tags: ['Mobile', 'UI/UX', 'Design'],
+            category: 'Mobile Application',
             milestones: [
                 { name: 'User Research', status: 'completed', dueDate: '2025-07-25' },
                 { name: 'Wireframes', status: 'in-progress', dueDate: '2025-08-05' },
@@ -122,8 +119,7 @@ function ProjectsManagement() {
             dueDate: '2025-07-08',
             budget: '$3,200',
             description: 'Photography portfolio website with gallery and contact forms.',
-            category: 'Portfolio',
-            tags: ['Website', 'Portfolio', 'Gallery'],
+            category: 'Website',
             milestones: [
                 { name: 'Design Concept', status: 'completed', dueDate: '2025-06-20' },
                 { name: 'Gallery Setup', status: 'completed', dueDate: '2025-06-28' },
@@ -145,8 +141,7 @@ function ProjectsManagement() {
             dueDate: '2025-08-20',
             budget: '$6,800',
             description: 'Complete brand identity including logo, colors, and guidelines.',
-            category: 'Branding',
-            tags: ['Branding', 'Logo', 'Identity'],
+            category: 'Logo',
             milestones: [
                 { name: 'Brand Discovery', status: 'completed', dueDate: '2025-07-15' },
                 { name: 'Logo Design', status: 'canceled', dueDate: '2025-07-25' },
@@ -172,12 +167,20 @@ function ProjectsManagement() {
         setSelectedProject(project);
         setShowProjectDetails(true);
         setActiveMenuId(null);
+        // Close other modals to ensure no conflicts
+        setShowMilestoneManager(false);
+        setShowEditProject(false);
+        setShowNewProject(false);
     };
 
     const handleEditProject = (project) => {
         setSelectedProject(project);
         setShowEditProject(true);
         setActiveMenuId(null);
+        // Close other modals
+        setShowProjectDetails(false);
+        setShowMilestoneManager(false);
+        setShowNewProject(false);
     };
 
     const handleProjectCardClick = (project, event) => {
@@ -215,18 +218,26 @@ function ProjectsManagement() {
     };
 
     const handleManageMilestones = (project) => {
+        console.log('Opening milestone manager for project:', project);
+        // Close all other modals first
         setShowProjectDetails(false);
+        setShowEditProject(false);
+        setShowNewProject(false);
+        setActiveMenuId(null);
+
+        // Set the selected project and show milestone manager
         setSelectedProject(project);
         setShowMilestoneManager(true);
-        setActiveMenuId(null);
     };
 
     const handleCloseMilestoneManager = () => {
+        console.log('Closing milestone manager');
         setShowMilestoneManager(false);
         setSelectedProject(null);
     };
 
     const handleSaveProject = (updatedProject) => {
+        console.log('Saving project:', updatedProject);
         setProjects(prevProjects =>
             prevProjects.map(project =>
                 project.id === updatedProject.id ? updatedProject : project
@@ -281,10 +292,17 @@ function ProjectsManagement() {
         return () => document.removeEventListener('click', handleClickOutside);
     }, []);
 
+    // Debug log for milestone manager state
+    console.log('MilestoneManager state:', {
+        showMilestoneManager,
+        selectedProject: selectedProject?.name,
+        projectId: selectedProject?.id
+    });
+
     return (
         <div className="projects-management">
             {/* Header */}
-            <div className="page-header">
+            <div className="dashboard-header">
                 <div className="header-content">
                     <h1>Projects Management</h1>
                     <p>Manage and track all your client projects in one place</p>
@@ -523,12 +541,10 @@ function ProjectsManagement() {
                                     {project.description}
                                 </div>
 
-                                <div className="project-tags">
-                                    {project.tags.map((tag, index) => (
-                                        <span key={index} className="tag">
-                                            {tag}
-                                        </span>
-                                    ))}
+                                <div className="project-category">
+                                    <span className="category-badge">
+                                        {project.category}
+                                    </span>
                                 </div>
 
                                 <div className="project-indicators">

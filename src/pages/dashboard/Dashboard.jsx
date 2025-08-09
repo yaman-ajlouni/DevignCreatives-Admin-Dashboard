@@ -7,7 +7,6 @@ import {
     CheckCircle,
     DollarSign,
     Plus,
-    ArrowUpRight,
     Calendar,
     Bell
 } from 'lucide-react';
@@ -18,32 +17,24 @@ function Dashboard() {
         {
             title: 'Active Projects',
             value: '24',
-            change: '+12%',
-            trend: 'up',
             icon: FolderOpen,
             color: 'primary'
         },
         {
             title: 'Total Clients',
             value: '89',
-            change: '+8%',
-            trend: 'up',
             icon: Users,
             color: 'success'
         },
         {
             title: 'Pending Reviews',
             value: '8',
-            change: '-3%',
-            trend: 'down',
             icon: MessageSquare,
             color: 'warning'
         },
         {
             title: 'Revenue',
             value: '$45,280',
-            change: '+15%',
-            trend: 'up',
             icon: DollarSign,
             color: 'success'
         }
@@ -55,32 +46,28 @@ function Dashboard() {
             client: 'John Doe',
             status: 'In Progress',
             progress: 75,
-            dueDate: '2025-08-15',
-            priority: 'high'
+            dueDate: '2025-08-15'
         },
         {
             name: 'TechCorp Website',
             client: 'Sarah Wilson',
             status: 'Review',
             progress: 90,
-            dueDate: '2025-08-12',
-            priority: 'medium'
+            dueDate: '2025-08-12'
         },
         {
             name: 'E-commerce Platform',
             client: 'Mike Johnson',
             status: 'In Progress',
             progress: 45,
-            dueDate: '2025-08-20',
-            priority: 'high'
+            dueDate: '2025-08-20'
         },
         {
             name: 'Portfolio Website',
             client: 'Emma Davis',
             status: 'Completed',
             progress: 100,
-            dueDate: '2025-08-08',
-            priority: 'low'
+            dueDate: '2025-08-08'
         }
     ];
 
@@ -117,8 +104,6 @@ function Dashboard() {
         }
     ];
 
-
-
     const getStatusClass = (status) => {
         switch (status.toLowerCase()) {
             case 'completed': return 'completed';
@@ -126,10 +111,6 @@ function Dashboard() {
             case 'review': return 'review';
             default: return 'pending';
         }
-    };
-
-    const getPriorityClass = (priority) => {
-        return `priority-${priority}`;
     };
 
     return (
@@ -160,10 +141,6 @@ function Dashboard() {
                             <div className="stat-content">
                                 <h3>{stat.value}</h3>
                                 <p>{stat.title}</p>
-                                <div className={`stat-change ${stat.trend}`}>
-                                    <ArrowUpRight size={16} />
-                                    <span>{stat.change}</span>
-                                </div>
                             </div>
                         </div>
                     );
@@ -191,9 +168,6 @@ function Dashboard() {
                                 <div className="project-progress">
                                     <div className="progress-info">
                                         <span>{project.progress}%</span>
-                                        <span className={getPriorityClass(project.priority)}>
-                                            {project.priority}
-                                        </span>
                                     </div>
                                     <div className="progress-bar">
                                         <div

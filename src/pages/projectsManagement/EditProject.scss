@@ -87,26 +87,26 @@
 
         h1 {
             color: $deep-blue;
-            font-size: 1.8rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            font-weight: 600;
             margin-bottom: 0.3rem;
 
             @media (max-width: $breakpoint-md) {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
             }
 
             @media (max-width: $breakpoint-sm) {
-                font-size: 1.3rem;
+                font-size: 1.25rem;
             }
         }
 
         p {
             color: $dark-gray;
             opacity: 0.8;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
 
             @media (max-width: $breakpoint-sm) {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
             }
         }
     }
@@ -188,14 +188,14 @@
         align-items: center;
         gap: 0.75rem;
         color: $deep-blue;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 600;
         margin-bottom: 1.5rem;
         padding-bottom: 0.5rem;
         border-bottom: 1px solid rgba($deep-blue, 0.1);
 
         @media (max-width: $breakpoint-sm) {
-            font-size: 1.1rem;
+            font-size: 1rem;
             margin-bottom: 1rem;
         }
 
@@ -338,91 +338,149 @@
     }
 }
 
-// Tags Input
-.tags-input-container {
-    .tag-input-group {
+// Client Search Container
+.client-search-container {
+    position: relative;
+
+    .search-input-wrapper {
+        position: relative;
         display: flex;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
+        align-items: center;
 
-        @media (max-width: $breakpoint-sm) {
-            flex-direction: column;
-        }
-
-        .tag-input {
-            flex: 1;
-            padding: 0.8rem 1rem;
-            border: 2px solid rgba($light-gray, 0.5);
-            border-radius: $border-radius;
-            font-size: 0.95rem;
-            transition: $transition;
+        svg {
+            position: absolute;
+            left: 1rem;
+            color: $dark-gray;
+            opacity: 0.5;
+            z-index: 1;
 
             @media (max-width: $breakpoint-sm) {
-                padding: 0.75rem 0.9rem;
-                font-size: 0.9rem;
+                left: 0.8rem;
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        input {
+            padding-left: 3rem;
+
+            @media (max-width: $breakpoint-sm) {
+                padding-left: 2.6rem;
             }
 
             &:focus {
-                outline: none;
                 border-color: $deep-blue;
                 box-shadow: 0 0 0 3px rgba($deep-blue, 0.1);
             }
         }
+    }
 
-        .add-tag-btn {
-            background: $orange;
-            color: $white;
-            border: none;
-            padding: 0.8rem 1rem;
-            border-radius: $border-radius;
+    .client-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: $white;
+        border: 2px solid rgba($deep-blue, 0.1);
+        border-top: none;
+        border-radius: 0 0 $border-radius $border-radius;
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 10;
+        box-shadow: 0 4px 15px rgba($deep-blue, 0.1);
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: rgba($deep-blue, 0.3);
+            border-radius: 2px;
+        }
+
+        .client-option {
+            padding: 1rem;
             cursor: pointer;
-            transition: $transition;
-            flex-shrink: 0;
+            border-bottom: 1px solid rgba($light-gray, 0.2);
+            transition: all 0.2s ease;
 
             @media (max-width: $breakpoint-sm) {
-                padding: 0.75rem 1.5rem;
-                justify-content: center;
+                padding: 0.8rem;
             }
 
             &:hover {
-                background: darken($orange, 10%);
-                transform: translateY(-1px);
+                background: rgba($deep-blue, 0.05);
+                transform: translateX(2px);
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .client-name {
+                font-weight: 600;
+                color: $deep-blue;
+                margin-bottom: 0.3rem;
+                font-size: 0.95rem;
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 0.9rem;
+                }
+            }
+
+            .client-details {
+                display: flex;
+                flex-direction: column;
+                gap: 0.2rem;
+
+                .client-email {
+                    color: $dark-gray;
+                    opacity: 0.8;
+                    font-size: 0.85rem;
+
+                    @media (max-width: $breakpoint-sm) {
+                        font-size: 0.8rem;
+                    }
+                }
+
+                .client-company {
+                    color: $orange;
+                    font-size: 0.8rem;
+                    font-weight: 500;
+
+                    @media (max-width: $breakpoint-sm) {
+                        font-size: 0.75rem;
+                    }
+                }
             }
         }
-    }
 
-    .tags-display {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+        .no-results {
+            padding: 1.5rem;
+            text-align: center;
+            color: $dark-gray;
 
-        .tag {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.4rem 0.8rem;
-            background: rgba($orange, 0.1);
-            color: $orange;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            @media (max-width: $breakpoint-sm) {
+                padding: 1rem;
+            }
 
-            .remove-tag {
-                background: none;
-                border: none;
-                color: inherit;
-                cursor: pointer;
-                padding: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-                width: 18px;
-                height: 18px;
-                transition: $transition;
+            span {
+                display: block;
+                font-weight: 500;
+                margin-bottom: 0.3rem;
+                font-size: 0.9rem;
 
-                &:hover {
-                    background: rgba($orange, 0.2);
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 0.85rem;
+                }
+            }
+
+            small {
+                font-size: 0.8rem;
+                opacity: 0.6;
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 0.75rem;
                 }
             }
         }
@@ -524,7 +582,7 @@
 
     h3 {
         color: $deep-blue;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 600;
         margin-bottom: 1rem;
         display: flex;
@@ -532,7 +590,7 @@
         gap: 0.5rem;
 
         @media (max-width: $breakpoint-sm) {
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         &::before {

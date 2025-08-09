@@ -6,13 +6,13 @@ import {
     Calendar,
     DollarSign,
     FileText,
-    Tag,
     Plus,
-    Trash2
+    Trash2,
+    Search
 } from 'lucide-react';
 import './NewProject.scss';
 
-function NewProject({ onClose }) {
+function NewProject({ onClose, onCreate }) {
     const [formData, setFormData] = useState({
         name: '',
         client: '',
@@ -22,18 +22,38 @@ function NewProject({ onClose }) {
         dueDate: '',
         budget: '',
         description: '',
-        category: '',
-        tags: []
+        category: ''
     });
 
     const [milestones, setMilestones] = useState([
         { name: '', dueDate: '' }
     ]);
 
-    const [currentTag, setCurrentTag] = useState('');
+    const [clientSearchTerm, setClientSearchTerm] = useState('');
+    const [showClientDropdown, setShowClientDropdown] = useState(false);
 
     const statusOptions = ['In Progress', 'On Hold', 'Completed', 'Canceled'];
-    const categoryOptions = ['Website', 'E-commerce', 'Mobile App', 'Branding', 'Corporate', 'Portfolio'];
+    const categoryOptions = ['Website', 'Mobile Application', 'UI UX', 'Logo'];
+
+    // Client database for selection
+    const clientsDatabase = [
+        { name: 'John Doe', email: 'john@shamsuperstore.com', company: 'ShamSuperStore' },
+        { name: 'Sarah Wilson', email: 'sarah@techcorp.com', company: 'TechCorp' },
+        { name: 'Emma Davis', email: 'emma@photographer.com', company: 'Photography Studio' },
+        { name: 'Mike Johnson', email: 'mike@innovate.com', company: 'Innovate Solutions' },
+        { name: 'Alex Thompson', email: 'alex@startup.com', company: 'Tech Startup' },
+        { name: 'David Brown', email: 'david@marketing.com', company: 'Marketing Agency' },
+        { name: 'Lisa Garcia', email: 'lisa@techstartup.com', company: 'Tech Solutions' },
+        { name: 'Robert Chen', email: 'robert@designagency.com', company: 'Design Agency' },
+        { name: 'Maria Rodriguez', email: 'maria@restaurant.com', company: 'Restaurant Group' },
+        { name: 'James Wilson', email: 'james@consulting.com', company: 'Business Consulting' }
+    ];
+
+    const filteredClients = clientsDatabase.filter(client =>
+        client.name.toLowerCase().includes(clientSearchTerm.toLowerCase()) ||
+        client.email.toLowerCase().includes(clientSearchTerm.toLowerCase()) ||
+        client.company.toLowerCase().includes(clientSearchTerm.toLowerCase())
+    );
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -41,6 +61,26 @@ function NewProject({ onClose }) {
             ...prev,
             [name]: value
         }));
+    };
+
+    const handleClientSelect = (client) => {
+        setFormData(prev => ({
+            ...prev,
+            client: client.name,
+            clientEmail: client.email
+        }));
+        setClientSearchTerm(client.name);
+        setShowClientDropdown(false);
+    };
+
+    const handleClientSearchChange = (e) => {
+        const value = e.target.value;
+        setClientSearchTerm(value);
+        setFormData(prev => ({
+            ...prev,
+            client: value
+        }));
+        setShowClientDropdown(true);
     };
 
     const handleMilestoneChange = (index, field, value) => {
@@ -57,30 +97,6 @@ function NewProject({ onClose }) {
     const removeMilestone = (index) => {
         if (milestones.length > 1) {
             setMilestones(milestones.filter((_, i) => i !== index));
-        }
-    };
-
-    const addTag = () => {
-        if (currentTag.trim() && !formData.tags.includes(currentTag.trim())) {
-            setFormData(prev => ({
-                ...prev,
-                tags: [...prev.tags, currentTag.trim()]
-            }));
-            setCurrentTag('');
-        }
-    };
-
-    const removeTag = (tagToRemove) => {
-        setFormData(prev => ({
-            ...prev,
-            tags: prev.tags.filter(tag => tag !== tagToRemove)
-        }));
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            addTag();
         }
     };
 
@@ -105,10 +121,25 @@ function NewProject({ onClose }) {
 
         console.log('New Project Data:', projectData);
 
-        // Here you would typically send the data to your backend
-        // For now, we'll just close the modal
+        // Call the onCreate callback
+        if (onCreate) {
+            onCreate(projectData);
+        }
+
         onClose();
     };
+
+    // Close dropdown when clicking outside
+    React.useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest('.client-search-container')) {
+                setShowClientDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     return (
         <div className="new-project-overlay">
@@ -215,15 +246,45 @@ function NewProject({ onClose }) {
                             <div className="form-grid">
                                 <div className="form-group">
                                     <label htmlFor="client">Client Name *</label>
-                                    <input
-                                        type="text"
-                                        id="client"
-                                        name="client"
-                                        value={formData.client}
-                                        onChange={handleInputChange}
-                                        placeholder="Enter client name"
-                                        required
-                                    />
+                                    <div className="client-search-container">
+                                        <div className="search-input-wrapper">
+                                            <Search size={18} />
+                                            <input
+                                                type="text"
+                                                id="client"
+                                                name="client"
+                                                value={clientSearchTerm}
+                                                onChange={handleClientSearchChange}
+                                                onFocus={() => setShowClientDropdown(true)}
+                                                placeholder="Search for client"
+                                                required
+                                            />
+                                        </div>
+                                        {showClientDropdown && (
+                                            <div className="client-dropdown">
+                                                {filteredClients.length > 0 ? (
+                                                    filteredClients.map((client, index) => (
+                                                        <div
+                                                            key={index}
+                                                            className="client-option"
+                                                            onClick={() => handleClientSelect(client)}
+                                                        >
+                                                            <div className="client-name">{client.name}</div>
+                                                            <div className="client-details">
+                                                                <span className="client-email">{client.email}</span>
+                                                                <span className="client-company">{client.company}</span>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className="no-results">
+                                                        <span>No matching clients found</span>
+                                                        <small>Keep typing to add a new client</small>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <div className="form-group">
@@ -270,43 +331,6 @@ function NewProject({ onClose }) {
                                         onChange={handleInputChange}
                                         required
                                     />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Tags */}
-                        <div className="form-section">
-                            <h3>
-                                <Tag size={20} />
-                                Tags
-                            </h3>
-                            <div className="tags-input-container">
-                                <div className="tag-input-group">
-                                    <input
-                                        type="text"
-                                        value={currentTag}
-                                        onChange={(e) => setCurrentTag(e.target.value)}
-                                        onKeyPress={handleKeyPress}
-                                        placeholder="Add tags (press Enter)"
-                                        className="tag-input"
-                                    />
-                                    <button type="button" onClick={addTag} className="add-tag-btn">
-                                        <Plus size={16} />
-                                    </button>
-                                </div>
-                                <div className="tags-display">
-                                    {formData.tags.map((tag, index) => (
-                                        <span key={index} className="tag">
-                                            {tag}
-                                            <button
-                                                type="button"
-                                                onClick={() => removeTag(tag)}
-                                                className="remove-tag"
-                                            >
-                                                <X size={12} />
-                                            </button>
-                                        </span>
-                                    ))}
                                 </div>
                             </div>
                         </div>

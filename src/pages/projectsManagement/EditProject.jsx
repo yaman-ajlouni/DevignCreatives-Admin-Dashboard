@@ -6,11 +6,10 @@ import {
     Calendar,
     DollarSign,
     FileText,
-    Tag,
     Plus,
     Trash2,
-    Edit,
-    Target
+    Target,
+    Search
 } from 'lucide-react';
 import './EditProject.scss';
 
@@ -25,19 +24,39 @@ function EditProject({ project, onClose, onSave }) {
         endDate: project.endDate || '',
         budget: project.budget || '',
         description: project.description || '',
-        category: project.category || '',
-        tags: project.tags || []
+        category: project.category || ''
     });
 
     const [milestones, setMilestones] = useState(
         project.milestones || [{ name: '', dueDate: '', status: 'pending' }]
     );
 
-    const [currentTag, setCurrentTag] = useState('');
+    const [clientSearchTerm, setClientSearchTerm] = useState(project.client || '');
+    const [showClientDropdown, setShowClientDropdown] = useState(false);
 
     const statusOptions = ['In Progress', 'On Hold', 'Completed', 'Canceled'];
-    const categoryOptions = ['Website', 'E-commerce', 'Mobile App', 'Branding', 'Corporate', 'Portfolio'];
+    const categoryOptions = ['Website', 'Mobile Application', 'UI UX', 'Logo'];
     const milestoneStatusOptions = ['pending', 'in-progress', 'completed', 'on-hold', 'canceled'];
+
+    // Client database for selection
+    const clientsDatabase = [
+        { name: 'John Doe', email: 'john@shamsuperstore.com', company: 'ShamSuperStore' },
+        { name: 'Sarah Wilson', email: 'sarah@techcorp.com', company: 'TechCorp' },
+        { name: 'Emma Davis', email: 'emma@photographer.com', company: 'Photography Studio' },
+        { name: 'Mike Johnson', email: 'mike@innovate.com', company: 'Innovate Solutions' },
+        { name: 'Alex Thompson', email: 'alex@startup.com', company: 'Tech Startup' },
+        { name: 'David Brown', email: 'david@marketing.com', company: 'Marketing Agency' },
+        { name: 'Lisa Garcia', email: 'lisa@techstartup.com', company: 'Tech Solutions' },
+        { name: 'Robert Chen', email: 'robert@designagency.com', company: 'Design Agency' },
+        { name: 'Maria Rodriguez', email: 'maria@restaurant.com', company: 'Restaurant Group' },
+        { name: 'James Wilson', email: 'james@consulting.com', company: 'Business Consulting' }
+    ];
+
+    const filteredClients = clientsDatabase.filter(client =>
+        client.name.toLowerCase().includes(clientSearchTerm.toLowerCase()) ||
+        client.email.toLowerCase().includes(clientSearchTerm.toLowerCase()) ||
+        client.company.toLowerCase().includes(clientSearchTerm.toLowerCase())
+    );
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -45,6 +64,26 @@ function EditProject({ project, onClose, onSave }) {
             ...prev,
             [name]: value
         }));
+    };
+
+    const handleClientSelect = (client) => {
+        setFormData(prev => ({
+            ...prev,
+            client: client.name,
+            clientEmail: client.email
+        }));
+        setClientSearchTerm(client.name);
+        setShowClientDropdown(false);
+    };
+
+    const handleClientSearchChange = (e) => {
+        const value = e.target.value;
+        setClientSearchTerm(value);
+        setFormData(prev => ({
+            ...prev,
+            client: value
+        }));
+        setShowClientDropdown(true);
     };
 
     const handleMilestoneChange = (index, field, value) => {
@@ -61,30 +100,6 @@ function EditProject({ project, onClose, onSave }) {
     const removeMilestone = (index) => {
         if (milestones.length > 1) {
             setMilestones(milestones.filter((_, i) => i !== index));
-        }
-    };
-
-    const addTag = () => {
-        if (currentTag.trim() && !formData.tags.includes(currentTag.trim())) {
-            setFormData(prev => ({
-                ...prev,
-                tags: [...prev.tags, currentTag.trim()]
-            }));
-            setCurrentTag('');
-        }
-    };
-
-    const removeTag = (tagToRemove) => {
-        setFormData(prev => ({
-            ...prev,
-            tags: prev.tags.filter(tag => tag !== tagToRemove)
-        }));
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            addTag();
         }
     };
 
@@ -137,6 +152,18 @@ function EditProject({ project, onClose, onSave }) {
             default: return '#6b7280';
         }
     };
+
+    // Close dropdown when clicking outside
+    React.useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (!event.target.closest('.client-search-container')) {
+                setShowClientDropdown(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     return (
         <div className="edit-project-overlay">
@@ -243,15 +270,45 @@ function EditProject({ project, onClose, onSave }) {
                             <div className="form-grid">
                                 <div className="form-group">
                                     <label htmlFor="client">Client Name *</label>
-                                    <input
-                                        type="text"
-                                        id="client"
-                                        name="client"
-                                        value={formData.client}
-                                        onChange={handleInputChange}
-                                        placeholder="Enter client name"
-                                        required
-                                    />
+                                    <div className="client-search-container">
+                                        <div className="search-input-wrapper">
+                                            <Search size={18} />
+                                            <input
+                                                type="text"
+                                                id="client"
+                                                name="client"
+                                                value={clientSearchTerm}
+                                                onChange={handleClientSearchChange}
+                                                onFocus={() => setShowClientDropdown(true)}
+                                                placeholder="Search for client"
+                                                required
+                                            />
+                                        </div>
+                                        {showClientDropdown && (
+                                            <div className="client-dropdown">
+                                                {filteredClients.length > 0 ? (
+                                                    filteredClients.map((client, index) => (
+                                                        <div
+                                                            key={index}
+                                                            className="client-option"
+                                                            onClick={() => handleClientSelect(client)}
+                                                        >
+                                                            <div className="client-name">{client.name}</div>
+                                                            <div className="client-details">
+                                                                <span className="client-email">{client.email}</span>
+                                                                <span className="client-company">{client.company}</span>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <div className="no-results">
+                                                        <span>No matching clients found</span>
+                                                        <small>Keep typing to add a new client</small>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <div className="form-group">
@@ -312,43 +369,6 @@ function EditProject({ project, onClose, onSave }) {
                                         />
                                     </div>
                                 )}
-                            </div>
-                        </div>
-
-                        {/* Tags */}
-                        <div className="form-section">
-                            <h3>
-                                <Tag size={20} />
-                                Tags
-                            </h3>
-                            <div className="tags-input-container">
-                                <div className="tag-input-group">
-                                    <input
-                                        type="text"
-                                        value={currentTag}
-                                        onChange={(e) => setCurrentTag(e.target.value)}
-                                        onKeyPress={handleKeyPress}
-                                        placeholder="Add tags (press Enter)"
-                                        className="tag-input"
-                                    />
-                                    <button type="button" onClick={addTag} className="add-tag-btn">
-                                        <Plus size={16} />
-                                    </button>
-                                </div>
-                                <div className="tags-display">
-                                    {formData.tags.map((tag, index) => (
-                                        <span key={index} className="tag">
-                                            {tag}
-                                            <button
-                                                type="button"
-                                                onClick={() => removeTag(tag)}
-                                                className="remove-tag"
-                                            >
-                                                <X size={12} />
-                                            </button>
-                                        </span>
-                                    ))}
-                                </div>
                             </div>
                         </div>
 

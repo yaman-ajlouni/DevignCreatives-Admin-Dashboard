@@ -121,12 +121,6 @@ function Dashboard() {
                     <h1>Dashboard Overview</h1>
                     <p>Welcome back! Here's what's happening with your projects today.</p>
                 </div>
-                <div className="header-actions">
-                    <button className="btn btn-primary">
-                        <Plus size={20} />
-                        New Project
-                    </button>
-                </div>
             </div>
 
             {/* Stats Cards */}

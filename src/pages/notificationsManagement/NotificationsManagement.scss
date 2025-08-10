@@ -4,49 +4,95 @@
     padding: 0;
 }
 
-.page-header {
+// Header (consistent with ImagesManagement)
+.notifications-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 2rem;
-    padding: 2rem;
+    padding: 1.5rem;
     background: $white;
     border-radius: $border-radius * 2;
     box-shadow: 0 4px 20px rgba($deep-blue, 0.08);
     border-left: 4px solid $deep-blue;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba($deep-blue, 0.12);
+    }
 
     @media (max-width: $breakpoint-md) {
         flex-direction: column;
         gap: 1rem;
         align-items: stretch;
-        padding: 1.5rem;
+        padding: 1rem 1.5rem 1.5rem;
     }
 
-    .header-content {
-        h1 {
-            color: $deep-blue;
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+    .notifications-header-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        width: 100%;
 
-            @media (max-width: $breakpoint-md) {
-                font-size: 1.8rem;
-            }
+        @media (max-width: $breakpoint-md) {
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
-        p {
-            color: $dark-gray;
-            opacity: 0.8;
-            font-size: 1.1rem;
-            max-width: 500px;
+        .notifications-header-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            flex: 1;
 
-            @media (max-width: $breakpoint-md) {
-                font-size: 1rem;
+            @media (max-width: $breakpoint-sm) {
+                gap: 0.75rem;
+            }
+
+            .notifications-title-text {
+                flex: 1;
+                min-width: 0;
+
+                h1 {
+                    color: $deep-blue;
+                    font-size: 1.8rem;
+                    font-weight: 600;
+                    margin-bottom: 0.5rem;
+                    line-height: 1.2;
+
+                    @media (max-width: $breakpoint-md) {
+                        font-size: 1.5rem;
+                    }
+
+                    @media (max-width: $breakpoint-sm) {
+                        font-size: 1.3rem;
+                        margin-bottom: 0.25rem;
+                    }
+                }
+
+                p {
+                    color: $dark-gray;
+                    opacity: 0.8;
+                    font-size: 1rem;
+                    max-width: 500px;
+                    line-height: 1.4;
+                    margin: 0;
+
+                    @media (max-width: $breakpoint-md) {
+                        font-size: 0.9rem;
+                        max-width: none;
+                    }
+
+                    @media (max-width: $breakpoint-sm) {
+                        font-size: 0.85rem;
+                    }
+                }
             }
         }
     }
 
-    .header-stats {
+    .notifications-header-stats {
         display: flex;
         gap: 0.75rem;
         align-items: center;
@@ -55,10 +101,11 @@
         @media (max-width: $breakpoint-sm) {
             justify-content: flex-start;
             width: 100%;
+            flex-wrap: wrap;
         }
     }
 
-    .stat-badge {
+    .notifications-stat-badge {
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -67,6 +114,12 @@
         font-weight: 600;
         font-size: 0.875rem;
         min-width: 0;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba($deep-blue, 0.2);
+        }
 
         @media (max-width: $breakpoint-sm) {
             padding: 0.6rem 0.8rem;
@@ -81,24 +134,36 @@
             background: rgba($deep-blue, 0.1);
             color: $deep-blue;
             border: 1px solid rgba($deep-blue, 0.2);
+
+            &:hover {
+                background: rgba($deep-blue, 0.15);
+            }
         }
 
         &.high {
             background: rgba(#ef4444, 0.1);
             color: #ef4444;
             border: 1px solid rgba(#ef4444, 0.2);
+
+            &:hover {
+                background: rgba(#ef4444, 0.15);
+            }
         }
 
         &.total {
-            background: rgba($deep-blue, 0.1);
-            color: $deep-blue;
-            border: 1px solid rgba($deep-blue, 0.2);
+            background: rgba($vibrant-green, 0.1);
+            color: $vibrant-green;
+            border: 1px solid rgba($vibrant-green, 0.2);
+
+            &:hover {
+                background: rgba($vibrant-green, 0.15);
+            }
         }
     }
 }
 
 // Tabs Section
-.tabs-section {
+.notifications-tabs-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -106,31 +171,38 @@
     padding: 1.5rem;
     background: $white;
     border-radius: $border-radius * 2;
-    box-shadow: 0 2px 15px rgba($deep-blue, 0.06);
+    box-shadow: 0 6px 25px rgba($deep-blue, 0.08);
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba($deep-blue, 0.12);
+    }
 
     @media (max-width: $breakpoint-md) {
         flex-direction: column;
         gap: 1rem;
         align-items: stretch;
+        padding: 1rem 1.5rem 1.5rem;
     }
 
-    .tabs {
+    .notifications-tabs {
         display: flex;
         gap: 0.5rem;
         background: rgba($light-gray, 0.2);
         padding: 0.25rem;
         border-radius: $border-radius;
 
-        .tab {
+        .notifications-tab {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.75rem 1.25rem;
+            padding: 0.5rem 1rem;
             border: none;
             border-radius: $border-radius - 2;
             background: transparent;
             color: $dark-gray;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
             transition: $transition;
@@ -139,12 +211,14 @@
             &:hover {
                 background: rgba($deep-blue, 0.1);
                 color: $deep-blue;
+                transform: translateY(-1px);
             }
 
             &.active {
                 background: $white;
                 color: $deep-blue;
                 box-shadow: 0 2px 8px rgba($deep-blue, 0.15);
+                transform: translateY(-1px);
                 font-weight: 600;
             }
         }
@@ -161,22 +235,29 @@
         font-size: 0.9rem;
         cursor: pointer;
         transition: $transition;
+        white-space: nowrap;
+
+        @media (max-width: $breakpoint-sm) {
+            padding: 0.65rem 1rem;
+            font-size: 0.85rem;
+        }
 
         &.btn-primary {
             background: $deep-blue;
             color: $white;
+            box-shadow: 0 4px 15px rgba($deep-blue, 0.2);
 
             &:hover {
                 background: darken($deep-blue, 5%);
-                transform: translateY(-1px);
-                box-shadow: 0 4px 15px rgba($deep-blue, 0.3);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba($deep-blue, 0.3);
             }
         }
     }
 }
 
 // Controls Section
-.controls-section {
+.notifications-controls-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -184,17 +265,25 @@
     padding: 1.5rem;
     background: $white;
     border-radius: $border-radius * 2;
-    box-shadow: 0 2px 15px rgba($deep-blue, 0.06);
+    box-shadow: 0 6px 25px rgba($deep-blue, 0.08);
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba($deep-blue, 0.12);
+    }
 
     @media (max-width: $breakpoint-md) {
         flex-direction: column;
         gap: 1rem;
         align-items: stretch;
+        padding: 1rem 1.5rem 1.5rem;
     }
 
-    .search-filters {
+    .notifications-search-filters {
         display: flex;
         gap: 1rem;
+        justify-content: space-between;
         align-items: center;
         flex: 1;
 
@@ -208,7 +297,7 @@
         }
     }
 
-    .search-box {
+    .notifications-search-box {
         position: relative;
         flex: 1;
         max-width: 400px;
@@ -247,33 +336,80 @@
         }
     }
 
-    .filter-dropdown {
+    .notifications-filter-dropdown {
         display: flex;
-        align-items: center;
         gap: 0.5rem;
-        padding: 0.8rem 1rem;
-        background: rgba($deep-blue, 0.05);
+        background: rgba($light-gray, 0.2);
+        padding: 0.25rem;
         border-radius: $border-radius;
-        border: 2px solid rgba($deep-blue, 0.1);
-        min-width: 150px;
 
         svg {
             color: $deep-blue;
-            flex-shrink: 0;
+            margin: auto 0.5rem;
         }
 
         select {
+            padding: 0.5rem 1rem;
             border: none;
-            background: none;
-            color: $deep-blue;
+            border-radius: $border-radius - 2;
+            background: transparent;
+            color: $dark-gray;
+            font-size: 0.85rem;
             font-weight: 500;
-            font-size: 0.9rem;
             cursor: pointer;
-            flex: 1;
+            transition: $transition;
+            min-width: 120px;
+
+            &:hover {
+                background: rgba($deep-blue, 0.1);
+                color: $deep-blue;
+            }
 
             &:focus {
                 outline: none;
+                background: $white;
+                color: $deep-blue;
+                box-shadow: 0 2px 8px rgba($deep-blue, 0.15);
             }
+        }
+    }
+}
+
+// Notifications List Container
+.notifications-list-container {
+    background: $white;
+    border-radius: $border-radius * 2;
+    box-shadow: 0 6px 25px rgba($deep-blue, 0.08);
+    padding: 2rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba($deep-blue, 0.12);
+    }
+
+    @media (max-width: $breakpoint-md) {
+        padding: 1.5rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 1rem;
+    }
+
+    .notifications-list-info {
+        padding: 1rem 1.5rem;
+        background: rgba($deep-blue, 0.05);
+        border-radius: $border-radius;
+        color: $dark-gray;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border-left: 3px solid $deep-blue;
+        margin-bottom: 1.5rem;
+
+        @media (max-width: $breakpoint-sm) {
+            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
         }
     }
 }
@@ -282,25 +418,18 @@
 .notifications-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
 
-    .list-info {
-        padding: 1rem 1.5rem;
-        background: rgba($deep-blue, 0.05);
-        border-radius: $border-radius;
-        color: $dark-gray;
-        font-size: 0.9rem;
-        font-weight: 500;
-        border-left: 3px solid $deep-blue;
+    @media (max-width: $breakpoint-md) {
+        gap: 1rem;
+    }
 
-        @media (max-width: $breakpoint-sm) {
-            padding: 0.75rem 1rem;
-            font-size: 0.85rem;
-        }
+    @media (max-width: $breakpoint-sm) {
+        gap: 0.75rem;
     }
 }
 
-.notification-card {
+.notifications-card {
     background: $white;
     border-radius: $border-radius * 2;
     box-shadow: 0 6px 25px rgba($deep-blue, 0.08);
@@ -324,11 +453,22 @@
     }
 
     &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 40px rgba($deep-blue, 0.15);
+        transform: translateY(-4px);
+        box-shadow: 0 16px 50px rgba($deep-blue, 0.18);
     }
 
-    .notification-icon {
+    @media (max-width: $breakpoint-md) {
+        padding: 1.25rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 1rem;
+        gap: 0.75rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .notifications-card-icon {
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -337,12 +477,18 @@
         justify-content: center;
         background: rgba(red, 0.1);
         flex-shrink: 0;
+
+        @media (max-width: $breakpoint-sm) {
+            width: 35px;
+            height: 35px;
+            align-self: flex-start;
+        }
     }
 
-    .notification-content {
+    .notifications-card-content {
         flex: 1;
 
-        .notification-header {
+        .notifications-card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -351,6 +497,7 @@
             @media (max-width: $breakpoint-sm) {
                 flex-direction: column;
                 gap: 0.5rem;
+                align-items: flex-start;
             }
 
             h3 {
@@ -359,15 +506,29 @@
                 font-weight: 600;
                 margin: 0;
                 line-height: 1.3;
+
+                @media (max-width: $breakpoint-md) {
+                    font-size: 1rem;
+                }
+
+                @media (max-width: $breakpoint-sm) {
+                    font-size: 0.95rem;
+                }
             }
 
-            .notification-meta {
+            .notifications-card-meta {
                 display: flex;
                 gap: 0.75rem;
                 align-items: center;
                 font-size: 0.8rem;
+                flex-shrink: 0;
 
-                .priority {
+                @media (max-width: $breakpoint-sm) {
+                    gap: 0.5rem;
+                    font-size: 0.75rem;
+                }
+
+                .notifications-priority {
                     padding: 0.25rem 0.5rem;
                     border-radius: 6px;
                     font-weight: 600;
@@ -389,28 +550,42 @@
                     }
                 }
 
-                .date {
+                .notifications-date {
                     color: $dark-gray;
                     opacity: 0.7;
                 }
             }
         }
 
-        .notification-message {
+        .notifications-card-message {
             color: $dark-gray;
             font-size: 0.95rem;
             line-height: 1.5;
             margin: 0 0 1rem 0;
             opacity: 0.9;
+
+            @media (max-width: $breakpoint-md) {
+                font-size: 0.9rem;
+            }
+
+            @media (max-width: $breakpoint-sm) {
+                font-size: 0.85rem;
+                margin-bottom: 0.75rem;
+            }
         }
 
-        .notification-details {
+        .notifications-card-details {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
             font-size: 0.85rem;
 
-            .client-info {
+            @media (max-width: $breakpoint-sm) {
+                font-size: 0.8rem;
+                gap: 0.25rem;
+            }
+
+            .notifications-client-info {
                 display: flex;
                 align-items: center;
                 gap: 0.5rem;
@@ -419,10 +594,11 @@
 
                 svg {
                     color: $orange;
+                    flex-shrink: 0;
                 }
             }
 
-            .project-info {
+            .notifications-project-info {
                 color: $dark-gray;
                 opacity: 0.8;
                 font-style: italic;
@@ -430,16 +606,21 @@
         }
     }
 
-    .notification-actions {
+    .notifications-card-actions {
         display: flex;
         gap: 0.5rem;
         flex-shrink: 0;
 
-        .action-btn {
-            width: 32px;
-            height: 32px;
+        @media (max-width: $breakpoint-sm) {
+            align-self: flex-end;
+            gap: 0.25rem;
+        }
+
+        .notifications-action-btn {
+            width: 28px;
+            height: 28px;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             background: rgba($deep-blue, 0.1);
             color: $deep-blue;
             cursor: pointer;
@@ -451,6 +632,17 @@
             &:hover {
                 background: $deep-blue;
                 color: $white;
+                transform: translateY(-1px);
+            }
+
+            @media (max-width: $breakpoint-sm) {
+                width: 24px;
+                height: 24px;
+
+                svg {
+                    width: 12px;
+                    height: 12px;
+                }
             }
 
             &.delete {
@@ -466,17 +658,17 @@
     }
 }
 
-// Pagination Styles
-.pagination {
+// Pagination
+.notifications-pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
     margin-top: 2rem;
     padding: 1.5rem;
-    background: $white;
-    border-radius: $border-radius * 2;
-    box-shadow: 0 2px 15px rgba($deep-blue, 0.06);
+    background: rgba($deep-blue, 0.02);
+    border-radius: $border-radius;
+    border-top: 1px solid rgba($light-gray, 0.2);
 
     @media (max-width: $breakpoint-sm) {
         flex-wrap: wrap;
@@ -484,7 +676,7 @@
         padding: 1rem;
     }
 
-    .page-btn {
+    .notifications-page-btn {
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -500,6 +692,7 @@
         &:hover:not(:disabled) {
             background: rgba($deep-blue, 0.1);
             border-color: $deep-blue;
+            transform: translateY(-1px);
         }
 
         &:disabled {
@@ -515,7 +708,7 @@
         }
     }
 
-    .page-numbers {
+    .notifications-page-numbers {
         display: flex;
         gap: 0.25rem;
         margin: 0 1rem;
@@ -528,7 +721,7 @@
             margin-top: 0.5rem;
         }
 
-        .page-number {
+        .notifications-page-number {
             width: 40px;
             height: 40px;
             border: 2px solid rgba($deep-blue, 0.2);
@@ -545,12 +738,14 @@
             &:hover {
                 background: rgba($deep-blue, 0.1);
                 border-color: $deep-blue;
+                transform: translateY(-1px);
             }
 
             &.active {
                 background: $deep-blue;
                 color: $white;
                 border-color: $deep-blue;
+                transform: translateY(-1px);
             }
 
             @media (max-width: $breakpoint-sm) {
@@ -563,12 +758,26 @@
 }
 
 // Send Section
-.send-section {
-    .sent-history {
+.notifications-send-section {
+    .notifications-sent-history {
         background: $white;
         border-radius: $border-radius * 2;
         box-shadow: 0 6px 25px rgba($deep-blue, 0.08);
         padding: 2rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba($deep-blue, 0.12);
+        }
+
+        @media (max-width: $breakpoint-md) {
+            padding: 1.5rem;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            padding: 1rem;
+        }
 
         h3 {
             color: $deep-blue;
@@ -577,14 +786,28 @@
             margin: 0 0 1.5rem 0;
             padding-bottom: 1rem;
             border-bottom: 1px solid rgba($light-gray, 0.2);
+
+            @media (max-width: $breakpoint-md) {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+                padding-bottom: 0.75rem;
+            }
+
+            @media (max-width: $breakpoint-sm) {
+                font-size: 1.1rem;
+            }
         }
 
-        .sent-list {
+        .notifications-sent-list {
             display: flex;
             flex-direction: column;
             gap: 1rem;
 
-            .sent-card {
+            @media (max-width: $breakpoint-sm) {
+                gap: 0.75rem;
+            }
+
+            .notifications-sent-card {
                 display: flex;
                 justify-content: space-between;
                 align-items: flex-start;
@@ -593,13 +816,26 @@
                 border-radius: $border-radius;
                 border: 1px solid rgba($vibrant-green, 0.1);
                 transition: $transition;
+                border-left: 4px solid $vibrant-green;
 
                 &:hover {
                     background: rgba($vibrant-green, 0.05);
-                    transform: translateY(-1px);
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba($vibrant-green, 0.15);
                 }
 
-                .sent-content {
+                @media (max-width: $breakpoint-md) {
+                    padding: 1.25rem;
+                }
+
+                @media (max-width: $breakpoint-sm) {
+                    padding: 1rem;
+                    flex-direction: column;
+                    gap: 1rem;
+                    align-items: flex-start;
+                }
+
+                .notifications-sent-content {
                     flex: 1;
 
                     h4 {
@@ -607,6 +843,10 @@
                         font-size: 1rem;
                         font-weight: 600;
                         margin: 0 0 0.5rem 0;
+
+                        @media (max-width: $breakpoint-sm) {
+                            font-size: 0.95rem;
+                        }
                     }
 
                     p {
@@ -615,9 +855,14 @@
                         line-height: 1.5;
                         margin: 0 0 0.75rem 0;
                         opacity: 0.9;
+
+                        @media (max-width: $breakpoint-sm) {
+                            font-size: 0.85rem;
+                            margin-bottom: 0.5rem;
+                        }
                     }
 
-                    .sent-meta {
+                    .notifications-sent-meta {
                         display: flex;
                         gap: 1rem;
                         font-size: 0.8rem;
@@ -627,11 +872,12 @@
                         @media (max-width: $breakpoint-sm) {
                             flex-direction: column;
                             gap: 0.25rem;
+                            font-size: 0.75rem;
                         }
                     }
                 }
 
-                .sent-status {
+                .notifications-sent-status {
                     display: flex;
                     align-items: center;
                     gap: 0.5rem;
@@ -639,6 +885,11 @@
                     font-size: 0.85rem;
                     font-weight: 600;
                     flex-shrink: 0;
+
+                    @media (max-width: $breakpoint-sm) {
+                        font-size: 0.8rem;
+                        align-self: flex-end;
+                    }
                 }
             }
         }
@@ -646,7 +897,7 @@
 }
 
 // Modal Styles
-.modal-overlay {
+.notifications-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -659,7 +910,7 @@
     z-index: 1000;
     padding: 1rem;
 
-    .modal-content {
+    .notifications-modal-content {
         background: $white;
         border-radius: $border-radius * 2;
         box-shadow: 0 20px 60px rgba($deep-blue, 0.3);
@@ -670,7 +921,11 @@
         display: flex;
         flex-direction: column;
 
-        .modal-header {
+        @media (max-width: $breakpoint-sm) {
+            max-width: 95vw;
+        }
+
+        .notifications-modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -685,7 +940,7 @@
                 margin: 0;
             }
 
-            .close-btn {
+            .notifications-close-btn {
                 width: 32px;
                 height: 32px;
                 border: none;
@@ -705,12 +960,12 @@
             }
         }
 
-        .modal-body {
+        .notifications-modal-body {
             padding: 1.5rem;
             flex: 1;
             overflow-y: auto;
 
-            .form-section {
+            .notifications-form-section {
                 margin-bottom: 1.5rem;
 
                 label {
@@ -743,7 +998,7 @@
                     }
                 }
 
-                .clients-grid {
+                .notifications-clients-grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
                     gap: 0.75rem;
@@ -752,7 +1007,7 @@
                         grid-template-columns: 1fr;
                     }
 
-                    .client-option {
+                    .notifications-client-option {
                         display: flex;
                         align-items: center;
                         gap: 0.75rem;
@@ -766,13 +1021,14 @@
                         &:hover {
                             border-color: rgba($deep-blue, 0.3);
                             background: rgba($deep-blue, 0.02);
+                            transform: translateY(-1px);
                         }
 
                         &.selected {
                             border-color: $deep-blue;
                             background: rgba($deep-blue, 0.05);
 
-                            .selected-icon {
+                            .notifications-selected-icon {
                                 position: absolute;
                                 top: 0.5rem;
                                 right: 0.5rem;
@@ -780,7 +1036,7 @@
                             }
                         }
 
-                        .client-avatar {
+                        .notifications-client-avatar {
                             width: 36px;
                             height: 36px;
                             background: linear-gradient(135deg, $deep-blue, lighten($deep-blue, 10%));
@@ -794,17 +1050,17 @@
                             flex-shrink: 0;
                         }
 
-                        .client-info {
+                        .notifications-client-info {
                             display: flex;
                             flex-direction: column;
 
-                            .name {
+                            .notifications-client-name {
                                 color: $deep-blue;
                                 font-weight: 600;
                                 font-size: 0.9rem;
                             }
 
-                            .company {
+                            .notifications-client-company {
                                 color: $dark-gray;
                                 font-size: 0.8rem;
                                 opacity: 0.8;
@@ -815,12 +1071,17 @@
             }
         }
 
-        .modal-footer {
+        .notifications-modal-footer {
             display: flex;
             gap: 1rem;
             padding: 1.5rem;
             border-top: 1px solid rgba($light-gray, 0.2);
             background: rgba($light-gray, 0.02);
+
+            @media (max-width: $breakpoint-sm) {
+                flex-direction: column;
+                padding: 1rem;
+            }
 
             .btn {
                 display: flex;
@@ -836,17 +1097,26 @@
                 flex: 1;
                 justify-content: center;
 
+                @media (max-width: $breakpoint-sm) {
+                    flex: none;
+                }
+
                 &.btn-primary {
                     background: $deep-blue;
                     color: $white;
+                    box-shadow: 0 4px 15px rgba($deep-blue, 0.2);
 
                     &:hover:not(:disabled) {
                         background: darken($deep-blue, 5%);
+                        transform: translateY(-2px);
+                        box-shadow: 0 6px 20px rgba($deep-blue, 0.3);
                     }
 
                     &:disabled {
                         background: rgba($deep-blue, 0.3);
                         cursor: not-allowed;
+                        transform: none;
+                        box-shadow: none;
                     }
                 }
 
@@ -856,6 +1126,7 @@
 
                     &:hover {
                         background: rgba($dark-gray, 0.2);
+                        transform: translateY(-1px);
                     }
                 }
             }
@@ -864,18 +1135,23 @@
 }
 
 // Empty State
-.empty-state {
+.notifications-empty-state {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding: 4rem 2rem;
-    background: $white;
-    border-radius: $border-radius * 2;
-    box-shadow: 0 4px 20px rgba($deep-blue, 0.08);
 
-    .empty-icon {
+    @media (max-width: $breakpoint-md) {
+        padding: 3rem 1.5rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+        padding: 2rem 1rem;
+    }
+
+    .notifications-empty-icon {
         width: 80px;
         height: 80px;
         background: linear-gradient(135deg, rgba($deep-blue, 0.1), rgba($orange, 0.05));
@@ -885,9 +1161,20 @@
         justify-content: center;
         margin-bottom: 1.5rem;
 
+        @media (max-width: $breakpoint-sm) {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+
         svg {
             color: $deep-blue;
             opacity: 0.6;
+
+            @media (max-width: $breakpoint-sm) {
+                width: 36px;
+                height: 36px;
+            }
         }
     }
 
@@ -896,6 +1183,14 @@
         font-size: 1.5rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
+
+        @media (max-width: $breakpoint-md) {
+            font-size: 1.3rem;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 1.1rem;
+        }
     }
 
     p {
@@ -903,6 +1198,17 @@
         opacity: 0.8;
         margin-bottom: 2rem;
         max-width: 400px;
+        font-size: 1rem;
+
+        @media (max-width: $breakpoint-md) {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: $breakpoint-sm) {
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
     }
 }
 
@@ -911,116 +1217,18 @@
     .notifications-management {
         padding: 0;
     }
-
-    .notification-card {
-        padding: 1rem;
-        flex-direction: column;
-        gap: 1rem;
-
-        .notification-icon {
-            align-self: flex-start;
-        }
-
-        .notification-content {
-            .notification-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.75rem;
-
-                .notification-meta {
-                    align-self: flex-start;
-                }
-            }
-        }
-
-        .notification-actions {
-            align-self: flex-end;
-        }
-    }
-
-    .send-section {
-        .sent-history {
-            padding: 1rem;
-
-            .sent-list {
-                .sent-card {
-                    padding: 1rem;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
-            }
-        }
-    }
-
-    .controls-section {
-        .search-filters {
-            gap: 0.75rem;
-        }
-
-        .filter-dropdown {
-            min-width: 120px;
-        }
-    }
 }
 
 @media (max-width: $breakpoint-sm) {
-    .page-header {
-        .header-stats {
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .stat-badge {
-            flex: 1;
-            min-width: 120px;
-            justify-content: center;
-        }
-    }
-
-    .tabs-section {
-        .tabs {
+    .notifications-tabs-section {
+        .notifications-tabs {
             width: 100%;
 
-            .tab {
+            .notifications-tab {
                 flex: 1;
                 justify-content: center;
                 padding: 0.6rem 0.75rem;
-                font-size: 0.85rem;
-            }
-        }
-    }
-
-    .notification-card {
-        .notification-content {
-            .notification-details {
-
-                .client-info,
-                .project-info {
-                    font-size: 0.8rem;
-                }
-            }
-        }
-    }
-
-    .modal-overlay {
-        padding: 0.5rem;
-
-        .modal-content {
-            .modal-header {
-                padding: 1rem;
-            }
-
-            .modal-body {
-                padding: 1rem;
-            }
-
-            .modal-footer {
-                padding: 1rem;
-                flex-direction: column;
-
-                .btn {
-                    flex: none;
-                }
+                font-size: 0.8rem;
             }
         }
     }

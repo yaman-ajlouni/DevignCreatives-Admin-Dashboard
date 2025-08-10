@@ -182,54 +182,58 @@ function UserManagement() {
     return (
         <div className="user-management">
             {/* Header */}
-            <div className="page-header">
-                <div className="header-content">
-                    <h1>Admin Management</h1>
-                    <p>Manage admin users and their account access</p>
-                </div>
-                <div className="header-actions">
-                    <button className="btn btn-primary" onClick={() => setShowCreateUser(true)}>
-                        <Plus size={20} />
-                        Add New Admin
-                    </button>
+            <div className="user-management-header">
+                <div className="user-management-header-content">
+                    <div className="user-management-header-title">
+                        <div className="user-management-title-text">
+                            <h1>Admin Management</h1>
+                            <p>Manage admin users and their account access</p>
+                        </div>
+                    </div>
+                    <div className="user-management-header-actions">
+                        <button className="btn btn-primary" onClick={() => setShowCreateUser(true)}>
+                            <Plus size={20} />
+                            Add New Admin
+                        </button>
+                    </div>
                 </div>
             </div>
 
             {/* Stats Summary */}
-            <div className="stats-summary">
-                <div className="stat-item">
-                    <div className="stat-icon total">
+            <div className="user-management-stats-summary">
+                <div className="user-management-stat-item">
+                    <div className="user-management-stat-icon total">
                         <Users size={16} />
                     </div>
-                    <div className="stat-info">
-                        <span className="stat-number">{userCounts.all}</span>
-                        <span className="stat-label">Total Admins</span>
+                    <div className="user-management-stat-info">
+                        <span className="user-management-stat-number">{userCounts.all}</span>
+                        <span className="user-management-stat-label">Total Admins</span>
                     </div>
                 </div>
-                <div className="stat-item">
-                    <div className="stat-icon active">
+                <div className="user-management-stat-item">
+                    <div className="user-management-stat-icon active">
                         <UserCheck size={16} />
                     </div>
-                    <div className="stat-info">
-                        <span className="stat-number">{userCounts.active}</span>
-                        <span className="stat-label">Active Admins</span>
+                    <div className="user-management-stat-info">
+                        <span className="user-management-stat-number">{userCounts.active}</span>
+                        <span className="user-management-stat-label">Active Admins</span>
                     </div>
                 </div>
-                <div className="stat-item">
-                    <div className="stat-icon inactive">
+                <div className="user-management-stat-item">
+                    <div className="user-management-stat-icon inactive">
                         <UserX size={16} />
                     </div>
-                    <div className="stat-info">
-                        <span className="stat-number">{userCounts.inactive}</span>
-                        <span className="stat-label">Inactive Admins</span>
+                    <div className="user-management-stat-info">
+                        <span className="user-management-stat-number">{userCounts.inactive}</span>
+                        <span className="user-management-stat-label">Inactive Admins</span>
                     </div>
                 </div>
             </div>
 
             {/* Controls */}
-            <div className="controls-section">
-                <div className="search-filters">
-                    <div className="search-box">
+            <div className="user-management-controls-section">
+                <div className="user-management-search-filters">
+                    <div className="user-management-search-box">
                         <Search size={20} />
                         <input
                             type="text"
@@ -239,7 +243,7 @@ function UserManagement() {
                         />
                     </div>
 
-                    <div className="filter-dropdown">
+                    <div className="user-management-filter-dropdown">
                         <Filter size={16} />
                         <select
                             value={filterStatus}
@@ -252,7 +256,7 @@ function UserManagement() {
                     </div>
                 </div>
 
-                <div className="sort-controls">
+                <div className="user-management-sort-controls">
                     <span>Sort by:</span>
                     <select
                         value={sortBy}
@@ -263,7 +267,7 @@ function UserManagement() {
                         <option value="status">Status</option>
                     </select>
                     <button
-                        className={`sort-order ${sortOrder}`}
+                        className={`user-management-sort-order ${sortOrder}`}
                         onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
                     >
                         {sortOrder === 'asc' ? '↑' : '↓'}
@@ -272,26 +276,26 @@ function UserManagement() {
             </div>
 
             {/* Users Table */}
-            <div className="users-table-container">
-                <div className="table-wrapper">
-                    <table className="users-table">
+            <div className="user-management-users-table-container">
+                <div className="user-management-table-wrapper">
+                    <table className="user-management-users-table">
                         <thead>
                             <tr>
                                 <th onClick={() => handleSort('name')} className={sortBy === 'name' ? 'active' : ''}>
-                                    <div className="th-content">
+                                    <div className="user-management-th-content">
                                         <User size={16} />
                                         <span>Admin User</span>
                                     </div>
                                 </th>
                                 <th onClick={() => handleSort('email')} className={sortBy === 'email' ? 'active' : ''}>
-                                    <div className="th-content">
+                                    <div className="user-management-th-content">
                                         <Mail size={16} />
                                         <span>Email Address</span>
                                     </div>
                                 </th>
                                 <th>Password</th>
                                 <th onClick={() => handleSort('status')} className={sortBy === 'status' ? 'active' : ''}>
-                                    <div className="th-content">
+                                    <div className="user-management-th-content">
                                         <span>Status</span>
                                     </div>
                                 </th>
@@ -300,41 +304,41 @@ function UserManagement() {
                         </thead>
                         <tbody>
                             {filteredAndSortedUsers.map(user => (
-                                <tr key={user.id} className="user-row">
-                                    <td className="user-info">
-                                        <div className="user-avatar">
+                                <tr key={user.id} className="user-management-user-row">
+                                    <td className="user-management-user-info">
+                                        <div className="user-management-user-avatar">
                                             {user.name.split(' ').map(n => n[0]).join('')}
                                         </div>
-                                        <div className="user-details">
-                                            <div className="user-name">{user.name}</div>
-                                            <div className="user-role">Administrator</div>
+                                        <div className="user-management-user-details">
+                                            <div className="user-management-user-name">{user.name}</div>
+                                            <div className="user-management-user-role">Administrator</div>
                                         </div>
                                     </td>
-                                    <td className="email-info">
-                                        <div className="email-address">{user.email}</div>
+                                    <td className="user-management-email-info">
+                                        <div className="user-management-email-address">{user.email}</div>
                                     </td>
-                                    <td className="password-info">
-                                        <div className="password-display">
+                                    <td className="user-management-password-info">
+                                        <div className="user-management-password-display">
                                             <Lock size={14} />
                                             <span>••••••••••</span>
                                         </div>
                                     </td>
-                                    <td className="status-info">
-                                        <span className={`status ${getStatusClass(user.status)}`}>
+                                    <td className="user-management-status-info">
+                                        <span className={`user-management-status ${getStatusClass(user.status)}`}>
                                             {user.status}
                                         </span>
                                     </td>
-                                    <td className="actions-info">
-                                        <div className="action-buttons">
+                                    <td className="user-management-actions-info">
+                                        <div className="user-management-action-buttons">
                                             <button
-                                                className="action-btn edit"
+                                                className="user-management-action-btn edit"
                                                 title="Edit User"
                                                 onClick={() => handleEditUser(user)}
                                             >
                                                 <Edit size={16} />
                                             </button>
                                             <button
-                                                className="action-btn delete"
+                                                className="user-management-action-btn delete"
                                                 title="Delete User"
                                                 onClick={() => handleDeleteUser(user.id)}
                                             >
@@ -351,8 +355,8 @@ function UserManagement() {
 
             {/* Empty State */}
             {filteredAndSortedUsers.length === 0 && (
-                <div className="empty-state">
-                    <div className="empty-icon">
+                <div className="user-management-empty-state">
+                    <div className="user-management-empty-icon">
                         <Users size={48} />
                     </div>
                     <h3>No admin users found</h3>
@@ -366,20 +370,20 @@ function UserManagement() {
 
             {/* Create User Modal */}
             {showCreateUser && (
-                <div className="modal-overlay" onClick={() => setShowCreateUser(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-header">
+                <div className="user-management-modal-overlay" onClick={() => setShowCreateUser(false)}>
+                    <div className="user-management-modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="user-management-modal-header">
                             <h2>Create New Admin</h2>
                             <button
-                                className="close-btn"
+                                className="user-management-close-btn"
                                 onClick={() => setShowCreateUser(false)}
                             >
                                 <X size={24} />
                             </button>
                         </div>
                         <form onSubmit={handleCreateUser}>
-                            <div className="modal-body">
-                                <div className="form-group">
+                            <div className="user-management-modal-body">
+                                <div className="user-management-form-group">
                                     <label htmlFor="name">Full Name *</label>
                                     <input
                                         type="text"
@@ -390,7 +394,7 @@ function UserManagement() {
                                         placeholder="Enter full name"
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="user-management-form-group">
                                     <label htmlFor="email">Email Address *</label>
                                     <input
                                         type="email"
@@ -401,7 +405,7 @@ function UserManagement() {
                                         placeholder="admin@company.com"
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="user-management-form-group">
                                     <label htmlFor="password">Password *</label>
                                     <input
                                         type="password"
@@ -413,7 +417,7 @@ function UserManagement() {
                                     />
                                 </div>
                             </div>
-                            <div className="modal-footer">
+                            <div className="user-management-modal-footer">
                                 <button
                                     type="button"
                                     className="btn btn-secondary"
@@ -433,20 +437,20 @@ function UserManagement() {
 
             {/* Edit User Modal */}
             {showUserEdit && (
-                <div className="modal-overlay" onClick={() => setShowUserEdit(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-header">
+                <div className="user-management-modal-overlay" onClick={() => setShowUserEdit(false)}>
+                    <div className="user-management-modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="user-management-modal-header">
                             <h2>Edit Admin User</h2>
                             <button
-                                className="close-btn"
+                                className="user-management-close-btn"
                                 onClick={() => setShowUserEdit(false)}
                             >
                                 <X size={24} />
                             </button>
                         </div>
                         <form onSubmit={handleSaveEdit}>
-                            <div className="modal-body">
-                                <div className="form-group">
+                            <div className="user-management-modal-body">
+                                <div className="user-management-form-group">
                                     <label htmlFor="edit-name">Full Name *</label>
                                     <input
                                         type="text"
@@ -457,7 +461,7 @@ function UserManagement() {
                                         placeholder="Enter full name"
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="user-management-form-group">
                                     <label htmlFor="edit-email">Email Address *</label>
                                     <input
                                         type="email"
@@ -468,7 +472,7 @@ function UserManagement() {
                                         placeholder="admin@company.com"
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className="user-management-form-group">
                                     <label htmlFor="edit-password">Password *</label>
                                     <input
                                         type="password"
@@ -480,7 +484,7 @@ function UserManagement() {
                                     />
                                 </div>
                             </div>
-                            <div className="modal-footer">
+                            <div className="user-management-modal-footer">
                                 <button
                                     type="button"
                                     className="btn btn-secondary"

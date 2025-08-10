@@ -5,7 +5,7 @@
     top: $navbar-height;
     left: 0;
     width: $sidebar-width;
-    height: calc(100vh - #{$navbar-height});
+    height: calc(100dvh - #{$navbar-height});
     background: linear-gradient(180deg, $white 0%, rgba($light-gray, 0.3) 100%);
     box-shadow: 4px 0 20px rgba($deep-blue, 0.15);
     transform: translateX(-100%);
@@ -21,7 +21,7 @@
 
     @media (max-width: $breakpoint-md) {
         top: 70px;
-        height: calc(100vh - 70px);
+        height: calc(100dvh - 70px);
     }
 
     &.sidebar-open {
@@ -34,12 +34,16 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
-    background: rgba($deep-blue, 0.4);
-    backdrop-filter: blur(2px);
+    height: 100dvh;
+    background: linear-gradient(135deg,
+            rgba($deep-blue, 0.85) 0%,
+            rgba($deep-blue, 0.75) 50%,
+            rgba($dark-gray, 0.8) 100%);
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 998;
 
     @media (min-width: $breakpoint-lg) {
@@ -49,6 +53,20 @@
     &.active {
         opacity: 1;
         visibility: visible;
+    }
+
+    // Add a subtle pattern for better visual appeal
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: radial-gradient(circle at 25% 25%, rgba($white, 0.1) 0%, transparent 25%),
+            radial-gradient(circle at 75% 75%, rgba($orange, 0.05) 0%, transparent 25%);
+        background-size: 60px 60px;
+        opacity: 0.5;
     }
 }
 
@@ -67,20 +85,24 @@
     margin-bottom: 1.5rem;
 
     .sidebar-close {
-        background: none;
-        border: none;
-        color: $dark-gray;
+        background: rgba($white, 0.9);
+        border: 2px solid rgba($deep-blue, 0.1);
+        color: $deep-blue;
         cursor: pointer;
-        padding: 0.5rem;
-        border-radius: $border-radius;
-        transition: $transition;
+        padding: 0.6rem;
+        border-radius: 50%;
+        transition: all 0.3s ease;
         display: flex;
         align-items: center;
         justify-content: center;
+        box-shadow: 0 4px 15px rgba($deep-blue, 0.1);
 
         &:hover {
-            background-color: $light-gray;
-            color: $deep-blue;
+            background: $deep-blue;
+            color: $white;
+            border-color: $deep-blue;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba($deep-blue, 0.25);
         }
 
         @media (min-width: $breakpoint-lg) {
@@ -121,6 +143,7 @@
         background: linear-gradient(135deg, rgba($deep-blue, 0.08), rgba($vibrant-green, 0.03));
         color: $deep-blue;
         box-shadow: 0 4px 15px rgba($deep-blue, 0.1);
+        padding-right: 2.5rem; // Add space for potential active indicator
 
         .nav-icon {
             transform: scale(1.1);
@@ -134,6 +157,7 @@
         border-left: 4px solid $deep-blue;
         font-weight: 600;
         box-shadow: 0 6px 20px rgba($deep-blue, 0.2);
+        padding-right: 2.5rem; // Extra space for the active indicator
 
         .nav-icon {
             transform: scale(1.15);
@@ -146,12 +170,28 @@
             top: 50%;
             right: 1rem;
             transform: translateY(-50%);
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             background: $orange;
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba($orange, 0.5);
+            box-shadow: 0 0 12px rgba($orange, 0.6), 0 0 24px rgba($orange, 0.3);
+            animation: pulse-active 2s infinite;
         }
+    }
+}
+
+// Animation for active indicator
+@keyframes pulse-active {
+
+    0%,
+    100% {
+        transform: translateY(-50%) scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(-50%) scale(1.2);
+        opacity: 0.8;
     }
 }
 
@@ -167,6 +207,7 @@
 .nav-text {
     font-size: 0.95rem;
     white-space: nowrap;
+    flex: 1; // Take up remaining space, pushing indicator to the right
 }
 
 .sidebar-footer {
@@ -248,8 +289,30 @@
         padding: 1rem 1.5rem;
         font-size: 1rem;
 
+        &.active,
+        &:hover {
+            padding-right: 3rem; // More space on mobile
+        }
+
         .nav-icon {
             width: 28px;
         }
+
+        &.active::before {
+            right: 1.5rem; // Adjust position for mobile
+            width: 10px;
+            height: 10px;
+        }
+    }
+
+    // Enhanced mobile overlay
+    .sidebar-overlay {
+        background: linear-gradient(135deg,
+                rgba($deep-blue, 0.9) 0%,
+                rgba($deep-blue, 0.85) 30%,
+                rgba($dark-gray, 0.9) 70%,
+                rgba($dark-gray, 0.85) 100%);
+        backdrop-filter: blur(12px) saturate(200%);
+        -webkit-backdrop-filter: blur(12px) saturate(200%);
     }
 }

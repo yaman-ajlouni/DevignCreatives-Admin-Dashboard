@@ -288,7 +288,7 @@ function ImagesManagement() {
     return (
         <div className="images-management">
             {/* Header */}
-            <div className="page-header">
+            <div className="images-header">
                 <div className="header-content">
                     <div className="header-title">
                         {currentView !== 'clients' && (
@@ -296,7 +296,7 @@ function ImagesManagement() {
                                 <ArrowLeft size={20} />
                             </button>
                         )}
-                        <div>
+                        <div className="title-text">
                             <h1>
                                 {currentView === 'clients' && 'Images Management'}
                                 {currentView === 'projects' && `${selectedClient?.name} - Projects`}
@@ -389,13 +389,13 @@ function ImagesManagement() {
                         {filteredClients.map(client => (
                             <div
                                 key={client.id}
-                                className="client-card"
+                                className="image-management-client-card"
                                 onClick={() => handleClientSelect(client)}
                             >
                                 <div className="client-avatar">
                                     {client.avatar}
                                 </div>
-                                <div className="client-info">
+                                <div className="image-management-client-info">
                                     <h3>{client.name}</h3>
                                     <p>{client.company}</p>
                                     <div className="client-stats">
@@ -490,7 +490,7 @@ function ImagesManagement() {
                 {/* Images View */}
                 {currentView === 'images' && (
                     <div className={`images-section ${viewMode}`}>
-                        <div className="images-header">
+                        <div className="section-title">
                             <h3>
                                 {selectedMilestone ? `${selectedMilestone.name} Images` : 'Project Images'}
                                 ({getCurrentImages().length})

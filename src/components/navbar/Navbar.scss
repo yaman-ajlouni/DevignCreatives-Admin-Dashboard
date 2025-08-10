@@ -222,8 +222,8 @@
     }
 
     .logout-icon {
-        font-size: 1.2rem;
         transition: $transition;
+        flex-shrink: 0;
     }
 
     .logout-text {
@@ -234,20 +234,12 @@
     @media (max-width: $breakpoint-md) {
         padding: 0.6rem 1.2rem;
         font-size: 0.85rem;
-
-        .logout-icon {
-            font-size: 1.1rem;
-        }
     }
 
     @media (max-width: $breakpoint-sm) {
         padding: 0.5rem 1rem;
         font-size: 0.8rem;
         gap: 0.4rem;
-
-        .logout-icon {
-            font-size: 1rem;
-        }
     }
 
     @media (max-width: 480px) {
@@ -256,17 +248,9 @@
         .logout-text {
             display: none;
         }
-
-        .logout-icon {
-            font-size: 1.2rem;
-        }
     }
 
     @media (max-width: 380px) {
         padding: 0.4rem 0.6rem;
-
-        .logout-icon {
-            font-size: 1.1rem;
-        }
     }
 }

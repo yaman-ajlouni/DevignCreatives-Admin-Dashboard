@@ -31,7 +31,7 @@ function Navbar({ toggleSidebar }) {
                     </div>
                     <div className="stat-item">
                         <span className="stat-number">8</span>
-                        <span className="stat-label">Pending Reviews</span>
+                        <span className="stat-label">Unread Conversations</span>
                     </div>
                 </div>
 

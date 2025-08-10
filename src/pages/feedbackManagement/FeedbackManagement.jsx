@@ -170,8 +170,7 @@ function FeedbackManagement() {
 
     return (
         <div className="feedback-management">
-            {/* Header */}
-            <div className="page-header">
+            <div className="feedback-header">
                 <div className="header-content">
                     <h1>Feedback Management</h1>
                     <p>View and manage client feedback and suggestions</p>
@@ -188,9 +187,8 @@ function FeedbackManagement() {
                 </div>
             </div>
 
-            {/* Controls */}
             <div className="controls-section">
-                <div className="search-filters">
+                <div className="feedback-search-filters">
                     <div className="search-box">
                         <Search size={20} />
                         <input
@@ -248,7 +246,6 @@ function FeedbackManagement() {
                 </div>
             </div>
 
-            {/* Feedback List */}
             <div className="feedback-list">
                 {filteredAndSortedFeedbacks.length > 0 ? (
                     filteredAndSortedFeedbacks.map(feedback => (

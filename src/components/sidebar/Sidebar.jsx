@@ -13,7 +13,8 @@ import {
     LogOut,
     X,
     Zap,
-    TrendingUp
+    TrendingUp,
+    MessageCircle
 } from 'lucide-react';
 import './Sidebar.scss';
 
@@ -40,6 +41,11 @@ function Sidebar({ isOpen, toggleSidebar }) {
             icon: MessageSquare
         },
         {
+            path: '/chat',
+            name: 'Chat Management',
+            icon: MessageCircle
+        },
+        {
             path: '/images',
             name: 'Images Management',
             icon: Images
@@ -53,12 +59,12 @@ function Sidebar({ isOpen, toggleSidebar }) {
             path: '/extra-work',
             name: 'Extra Work Requests',
             icon: Zap
-        },
-        {
-            path: '/users',
-            name: 'User Management',
-            icon: UserCog
         }
+        // {
+        //     path: '/users',
+        //     name: 'User Management',
+        //     icon: UserCog
+        // }
     ];
 
     const handleLogout = () => {

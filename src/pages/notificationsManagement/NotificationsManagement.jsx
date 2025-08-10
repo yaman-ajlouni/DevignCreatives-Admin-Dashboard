@@ -299,21 +299,25 @@ function NotificationsManagement() {
     return (
         <div className="notifications-management">
             {/* Header */}
-            <div className="page-header">
-                <div className="header-content">
-                    <h1>Notifications Management</h1>
-                    <p>Send notifications to clients and manage received alerts</p>
+            <div className="notifications-header">
+                <div className="notifications-header-content">
+                    <div className="notifications-header-title">
+                        <div className="notifications-title-text">
+                            <h1>Notifications Management</h1>
+                            <p>Send notifications to clients and manage received alerts</p>
+                        </div>
+                    </div>
                 </div>
-                <div className="header-stats">
-                    <div className="stat-badge recent">
+                <div className="notifications-header-stats">
+                    <div className="notifications-stat-badge recent">
                         <Bell size={16} />
                         <span>{stats.recent} Today</span>
                     </div>
-                    <div className="stat-badge high">
+                    <div className="notifications-stat-badge high">
                         <AlertCircle size={16} />
                         <span>{stats.high} High Priority</span>
                     </div>
-                    <div className="stat-badge total">
+                    <div className="notifications-stat-badge total">
                         <MessageSquare size={16} />
                         <span>{stats.total} Total</span>
                     </div>
@@ -321,17 +325,17 @@ function NotificationsManagement() {
             </div>
 
             {/* Tabs */}
-            <div className="tabs-section">
-                <div className="tabs">
+            <div className="notifications-tabs-section">
+                <div className="notifications-tabs">
                     <button
-                        className={`tab ${activeTab === 'received' ? 'active' : ''}`}
+                        className={`notifications-tab ${activeTab === 'received' ? 'active' : ''}`}
                         onClick={() => setActiveTab('received')}
                     >
                         <Bell size={16} />
                         My Notifications ({stats.total})
                     </button>
                     <button
-                        className={`tab ${activeTab === 'send' ? 'active' : ''}`}
+                        className={`notifications-tab ${activeTab === 'send' ? 'active' : ''}`}
                         onClick={() => setActiveTab('send')}
                     >
                         <Send size={16} />
@@ -351,14 +355,14 @@ function NotificationsManagement() {
             </div>
 
             {/* Content Area */}
-            <div className="content-area">
+            <div className="notifications-content-area">
                 {/* Received Notifications Tab */}
                 {activeTab === 'received' && (
                     <>
                         {/* Controls */}
-                        <div className="controls-section">
-                            <div className="search-filters">
-                                <div className="search-box">
+                        <div className="notifications-controls-section">
+                            <div className="notifications-search-filters">
+                                <div className="notifications-search-box">
                                     <Search size={20} />
                                     <input
                                         type="text"
@@ -368,7 +372,7 @@ function NotificationsManagement() {
                                     />
                                 </div>
 
-                                <div className="filter-dropdown">
+                                <div className="notifications-filter-dropdown">
                                     <Filter size={16} />
                                     <select
                                         value={filterType}
@@ -386,68 +390,73 @@ function NotificationsManagement() {
                         </div>
 
                         {/* Notifications List */}
-                        <div className="notifications-list">
+                        <div className="notifications-list-container">
                             {currentNotifications.length > 0 ? (
                                 <>
-                                    <div className="list-info">
+                                    <div className="notifications-list-info">
                                         <span>
                                             Showing {startIndex + 1}-{Math.min(endIndex, filteredNotifications.length)} of {filteredNotifications.length} notifications
                                         </span>
                                     </div>
 
-                                    {currentNotifications.map(notification => (
-                                        <div
-                                            key={notification.id}
-                                            className={`notification-card ${getPriorityClass(notification.priority)}`}
-                                        >
-                                            <div className="notification-icon" style={{ color: getNotificationColor(notification.type) }}>
-                                                {getNotificationIcon(notification.type)}
-                                            </div>
-                                            <div className="notification-content">
-                                                <div className="notification-header">
-                                                    <h3>{notification.title}</h3>
-                                                    <div className="notification-meta">
-                                                        <span className={`priority ${notification.priority}`}>
-                                                            {notification.priority}
-                                                        </span>
-                                                        <span className="date">{formatDate(notification.date)}</span>
+                                    <div className="notifications-list">
+                                        {currentNotifications.map(notification => (
+                                            <div
+                                                key={notification.id}
+                                                className={`notifications-card ${getPriorityClass(notification.priority)}`}
+                                            >
+                                                <div
+                                                    className="notifications-card-icon"
+                                                    style={{ color: getNotificationColor(notification.type) }}
+                                                >
+                                                    {getNotificationIcon(notification.type)}
+                                                </div>
+                                                <div className="notifications-card-content">
+                                                    <div className="notifications-card-header">
+                                                        <h3>{notification.title}</h3>
+                                                        <div className="notifications-card-meta">
+                                                            <span className={`notifications-priority ${notification.priority}`}>
+                                                                {notification.priority}
+                                                            </span>
+                                                            <span className="notifications-date">{formatDate(notification.date)}</span>
+                                                        </div>
+                                                    </div>
+                                                    <p className="notifications-card-message">{notification.message}</p>
+                                                    <div className="notifications-card-details">
+                                                        <div className="notifications-client-info">
+                                                            <User size={14} />
+                                                            <span>{notification.clientName} • {notification.clientCompany}</span>
+                                                        </div>
+                                                        <div className="notifications-project-info">
+                                                            <span>Project: {notification.projectName}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <p className="notification-message">{notification.message}</p>
-                                                <div className="notification-details">
-                                                    <div className="client-info">
-                                                        <User size={14} />
-                                                        <span>{notification.clientName} • {notification.clientCompany}</span>
-                                                    </div>
-                                                    <div className="project-info">
-                                                        <span>Project: {notification.projectName}</span>
-                                                    </div>
+                                                <div className="notifications-card-actions">
+                                                    <button className="notifications-action-btn delete" title="Delete">
+                                                        <Trash2 size={14} />
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div className="notification-actions">
-                                                <button className="action-btn delete" title="Delete">
-                                                    <Trash2 size={14} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
 
                                     {/* Pagination */}
                                     {totalPages > 1 && (
-                                        <div className="pagination">
+                                        <div className="notifications-pagination">
                                             <button
-                                                className="page-btn prev"
+                                                className="notifications-page-btn prev"
                                                 onClick={() => handlePageChange(currentPage - 1)}
                                                 disabled={currentPage === 1}
                                             >
                                                 Previous
                                             </button>
 
-                                            <div className="page-numbers">
+                                            <div className="notifications-page-numbers">
                                                 {[...Array(totalPages)].map((_, index) => (
                                                     <button
                                                         key={index + 1}
-                                                        className={`page-number ${currentPage === index + 1 ? 'active' : ''}`}
+                                                        className={`notifications-page-number ${currentPage === index + 1 ? 'active' : ''}`}
                                                         onClick={() => handlePageChange(index + 1)}
                                                     >
                                                         {index + 1}
@@ -456,7 +465,7 @@ function NotificationsManagement() {
                                             </div>
 
                                             <button
-                                                className="page-btn next"
+                                                className="notifications-page-btn next"
                                                 onClick={() => handlePageChange(currentPage + 1)}
                                                 disabled={currentPage === totalPages}
                                             >
@@ -466,8 +475,8 @@ function NotificationsManagement() {
                                     )}
                                 </>
                             ) : (
-                                <div className="empty-state">
-                                    <div className="empty-icon">
+                                <div className="notifications-empty-state">
+                                    <div className="notifications-empty-icon">
                                         <Bell size={48} />
                                     </div>
                                     <h3>No notifications found</h3>
@@ -480,22 +489,22 @@ function NotificationsManagement() {
 
                 {/* Send Notifications Tab */}
                 {activeTab === 'send' && (
-                    <div className="send-section">
+                    <div className="notifications-send-section">
                         {/* Sent Notifications History */}
-                        <div className="sent-history">
+                        <div className="notifications-sent-history">
                             <h3>Recent Sent Notifications</h3>
-                            <div className="sent-list">
+                            <div className="notifications-sent-list">
                                 {sentNotifications.map(notification => (
-                                    <div key={notification.id} className="sent-card">
-                                        <div className="sent-content">
+                                    <div key={notification.id} className="notifications-sent-card">
+                                        <div className="notifications-sent-content">
                                             <h4>{notification.subject}</h4>
                                             <p>{notification.message}</p>
-                                            <div className="sent-meta">
+                                            <div className="notifications-sent-meta">
                                                 <span>To: {notification.recipients.join(', ')}</span>
                                                 <span>{formatDate(notification.dateSent)}</span>
                                             </div>
                                         </div>
-                                        <div className="sent-status">
+                                        <div className="notifications-sent-status">
                                             <CheckCircle size={16} />
                                             <span>Sent</span>
                                         </div>
@@ -509,37 +518,37 @@ function NotificationsManagement() {
 
             {/* Send Notification Modal */}
             {showSendModal && (
-                <div className="modal-overlay">
-                    <div className="modal-content send-modal">
-                        <div className="modal-header">
+                <div className="notifications-modal-overlay">
+                    <div className="notifications-modal-content send-modal">
+                        <div className="notifications-modal-header">
                             <h3>Send Notification</h3>
                             <button
-                                className="close-btn"
+                                className="notifications-close-btn"
                                 onClick={() => setShowSendModal(false)}
                             >
                                 <X size={20} />
                             </button>
                         </div>
-                        <div className="modal-body">
+                        <div className="notifications-modal-body">
                             {/* Client Selection */}
-                            <div className="form-section">
+                            <div className="notifications-form-section">
                                 <label>Select Recipients</label>
-                                <div className="clients-grid">
+                                <div className="notifications-clients-grid">
                                     {clients.map(client => (
                                         <div
                                             key={client.id}
-                                            className={`client-option ${selectedClients.includes(client.id) ? 'selected' : ''}`}
+                                            className={`notifications-client-option ${selectedClients.includes(client.id) ? 'selected' : ''}`}
                                             onClick={() => handleClientSelect(client.id)}
                                         >
-                                            <div className="client-avatar">
+                                            <div className="notifications-client-avatar">
                                                 {client.avatar}
                                             </div>
-                                            <div className="client-info">
-                                                <span className="name">{client.name}</span>
-                                                <span className="company">{client.company}</span>
+                                            <div className="notifications-client-info">
+                                                <span className="notifications-client-name">{client.name}</span>
+                                                <span className="notifications-client-company">{client.company}</span>
                                             </div>
                                             {selectedClients.includes(client.id) && (
-                                                <CheckCircle size={16} className="selected-icon" />
+                                                <CheckCircle size={16} className="notifications-selected-icon" />
                                             )}
                                         </div>
                                     ))}
@@ -547,7 +556,7 @@ function NotificationsManagement() {
                             </div>
 
                             {/* Subject */}
-                            <div className="form-section">
+                            <div className="notifications-form-section">
                                 <label htmlFor="subject">Subject</label>
                                 <input
                                     type="text"
@@ -559,7 +568,7 @@ function NotificationsManagement() {
                             </div>
 
                             {/* Message */}
-                            <div className="form-section">
+                            <div className="notifications-form-section">
                                 <label htmlFor="message">Message</label>
                                 <textarea
                                     id="message"
@@ -570,7 +579,7 @@ function NotificationsManagement() {
                                 />
                             </div>
                         </div>
-                        <div className="modal-footer">
+                        <div className="notifications-modal-footer">
                             <button
                                 className="btn btn-secondary"
                                 onClick={() => setShowSendModal(false)}

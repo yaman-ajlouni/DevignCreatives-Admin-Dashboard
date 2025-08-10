@@ -84,7 +84,6 @@ function ClientsManagement() {
                 }
             ],
             notes: 'Great client, always pays on time. Prefers email communication.',
-            preferredContact: 'email',
             industry: 'E-commerce',
             website: 'https://shamsuperstore.com',
             timezone: 'EST'
@@ -123,7 +122,6 @@ function ClientsManagement() {
                 }
             ],
             notes: 'Very detail-oriented. Requires regular updates and prefers phone calls.',
-            preferredContact: 'phone',
             industry: 'Technology',
             website: 'https://techcorp.com',
             timezone: 'PST'
@@ -154,7 +152,6 @@ function ClientsManagement() {
                 }
             ],
             notes: 'New client, very enthusiastic about the project. Quick decision maker.',
-            preferredContact: 'email',
             industry: 'Consulting',
             website: 'https://innovatesolutions.com',
             timezone: 'CST'
@@ -193,7 +190,6 @@ function ClientsManagement() {
                 }
             ],
             notes: 'Excellent client, referred 2 new clients. Very satisfied with work.',
-            preferredContact: 'email',
             industry: 'Photography',
             website: 'https://davisphotography.com',
             timezone: 'PST'
@@ -224,7 +220,6 @@ function ClientsManagement() {
                 }
             ],
             notes: 'Project canceled due to budget constraints. Potential future client.',
-            preferredContact: 'phone',
             industry: 'Startup',
             website: 'https://thompsonstartup.com',
             timezone: 'PST'
@@ -434,7 +429,7 @@ function ClientsManagement() {
             {/* Controls */}
             <div className="controls-section">
                 <div className="controls-wrapper">
-                    <div className="search-filters">
+                    <div className="clients-search-filters">
                         <div className="search-box">
                             <Search size={20} />
                             <input
@@ -574,10 +569,6 @@ function ClientsManagement() {
                                         <div className="contact-item">
                                             <Mail size={14} />
                                             <span>{client.email}</span>
-                                        </div>
-                                        <div className="contact-preference">
-                                            <MessageCircle size={12} />
-                                            Prefers {client.preferredContact}
                                         </div>
                                     </td>
                                     <td className="projects-info">

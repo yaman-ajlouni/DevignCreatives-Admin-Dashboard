@@ -267,71 +267,67 @@ function ExtraWorkManagement() {
     return (
         <div className="extra-work-management">
             {/* Header */}
-            <div className="page-header">
-                <div className="header-content">
-                    <h1>Extra Work Management</h1>
-                    <p>Review and manage additional work requests from clients</p>
-                </div>
-                <div className="header-actions">
-                    <button className="btn btn-secondary">
-                        <FileText size={20} />
-                        Export Report
-                    </button>
+            <div className="extra-work-header">
+                <div className="extra-work-header-content">
+                    <div className="extra-work-header-title">
+                        <div className="extra-work-title-text">
+                            <h1>Extra Work Management</h1>
+                            <p>Review and manage additional work requests from clients</p>
+                        </div>
+                    </div>
+                    <div className="extra-work-header-actions">
+                        <button className="btn btn-secondary">
+                            <FileText size={20} />
+                            Export Report
+                        </button>
+                    </div>
                 </div>
             </div>
 
             {/* Stats Summary */}
-            <div className="stats-summary">
-                <div className="stat-item">
-                    <div className="stat-icon pending">
+            <div className="extra-work-stats-summary">
+                <div className="extra-work-stat-item">
+                    <div className="extra-work-stat-icon pending">
                         <Clock size={16} />
                     </div>
-                    <div className="stat-info">
-                        <span className="stat-number">{statusCounts.pending}</span>
-                        <span className="stat-label">Pending Requests</span>
+                    <div className="extra-work-stat-info">
+                        <span className="extra-work-stat-number">{statusCounts.pending}</span>
+                        <span className="extra-work-stat-label">Pending Requests</span>
                     </div>
                 </div>
-                <div className="stat-item">
-                    <div className="stat-icon accepted">
+                <div className="extra-work-stat-item">
+                    <div className="extra-work-stat-icon accepted">
                         <CheckCircle size={16} />
                     </div>
-                    <div className="stat-info">
-                        <span className="stat-number">{statusCounts.accepted}</span>
-                        <span className="stat-label">Accepted</span>
+                    <div className="extra-work-stat-info">
+                        <span className="extra-work-stat-number">{statusCounts.accepted}</span>
+                        <span className="extra-work-stat-label">Accepted</span>
                     </div>
                 </div>
-                <div className="stat-item">
-                    <div className="stat-icon completed">
+                <div className="extra-work-stat-item">
+                    <div className="extra-work-stat-icon completed">
                         <Check size={16} />
                     </div>
-                    <div className="stat-info">
-                        <span className="stat-number">{statusCounts.completed}</span>
-                        <span className="stat-label">Completed</span>
+                    <div className="extra-work-stat-info">
+                        <span className="extra-work-stat-number">{statusCounts.completed}</span>
+                        <span className="extra-work-stat-label">Completed</span>
                     </div>
                 </div>
-                {/* <div className="stat-item">
-                    <div className="stat-icon revenue">
-                        <DollarSign size={16} />
+                <div className="extra-work-stat-item">
+                    <div className="extra-work-stat-icon rejected">
+                        <X size={16} />
                     </div>
-                    <div className="stat-info">
-                        <span className="stat-number">
-                            ${extraWorkRequests
-                                .filter(r => r.status === 'Completed' || r.status === 'Accepted')
-                                .reduce((total, request) => {
-                                    const amount = request.adminRequiredMoney || request.clientProposedMoney;
-                                    return total + parseFloat(amount.replace('$', '').replace(',', ''));
-                                }, 0)
-                                .toLocaleString()}
-                        </span>
-                        <span className="stat-label">Extra Revenue</span>
+                    <div className="extra-work-stat-info">
+                        <span className="extra-work-stat-number">{statusCounts.rejected}</span>
+                        <span className="extra-work-stat-label">Rejected</span>
                     </div>
-                </div> */}
+                </div>
             </div>
 
             {/* Controls */}
-            <div className="controls-section">
-                <div className="search-filters">
-                    <div className="search-box">
+            <div className="extra-work-controls-section">
+                <div className="extra-work-search-filters">
+                    <div className="extra-work-search-box">
                         <Search size={20} />
                         <input
                             type="text"
@@ -341,7 +337,7 @@ function ExtraWorkManagement() {
                         />
                     </div>
 
-                    <div className="filter-dropdown">
+                    <div className="extra-work-filter-dropdown">
                         <Filter size={16} />
                         <select
                             value={filterStatus}
@@ -356,7 +352,7 @@ function ExtraWorkManagement() {
                     </div>
                 </div>
 
-                <div className="sort-controls">
+                <div className="extra-work-sort-controls">
                     <span>Sort by:</span>
                     <select
                         value={sortBy}
@@ -368,7 +364,7 @@ function ExtraWorkManagement() {
                         <option value="status">Status</option>
                     </select>
                     <button
-                        className={`sort-order ${sortOrder}`}
+                        className={`extra-work-sort-order ${sortOrder}`}
                         onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
                     >
                         {sortOrder === 'asc' ? '↑' : '↓'}
@@ -377,19 +373,19 @@ function ExtraWorkManagement() {
             </div>
 
             {/* Requests Table */}
-            <div className="requests-table-container">
-                <div className="table-wrapper">
-                    <table className="requests-table">
+            <div className="extra-work-requests-table-container">
+                <div className="extra-work-table-wrapper">
+                    <table className="extra-work-requests-table">
                         <thead>
                             <tr>
                                 <th onClick={() => handleSort('clientName')} className={sortBy === 'clientName' ? 'active' : ''}>
-                                    <div className="th-content">
+                                    <div className="extra-work-th-content">
                                         <User size={16} />
                                         <span>Client</span>
                                     </div>
                                 </th>
                                 <th onClick={() => handleSort('title')} className={sortBy === 'title' ? 'active' : ''}>
-                                    <div className="th-content">
+                                    <div className="extra-work-th-content">
                                         <Briefcase size={16} />
                                         <span>Request Details</span>
                                     </div>
@@ -397,13 +393,13 @@ function ExtraWorkManagement() {
                                 <th>Proposed Terms</th>
                                 <th>Admin Requirements</th>
                                 <th onClick={() => handleSort('priority')} className={sortBy === 'priority' ? 'active' : ''}>
-                                    <div className="th-content">
+                                    <div className="extra-work-th-content">
                                         <AlertCircle size={16} />
                                         <span>Priority</span>
                                     </div>
                                 </th>
                                 <th onClick={() => handleSort('status')} className={sortBy === 'status' ? 'active' : ''}>
-                                    <div className="th-content">
+                                    <div className="extra-work-th-content">
                                         <span>Status</span>
                                     </div>
                                 </th>
@@ -412,81 +408,81 @@ function ExtraWorkManagement() {
                         </thead>
                         <tbody>
                             {filteredAndSortedRequests.map(request => (
-                                <tr key={request.id} className="request-row">
-                                    <td className="client-info">
-                                        <div className="client-avatar">
+                                <tr key={request.id} className="extra-work-request-row">
+                                    <td className="extra-work-client-info">
+                                        <div className="extra-work-client-avatar">
                                             {request.clientName.split(' ').map(n => n[0]).join('')}
                                         </div>
-                                        <div className="client-details">
-                                            <div className="client-name">{request.clientName}</div>
-                                            <div className="client-company">{request.company}</div>
-                                            <div className="project-name">
+                                        <div className="extra-work-client-details">
+                                            <div className="extra-work-client-name">{request.clientName}</div>
+                                            <div className="extra-work-client-company">{request.company}</div>
+                                            <div className="extra-work-project-name">
                                                 <Briefcase size={12} />
                                                 {request.projectName}
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="request-details">
-                                        <div className="request-title">{request.title}</div>
-                                        <div className="request-description">
+                                    <td className="extra-work-request-details">
+                                        <div className="extra-work-request-title">{request.title}</div>
+                                        <div className="extra-work-request-description">
                                             {request.description.length > 100
                                                 ? `${request.description.substring(0, 100)}...`
                                                 : request.description
                                             }
                                         </div>
-                                        <div className="request-meta">
-                                            <span className="category">{request.category}</span>
-                                            <span className="estimated-hours">{request.estimatedHours}h</span>
-                                            <span className="submission-date">
+                                        <div className="extra-work-request-meta">
+                                            <span className="extra-work-category">{request.category}</span>
+                                            <span className="extra-work-estimated-hours">{request.estimatedHours}h</span>
+                                            <span className="extra-work-submission-date">
                                                 <Calendar size={12} />
                                                 {formatDate(request.submissionDate)}
                                             </span>
                                         </div>
                                     </td>
-                                    <td className="proposed-terms">
-                                        <div className="term-item">
+                                    <td className="extra-work-proposed-terms">
+                                        <div className="extra-work-term-item">
                                             <DollarSign size={14} />
                                             <span>{request.clientProposedMoney}</span>
                                         </div>
-                                        <div className="term-item">
+                                        <div className="extra-work-term-item">
                                             <Clock size={14} />
                                             <span>{request.clientProposedTime}</span>
                                         </div>
-                                        <div className="complexity">
+                                        <div className="extra-work-complexity">
                                             Complexity: {request.complexity}
                                         </div>
                                     </td>
-                                    <td className="admin-requirements">
+                                    <td className="extra-work-admin-requirements">
                                         {request.adminRequiredMoney && request.adminRequiredTime ? (
                                             <>
-                                                <div className="term-item">
+                                                <div className="extra-work-term-item">
                                                     <DollarSign size={14} />
                                                     <span>{request.adminRequiredMoney}</span>
                                                 </div>
-                                                <div className="term-item">
+                                                <div className="extra-work-term-item">
                                                     <Clock size={14} />
                                                     <span>{request.adminRequiredTime}</span>
                                                 </div>
                                             </>
                                         ) : (
-                                            <span className="not-set">Not set</span>
+                                            <span className="extra-work-not-set">Not set</span>
                                         )}
                                     </td>
-                                    <td className="priority-info">
-                                        <span className={`priority ${getPriorityClass(request.priority)}`}>
+                                    <td className="extra-work-priority-info">
+                                        <span className={`extra-work-priority ${getPriorityClass(request.priority)}`}>
                                             {request.priority}
                                         </span>
                                     </td>
-                                    <td className="status-info">
-                                        <div className={`status ${getStatusClass(request.status)}`}>
+                                    <td className="extra-work-status-info">
+                                        <div className={`extra-work-status ${getStatusClass(request.status)}`}>
                                             {getStatusIcon(request.status)}
                                             <span>{request.status}</span>
                                         </div>
                                     </td>
-                                    <td className="actions-info">
-                                        <div className="action-buttons">
+                                    <td className="extra-work-actions-info">
+                                        <div className="extra-work-action-buttons">
                                             <button
-                                                className="action-btn view"
+                                                className="extra-work-action-btn view"
                                                 title="View Details"
                                                 onClick={() => handleViewRequest(request)}
                                             >
@@ -495,14 +491,14 @@ function ExtraWorkManagement() {
                                             {request.status === 'Pending' && (
                                                 <>
                                                     <button
-                                                        className="action-btn accept"
+                                                        className="extra-work-action-btn accept"
                                                         title="Accept Request"
                                                         onClick={() => handleAcceptRequest(request.id)}
                                                     >
                                                         <Check size={16} />
                                                     </button>
                                                     <button
-                                                        className="action-btn reject"
+                                                        className="extra-work-action-btn reject"
                                                         title="Reject Request"
                                                         onClick={() => handleRejectRequest(request.id)}
                                                     >
@@ -521,8 +517,8 @@ function ExtraWorkManagement() {
 
             {/* Empty State */}
             {filteredAndSortedRequests.length === 0 && (
-                <div className="empty-state">
-                    <div className="empty-icon">
+                <div className="extra-work-empty-state">
+                    <div className="extra-work-empty-icon">
                         <Briefcase size={48} />
                     </div>
                     <h3>No extra work requests found</h3>
@@ -532,20 +528,20 @@ function ExtraWorkManagement() {
 
             {/* Request Details Modal */}
             {showRequestModal && selectedRequest && (
-                <div className="modal-overlay" onClick={() => setShowRequestModal(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-header">
+                <div className="extra-work-modal-overlay" onClick={() => setShowRequestModal(false)}>
+                    <div className="extra-work-modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="extra-work-modal-header">
                             <h2>{selectedRequest.title}</h2>
                             <button
-                                className="close-btn"
+                                className="extra-work-close-btn"
                                 onClick={() => setShowRequestModal(false)}
                             >
                                 <X size={24} />
                             </button>
                         </div>
-                        <div className="modal-body">
-                            <div className="request-full-details">
-                                <div className="detail-section">
+                        <div className="extra-work-modal-body">
+                            <div className="extra-work-request-full-details">
+                                <div className="extra-work-detail-section">
                                     <h3>Client Information</h3>
                                     <p><strong>Name:</strong> {selectedRequest.clientName}</p>
                                     <p><strong>Company:</strong> {selectedRequest.company}</p>
@@ -553,25 +549,25 @@ function ExtraWorkManagement() {
                                     <p><strong>Project:</strong> {selectedRequest.projectName}</p>
                                 </div>
 
-                                <div className="detail-section">
+                                <div className="extra-work-detail-section">
                                     <h3>Request Details</h3>
                                     <p><strong>Description:</strong></p>
-                                    <p className="description">{selectedRequest.description}</p>
+                                    <p className="extra-work-description">{selectedRequest.description}</p>
                                     <p><strong>Category:</strong> {selectedRequest.category}</p>
                                     <p><strong>Estimated Hours:</strong> {selectedRequest.estimatedHours}</p>
                                     <p><strong>Complexity:</strong> {selectedRequest.complexity}</p>
                                     <p><strong>Priority:</strong> {selectedRequest.priority}</p>
                                 </div>
 
-                                <div className="detail-section">
+                                <div className="extra-work-detail-section">
                                     <h3>Financial Terms</h3>
-                                    <div className="terms-comparison">
-                                        <div className="client-terms">
+                                    <div className="extra-work-terms-comparison">
+                                        <div className="extra-work-client-terms">
                                             <h4>Client Proposed</h4>
                                             <p><strong>Amount:</strong> {selectedRequest.clientProposedMoney}</p>
                                             <p><strong>Timeline:</strong> {selectedRequest.clientProposedTime}</p>
                                         </div>
-                                        <div className="admin-terms">
+                                        <div className="extra-work-admin-terms">
                                             <h4>Admin Requirements</h4>
                                             <p><strong>Amount:</strong> {selectedRequest.adminRequiredMoney || 'Not set'}</p>
                                             <p><strong>Timeline:</strong> {selectedRequest.adminRequiredTime || 'Not set'}</p>
@@ -580,22 +576,22 @@ function ExtraWorkManagement() {
                                 </div>
 
                                 {selectedRequest.adminNotes && (
-                                    <div className="detail-section">
+                                    <div className="extra-work-detail-section">
                                         <h3>Admin Notes</h3>
-                                        <p className="admin-notes">{selectedRequest.adminNotes}</p>
+                                        <p className="extra-work-admin-notes">{selectedRequest.adminNotes}</p>
                                     </div>
                                 )}
                             </div>
                         </div>
-                        <div className="modal-footer">
-                            <div className="status-display">
-                                <span className={`status ${getStatusClass(selectedRequest.status)}`}>
+                        <div className="extra-work-modal-footer">
+                            <div className="extra-work-status-display">
+                                <span className={`extra-work-status ${getStatusClass(selectedRequest.status)}`}>
                                     {getStatusIcon(selectedRequest.status)}
                                     {selectedRequest.status}
                                 </span>
                             </div>
                             {selectedRequest.status === 'Pending' && (
-                                <div className="action-buttons">
+                                <div className="extra-work-action-buttons">
                                     <button
                                         className="btn btn-success"
                                         onClick={() => {

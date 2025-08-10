@@ -18,8 +18,6 @@ import {
     MessageCircle,
     Zap,
     Target,
-    Grid,
-    List,
     Menu
 } from 'lucide-react';
 import ProjectDetails from './ProjectDetails';
@@ -31,7 +29,6 @@ import './ProjectsManagement.scss';
 function ProjectsManagement() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
-    const [viewMode, setViewMode] = useState('grid');
     const [showProjectDetails, setShowProjectDetails] = useState(false);
     const [showNewProject, setShowNewProject] = useState(false);
     const [showEditProject, setShowEditProject] = useState(false);
@@ -353,25 +350,6 @@ function ProjectsManagement() {
                             <span>Filters</span>
                         </button>
                     </div>
-
-                    <div className="view-controls">
-                        <button
-                            className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-                            onClick={() => setViewMode('grid')}
-                            title="Grid View"
-                        >
-                            <Grid size={16} />
-                            <span className="view-text">Grid</span>
-                        </button>
-                        <button
-                            className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
-                            onClick={() => setViewMode('list')}
-                            title="List View"
-                        >
-                            <List size={16} />
-                            <span className="view-text">List</span>
-                        </button>
-                    </div>
                 </div>
 
                 {/* Mobile Filters */}
@@ -434,8 +412,8 @@ function ProjectsManagement() {
                 </div>
             </div>
 
-            {/* Projects Grid/List */}
-            <div className={`projects-container ${viewMode}`}>
+            {/* Projects Grid */}
+            <div className="projects-container">
                 {filteredProjects.length > 0 ? (
                     filteredProjects.map((project) => (
                         <div

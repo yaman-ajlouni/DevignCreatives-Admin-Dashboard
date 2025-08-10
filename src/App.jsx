@@ -10,7 +10,8 @@ import FeedbackManagement from './pages/feedbackManagement/FeedbackManagement';
 import ImagesManagement from './pages/imagesManagement/ImagesManagement';
 import NotificationsManagement from './pages/notificationsManagement/NotificationsManagement';
 import ExtraWorkManagement from './pages/extraWorkManagement/ExtraWorkManagement';
-import UserManagement from './pages/userManagement/UserManagement';
+// import UserManagement from './pages/userManagement/UserManagement';
+import ChatManagement from './pages/chatManagement/ChatManagement';
 
 import './App.scss';
 
@@ -36,7 +37,8 @@ function App() {
               <Route path="/images" element={<ImagesManagement />} />
               <Route path="/notifications" element={<NotificationsManagement />} />
               <Route path="/extra-work" element={<ExtraWorkManagement />} />
-              <Route path="/users" element={<UserManagement />} />
+              {/* <Route path="/users" element={<UserManagement />} /> */}
+              <Route path="/chat" element={<ChatManagement />} />
             </Routes>
           </main>
         </div>
